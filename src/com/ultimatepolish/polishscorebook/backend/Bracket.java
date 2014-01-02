@@ -139,6 +139,18 @@ public class Bracket {
 		}
 	}
 
+	public void setFinalsRespawnText() {
+		TextView tv;
+		tv = (TextView) rl.findViewById(matchIdOffset + BrNodeType.UPPER);
+		tv.setText("(W)");
+
+		tv = (TextView) rl.findViewById(matchIdOffset + BrNodeType.LOWER);
+		tv.setText("(L)");
+
+		tv = (TextView) rl.findViewById(2 + matchIdOffset + BrNodeType.LOWER);
+		tv.setText("(W)");
+	}
+
 	public void copyBracketMaps(Bracket br) {
 		this.smIdMap = br.smIdMap;
 		this.smSeedMap = br.smSeedMap;
