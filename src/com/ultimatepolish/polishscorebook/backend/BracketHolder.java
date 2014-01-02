@@ -81,7 +81,8 @@ public class BracketHolder implements View.OnClickListener {
 			fBr.changeOffsets(lBr.lastHeaderId, lBr.lastMatchId + 1);
 			fBr.labelText = "Finals";
 			fBr.copyBracketMaps(wBr);
-			fBr.buildBracket(context, 82, lBr.lowestViewId(), 1, this);
+			fBr.buildBracket(context, 150, lBr.lowestViewId(), 1, this);
+			fBr.setFinalsRespawnText();
 		}
 		sv.addView(rl);
 	}
