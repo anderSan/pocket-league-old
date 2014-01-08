@@ -42,13 +42,14 @@ import com.ultimatepolish.db.Player;
 import com.ultimatepolish.db.Session;
 import com.ultimatepolish.db.Throw;
 import com.ultimatepolish.db.Venue;
+import com.ultimatepolish.enums.DbxInfo;
 import com.ultimatepolish.enums.RuleType;
 
 public class DbSettings extends OrmLiteFragment {
 
 	private DbxAccountManager mDbxAcctMgr;
-	private static final String appKey = "v08dmrsen6b8pr5";
-	private static final String appSecret = "epzfibxnco03c9v";
+	private static final String appKey = DbxInfo.appKey;
+	private static final String appSecret = DbxInfo.appSecret;
 	private Button mLinkButton;
 	private Button dbxSaveButton;
 	private Button dbxLoadButton;
