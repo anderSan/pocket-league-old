@@ -2,19 +2,13 @@ package com.ultimatepolish.polishscorebook.backend;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 import android.content.Context;
-import android.graphics.Color;
-import android.graphics.Paint;
-import android.graphics.PorterDuff.Mode;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.j256.ormlite.dao.Dao;
@@ -24,21 +18,18 @@ import com.ultimatepolish.db.Player;
 import com.ultimatepolish.db.Session;
 import com.ultimatepolish.db.SessionMember;
 import com.ultimatepolish.enums.BrNodeType;
-import com.ultimatepolish.polishscorebook.R;
+import com.ultimatepolish.polishscorebook.backend.Bracket.MatchInfo;
 
 public class BracketHolder implements View.OnClickListener {
 	public static String LOGTAG = "BracketHolder";
 	public Context context;
 	private Session s;
-	public RelativeLayout rl;
+	private RelativeLayout rl;
 	private List<SessionMember> sMembers = new ArrayList<SessionMember>();
 	private Boolean isDoubleElim;
 	private Bracket wBr; // winners bracket
 	private Bracket lBr; // losers bracket
 	private Bracket fBr; // finals bracket
-
-	// sMemberMap maps a player id to a session member
-	public HashMap<Long, SessionMember> sMemberMap = new HashMap<Long, SessionMember>();
 
 	Dao<Session, Long> sDao;
 	Dao<SessionMember, Long> smDao;
@@ -65,115 +56,38 @@ public class BracketHolder implements View.OnClickListener {
 					.orderBy(SessionMember.PLAYER_SEED, true).query();
 			for (SessionMember member : sMembers) {
 				pDao.refresh(member.getPlayer());
-				sMemberMap.put(member.getPlayer().getId(), member);
 			}
 		} catch (SQLException e) {
 			Toast.makeText(context, e.getMessage(), Toast.LENGTH_LONG).show();
 		}
 
 		rl = new RelativeLayout(context);
-		this.context = rl.getContext();
 
 		foldRoster();
-		wBr = new BracketData(sMembers.size());
-		wBr.seed(sMembers);
-		buildWinnersBracket();
+		wBr = new Bracket(sMembers, rl);
+		if (isDoubleElim) {
+			wBr.labelText = "Winners Bracket";
+		}
+		wBr.buildBracket(context, this);
 
 		if (isDoubleElim) {
+			lBr = new Bracket(sMembers.size(), false, rl);
+			lBr.changeOffsets(wBr.lastHeaderId, 0);
+			lBr.labelText = "Losers Bracket";
+			lBr.seedFromParentBracket(wBr);
+			lBr.buildBracket(context, 82, wBr.lowestViewId(), 1, this);
 
-			lBr = new BracketData(sMembers.size());
-			lBr.changeOffsets(factorTwos(sMembers.size()) + 1, sMembers.size());
-			lBr.seed(sMembers);
-			buildLosersBracket();
+			fBr = new Bracket(sMembers.size(), true, rl);
+			fBr.changeOffsets(lBr.lastHeaderId, lBr.lastMatchId + 1);
+			fBr.labelText = "Finals";
+			fBr.copyBracketMaps(wBr);
+			fBr.buildBracket(context, 150, lBr.lowestViewId(), 1, this);
+			fBr.setFinalsRespawnText();
 		}
+		sv.addView(rl);
 	}
 
-	private void buildWinnersBracket() {
-		// matches and tiers are 0 based.
-		// matches are numbered top to bottom starting at tier 0 and continuing
-		// in higher tiers of winners bracket followed by losers bracket.
-
-		// Id for upper half of match = matchId + SMType.UPPER
-		// Id for lower half of match = matchId + SMType.LOWER
-
-		TextView tv;
-		Integer matchIdx;
-
-		// lay out the bracket
-		makeInvisibleHeaders(350, 150, 0, 0, 0);
-
-		for (Integer mPos = 0; mPos < wBr.length(); mPos++) {
-			// populate the bracket map
-			matchIdx = wBr.matchIds.get(mPos);
-
-			// upper half of match
-			tv = makeHalfBracket(wBr, matchIdx, true);
-			if (wBr.sm1Types.get(mPos) == BrNodeType.TIP) {
-				addViewToLayout(wBr, tv, true);
-			} else {
-				addViewToLayout(wBr, tv, false);
-			}
-
-			// lower half of match
-			if (wBr.sm2Types.get(mPos) != BrNodeType.NA) {
-				tv = makeHalfBracket(wBr, matchIdx, false);
-				if (wBr.sm2Types.get(mPos) == BrNodeType.TIP) {
-					addViewToLayout(wBr, tv, true);
-				} else {
-					addViewToLayout(wBr, tv, false);
-				}
-			}
-		}
-	}
-
-	private void buildLosersBracket() {
-		// matches and tiers are 0 based.
-		// matches are numbered top to bottom starting at tier 0 and continuing
-		// in higher tiers of winners bracket followed by losers bracket.
-
-		// Id for upper half of match = matchId + SMType.UPPER
-		// Id for lower half of match = matchId + SMType.LOWER
-
-		TextView tv;
-		Integer matchIdx;
-
-		// lay out the bracket
-		int wBrLowest;
-		if (wBr.matchIds.contains(sMembers.size() / 2)) {
-			wBrLowest = sMembers.size() / 2 - 1 + BrNodeType.LOWER;
-		} else {
-			wBrLowest = wBr.findViewAbove(sMembers.size() / 2 - 1
-					+ BrNodeType.LOWER);
-		}
-		makeInvisibleHeaders(350, 150, 1, wBrLowest, lBr.headerIdOffset);
-
-		for (Integer mPos = 0; mPos < lBr.length(); mPos++) {
-			// populate the bracket map
-			matchIdx = lBr.matchIds.get(mPos);
-
-			// upper half of match
-			tv = makeHalfBracket(lBr, matchIdx, true);
-			if (lBr.sm1Types.get(mPos) == BrNodeType.TIP) {
-				addViewToLayout(lBr, tv, true);
-			} else {
-				addViewToLayout(lBr, tv, false);
-			}
-
-			// lower half of match
-			if (lBr.sm2Types.get(mPos) != BrNodeType.NA) {
-				tv = makeHalfBracket(lBr, matchIdx, false);
-				if (lBr.sm2Types.get(mPos) == BrNodeType.TIP) {
-					addViewToLayout(lBr, tv, true);
-				} else {
-					addViewToLayout(lBr, tv, false);
-				}
-			}
-		}
-	}
-
-	public void refreshWinnersBracket() {
-		TextView tv;
-
+	public void refreshBrackets() {
 		// get all the completed games for the session, ordered by date played
 		List<Game> sGamesList = new ArrayList<Game>();
 		try {
@@ -187,268 +101,25 @@ public class BracketHolder implements View.OnClickListener {
 			Toast.makeText(context, e.getMessage(), Toast.LENGTH_LONG).show();
 		}
 
-		// step through the games for this session and associate each with a
-		// match in the bracket
-		int smIdxA;
-		int smIdxB;
+		sGamesList = wBr.matchMatches(sGamesList);
+		wBr.refreshViews();
 
-		for (Game g : sGamesList) {
-			smIdxA = sMembers.indexOf(sMemberMap
-					.get(g.getFirstPlayer().getId()));
-			smIdxB = sMembers.indexOf(sMemberMap.get(g.getSecondPlayer()
-					.getId()));
-			wBr.matchMatches(g.getId(), smIdxA, smIdxB);
+		if (isDoubleElim) {
+			lBr.respawnFromParentBracket(wBr);
+			sGamesList = lBr.matchMatches(sGamesList);
+			lBr.refreshViews();
 
-			if (g.getIsComplete()) {
-				smIdxA = sMembers
-						.indexOf(sMemberMap.get(g.getWinner().getId()));
-				wBr.promoteWinner(wBr.gameIds.indexOf(g.getId()), smIdxA);
-			}
+			fBr.respawnFromParentBracket(wBr);
+			fBr.respawnFromParentBracket(lBr);
+			sGamesList = fBr.matchMatches(sGamesList);
+			fBr.refreshViews();
 		}
-
-		// now refresh the views
-		int matchId;
-		int viewId;
-		int smColor;
-		int smType;
-		boolean isLabeled;
-		for (int idx = 0; idx < wBr.length(); idx++) {
-			matchId = wBr.matchIds.get(idx);
-
-			// match upper view
-			viewId = matchId + BrNodeType.UPPER;
-			smType = wBr.sm1Types.get(idx);
-			tv = (TextView) rl.findViewById(viewId);
-			isLabeled = tv.getText() != "";
-			if (isLabeled && wBr.smLost(wBr.sm1Idcs.get(idx))) {
-				tv.setPaintFlags(tv.getPaintFlags()
-						| Paint.STRIKE_THRU_TEXT_FLAG);
-			}
-			switch (smType) {
-			case BrNodeType.BYE:
-				tv.getBackground().setColorFilter(Color.LTGRAY, Mode.MULTIPLY);
-				break;
-			case BrNodeType.LOSS:
-				smColor = sMembers.get(wBr.sm1Idcs.get(idx)).getPlayer().color;
-				if (isLabeled) {
-					tv.setBackgroundResource(R.drawable.bracket_top_eliminated_labeled);
-				} else {
-					tv.setBackgroundResource(R.drawable.bracket_top_eliminated);
-				}
-				tv.getBackground().setColorFilter(smColor, Mode.MULTIPLY);
-				break;
-			case BrNodeType.WIN:
-				smColor = sMembers.get(wBr.sm1Idcs.get(idx)).getPlayer().color;
-				if (isLabeled) {
-					tv.setBackgroundResource(R.drawable.bracket_top_labeled);
-				} else {
-					tv.setBackgroundResource(R.drawable.bracket_top);
-				}
-				tv.getBackground().setColorFilter(smColor, Mode.MULTIPLY);
-				break;
-			case BrNodeType.TIP:
-				smColor = sMembers.get(wBr.sm1Idcs.get(idx)).getPlayer().color;
-				if (wBr.sm2Types.get(idx) == BrNodeType.NA) {
-				} else if (isLabeled) {
-					tv.setBackgroundResource(R.drawable.bracket_top_labeled);
-				} else {
-					tv.setBackgroundResource(R.drawable.bracket_top);
-				}
-				tv.getBackground().setColorFilter(smColor, Mode.MULTIPLY);
-				break;
-			}
-
-			// match lower view
-			viewId = matchId + BrNodeType.LOWER;
-			smType = wBr.sm2Types.get(idx);
-			tv = (TextView) rl.findViewById(viewId);
-			if (smType != BrNodeType.NA) {
-				isLabeled = tv.getText() != "";
-				if (isLabeled && wBr.smLost(wBr.sm2Idcs.get(idx))) {
-					tv.setPaintFlags(tv.getPaintFlags()
-							| Paint.STRIKE_THRU_TEXT_FLAG);
-				}
-			}
-			switch (smType) {
-			case BrNodeType.BYE:
-				tv.getBackground().setColorFilter(Color.LTGRAY, Mode.MULTIPLY);
-				break;
-			case BrNodeType.LOSS:
-				smColor = sMembers.get(wBr.sm2Idcs.get(idx)).getPlayer().color;
-				if (isLabeled) {
-					tv.setBackgroundResource(R.drawable.bracket_bottom_eliminated_labeled);
-				} else {
-					tv.setBackgroundResource(R.drawable.bracket_bottom_eliminated);
-				}
-				tv.getBackground().setColorFilter(smColor, Mode.MULTIPLY);
-				break;
-			case BrNodeType.WIN:
-				smColor = sMembers.get(wBr.sm2Idcs.get(idx)).getPlayer().color;
-				if (isLabeled) {
-					tv.setBackgroundResource(R.drawable.bracket_bottom_labeled);
-				} else {
-					tv.setBackgroundResource(R.drawable.bracket_bottom);
-				}
-				tv.getBackground().setColorFilter(smColor, Mode.MULTIPLY);
-				break;
-			case BrNodeType.TIP:
-				smColor = sMembers.get(wBr.sm2Idcs.get(idx)).getPlayer().color;
-				if (isLabeled) {
-					tv.setBackgroundResource(R.drawable.bracket_bottom_labeled);
-				} else {
-					tv.setBackgroundResource(R.drawable.bracket_bottom);
-				}
-				tv.getBackground().setColorFilter(smColor, Mode.MULTIPLY);
-				break;
-			}
-		}
-	}
-
-	public void makeInvisibleHeaders(int baseWidth, int tierWidth,
-			int rightOfId, int belowId, int offset) {
-		// invisible headers are for spacing the bracket.
-		TextView tv;
-		RelativeLayout.LayoutParams lp;
-		int vwHeight = 10;
-		Log.i(LOGTAG, "baseWidth: " + baseWidth + ", tierWidth: " + tierWidth
-				+ ", rightOfId: " + rightOfId + ", belowId: " + belowId
-				+ ", offset: " + offset);
-
-		// header for the labeled brackets on tier 0
-		tv = new TextView(context);
-		tv.setWidth(baseWidth);
-		tv.setHeight(vwHeight);
-		tv.setId(1 + offset);
-		tv.setBackgroundColor(Color.BLACK);
-		lp = new RelativeLayout.LayoutParams(
-				RelativeLayout.LayoutParams.WRAP_CONTENT,
-				RelativeLayout.LayoutParams.WRAP_CONTENT);
-		lp.addRule(RelativeLayout.ALIGN_PARENT_LEFT, 1);
-		if (belowId > 0) {
-			Log.i(LOGTAG, "Header is below " + belowId);
-			lp.addRule(RelativeLayout.BELOW, belowId);
-		}
-		rl.addView(tv, lp);
-
-		// headers for the remaining tiers
-		Integer nTiers = factorTwos(sMembers.size());
-
-		// tier width = (screen width - label width - arbitrary side spacing) /
-		// number of tiers
-		// tierWidth = (svWidth - 350 - 100) / nTiers;
-
-		int[] vwColor = { Color.RED, Color.BLUE, Color.GREEN };
-		for (Integer i = 0; i < nTiers; i++) {
-			tv = new TextView(context);
-			tv.setWidth(tierWidth);
-			tv.setHeight(vwHeight);
-			tv.setId(i + 2 + offset);
-			tv.setBackgroundColor(vwColor[i % 3]);
-			lp = new RelativeLayout.LayoutParams(
-					RelativeLayout.LayoutParams.WRAP_CONTENT,
-					RelativeLayout.LayoutParams.WRAP_CONTENT);
-			lp.addRule(RelativeLayout.ALIGN_BASELINE, 1 + offset);
-			lp.addRule(RelativeLayout.RIGHT_OF, i + 1 + offset);
-			lp.setMargins(-14, 0, 0, 0);
-			rl.addView(tv, lp);
-		}
-	}
-
-	public TextView makeHalfBracket(Bracket bd, Integer matchId, Boolean upper) {
-		TextView tv = new TextView(context);
-
-		int idx = bd.matchIds.indexOf(matchId);
-		int smType = BrNodeType.TIP;
-		SessionMember sm = null;
-
-		if (upper) {
-			tv.setId(matchId + bd.matchIdOffset + BrNodeType.UPPER);
-			smType = bd.sm1Types.get(idx);
-			switch (smType) {
-			case BrNodeType.TIP:
-				sm = sMembers.get(bd.sm1Idcs.get(idx));
-				tv.setText("(" + String.valueOf(sm.getSeed() + 1) + ") "
-						+ sm.getPlayer().getNickName());
-				tv.setBackgroundResource(R.drawable.bracket_top_labeled);
-				tv.getBackground().setColorFilter(sm.getPlayer().getColor(),
-						Mode.MULTIPLY);
-				break;
-			case BrNodeType.UNSET:
-				tv.setBackgroundResource(R.drawable.bracket_top);
-				tv.getBackground().setColorFilter(Color.LTGRAY, Mode.MULTIPLY);
-				break;
-			}
-			if (bd.sm2Types.get(idx) == BrNodeType.NA) {
-				tv.setBackgroundResource(R.drawable.bracket_endpoint);
-				tv.getBackground().setColorFilter(Color.LTGRAY, Mode.MULTIPLY);
-			}
-		} else {
-			tv.setId(matchId + bd.matchIdOffset + BrNodeType.LOWER);
-			smType = bd.sm2Types.get(idx);
-			switch (smType) {
-			case BrNodeType.TIP:
-				sm = sMembers.get(bd.sm2Idcs.get(idx));
-				tv.setText("(" + String.valueOf(sm.getSeed() + 1) + ") "
-						+ sm.getPlayer().getNickName());
-				tv.setBackgroundResource(R.drawable.bracket_bottom_labeled);
-				tv.getBackground().setColorFilter(sm.getPlayer().getColor(),
-						Mode.MULTIPLY);
-				break;
-			case BrNodeType.UNSET:
-				tv.setBackgroundResource(R.drawable.bracket_bottom);
-				tv.getBackground().setColorFilter(Color.LTGRAY, Mode.MULTIPLY);
-				break;
-			}
-		}
-		tv.setGravity(Gravity.RIGHT);
-		tv.setTextAppearance(context, android.R.style.TextAppearance_Medium);
-
-		tv.setOnClickListener(this);
-
-		return tv;
-	}
-
-	private void addViewToLayout(Bracket bd, TextView tv, Boolean isLabeled) {
-		Integer matchId = tv.getId() % BrNodeType.MOD;
-		Boolean upper = isUpperView(tv.getId());
-		Integer tier = bd.getTier(matchId);
-
-		RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(
-				RelativeLayout.LayoutParams.WRAP_CONTENT,
-				RelativeLayout.LayoutParams.WRAP_CONTENT);
-		if (!isLabeled) {
-			lp.addRule(RelativeLayout.ALIGN_LEFT, tier + 1);
-			if (tier == bd.getTier(sMembers.size() - 1)) {
-				lp.setMargins(0, -25, 0, 0);
-			} else if (upper) {
-				Integer topParentMatch = bd.getTopParentMatch(matchId);
-				lp.addRule(RelativeLayout.ALIGN_BOTTOM, topParentMatch
-						+ BrNodeType.LOWER);
-				lp.setMargins(0, -2, 0, 0);
-			} else {
-				Integer bottomParentMatch = bd.getTopParentMatch(matchId) + 1;
-				lp.addRule(RelativeLayout.ABOVE, bottomParentMatch
-						+ BrNodeType.LOWER);
-				lp.setMargins(0, 0, 0, -2);
-			}
-
-		} else {
-			if (upper) {
-				lp.setMargins(0, 8, 0, 0);
-			} else {
-				lp.setMargins(0, 0, 0, 8);
-			}
-		}
-
-		lp.addRule(RelativeLayout.ALIGN_RIGHT, tier + 1);
-		lp.addRule(RelativeLayout.BELOW, bd.findViewAbove(tv.getId()));
-
-		rl.addView(tv, lp);
+		assert sGamesList.isEmpty();
 	}
 
 	public void foldRoster() {
 		// expand the list size to the next power of two
-		Integer n = factorTwos(sMembers.size());
+		Integer n = Bracket.factorTwos(sMembers.size());
 
 		SessionMember dummySessionMember = new SessionMember(BrNodeType.BYE,
 				-1000);
@@ -471,86 +142,22 @@ public class BracketHolder implements View.OnClickListener {
 		}
 	}
 
-	@Override
-	public void onClick(View v) {
-		Log.i(LOGTAG, "View " + v.getId() + " was clicked");
-	}
-
 	public MatchInfo getMatchInfo(int viewId) {
-		MatchInfo mInfo = new MatchInfo();
-		int matchId = viewId % BrNodeType.MOD;
-		if (wBr.matchIds.contains(matchId)) {
-			int idx = wBr.matchIds.indexOf(matchId);
-			mInfo = new MatchInfo(wBr, idx);
+		MatchInfo mInfo = wBr.getMatchInfo(viewId);
+
+		if (isDoubleElim) {
+			if (lBr.hasView(viewId)) {
+				mInfo = lBr.getMatchInfo(viewId);
+			} else if (fBr.hasView(viewId)) {
+				mInfo = fBr.getMatchInfo(viewId);
+			}
 		}
+
 		return mInfo;
 	}
 
-	public class MatchInfo {
-		public long gameId = -1;
-		public long p1Id = -1;
-		public long p2Id = -1;
-		public boolean allowCreate = false;
-		public boolean allowView = false;
-		public String marquee = "";
-
-		MatchInfo() {
-		}
-
-		MatchInfo(Bracket bd, int idx) {
-			gameId = bd.gameIds.get(idx);
-			int sm1Type = bd.sm1Types.get(idx);
-			int sm2Type = bd.sm2Types.get(idx);
-
-			if (sm1Type == BrNodeType.TIP || sm1Type == BrNodeType.WIN
-					|| sm1Type == BrNodeType.LOSS) {
-				p1Id = sMembers.get(bd.sm1Idcs.get(idx)).getPlayer().getId();
-			}
-
-			if (sm2Type == BrNodeType.TIP || sm2Type == BrNodeType.WIN
-					|| sm2Type == BrNodeType.LOSS) {
-				p2Id = sMembers.get(bd.sm2Idcs.get(idx)).getPlayer().getId();
-			}
-
-			if (sm1Type == BrNodeType.TIP && sm2Type == BrNodeType.TIP) {
-				allowCreate = true;
-			}
-
-			if (sm1Type == BrNodeType.WIN || sm1Type == BrNodeType.LOSS) {
-				assert sm2Type == BrNodeType.WIN || sm2Type == BrNodeType.LOSS;
-				allowView = true;
-			}
-
-			marquee += "[ " + bd.matchIds.get(idx) + " / " + gameId + " ] ";
-
-			// upper player
-			if (sm1Type == BrNodeType.UNSET) {
-				marquee += "Unknown";
-			} else {
-				marquee += sMembers.get(bd.sm1Idcs.get(idx)).getPlayer()
-						.getNickName();
-				if (sm1Type == BrNodeType.WIN) {
-					marquee += " (W)";
-				} else if (sm1Type == BrNodeType.LOSS) {
-					marquee += " (L)";
-				}
-			}
-
-			// lower player
-			if (sm2Type == BrNodeType.UNSET) {
-				marquee += " -vs- Unknown";
-			} else if (sm2Type == BrNodeType.NA) {
-				marquee += ", tournament winner.";
-			} else {
-				marquee += " -vs- "
-						+ sMembers.get(bd.sm2Idcs.get(idx)).getPlayer()
-								.getNickName();
-				if (sm2Type == BrNodeType.WIN) {
-					marquee += " (W)";
-				} else if (sm2Type == BrNodeType.LOSS) {
-					marquee += " (L)";
-				}
-			}
-		}
+	@Override
+	public void onClick(View v) {
+		Log.i(LOGTAG, "View " + v.getId() + " was clicked");
 	}
 }

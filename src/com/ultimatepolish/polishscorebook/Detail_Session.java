@@ -19,8 +19,8 @@ import com.j256.ormlite.dao.Dao;
 import com.ultimatepolish.db.Session;
 import com.ultimatepolish.enums.RuleType;
 import com.ultimatepolish.enums.SessionType;
+import com.ultimatepolish.polishscorebook.backend.Bracket.MatchInfo;
 import com.ultimatepolish.polishscorebook.backend.BracketHolder;
-import com.ultimatepolish.polishscorebook.backend.BracketHolder.MatchInfo;
 import com.ultimatepolish.polishscorebook.backend.MenuContainerActivity;
 
 public class Detail_Session extends MenuContainerActivity {
@@ -28,7 +28,7 @@ public class Detail_Session extends MenuContainerActivity {
 	Long sId;
 	Session s;
 	Dao<Session, Long> sDao;
-	BracketHolder bracket = null;
+	BracketHolder bracketHolder = null;
 	TextView matchText;
 	Button loadMatch;
 	MatchInfo mInfo;
@@ -64,10 +64,13 @@ public class Detail_Session extends MenuContainerActivity {
 			matchText = (TextView) findViewById(R.id.sDet_match);
 			loadMatch = (Button) findViewById(R.id.sDet_loadMatch);
 
-			bracket = new BracketHolder(sv, s, isDblElim) {
+			bracketHolder = new BracketHolder(sv, s, isDblElim) {
 				@Override
 				public void onClick(View v) {
-					mInfo = bracket.getMatchInfo(v.getId());
+					mInfo = getMatchInfo(v.getId());
+					log("gId: " + mInfo.gameId + ", create: "
+							+ mInfo.allowCreate + ", view: " + mInfo.allowView
+							+ ", marquee: " + mInfo.marquee);
 					matchText.setText(mInfo.marquee);
 					if (mInfo.allowCreate) {
 						loadMatch.setVisibility(View.VISIBLE);
@@ -84,7 +87,6 @@ public class Detail_Session extends MenuContainerActivity {
 					}
 				}
 			};
-			sv.addView(bracket.rl);
 		} else {
 			setContentView(R.layout.activity_detail_session);
 		}
@@ -112,8 +114,8 @@ public class Detail_Session extends MenuContainerActivity {
 	protected void onResume() {
 		super.onResume();
 		refreshDetails();
-		if (bracket != null) {
-			bracket.refreshWinnersBracket();
+		if (bracketHolder != null) {
+			bracketHolder.refreshBrackets();
 		}
 	}
 
