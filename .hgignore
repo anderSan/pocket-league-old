@@ -1,0 +1,9 @@
+syntax: glob
+
+.settings
+bin
+gen
+*~
+lint.xml
+libs
+src/com/ultimatepolish/enums/DbxInfo.java
