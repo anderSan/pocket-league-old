@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-	<string name="app_name">PolishScorebook</string>
+	<string name="app_name">Pocket League</string>
 	<string name="drawer_open">Open navigation drawer</string>
     <string name="drawer_close">Close navigation drawer</string>
     <string name="action_websearch">Web search</string>
     <string name="app_not_available">Sorry, there\'s no web browser available</string>
 
-	<string name="title_activity_polish_scorebook">PolishScorebook</string>
+	<string name="title_activity_pocketleague">Pocket League</string>
 	<string name="title_activity_about_page">About</string>
 	<string name="title_activity_dbSettings">Database Settings</string>
 	<string name="title_activity_games">Games</string>
