@@ -6,4 +6,4 @@ gen
 *~
 lint.xml
 libs
-src/com/ultimatepolish/enums/DbxInfo.java
+DbxInfo.java
