@@ -1,8 +1,8 @@
 #
-# generated on 2013/12/30 01:59:06
+# generated on 2014/01/12 10:17:50
 #
 # --table-start--
-dataClass=com.ultimatepolish.db.Player
+dataClass=com.pocketleague.manager.db.Player
 tableName=player
 # --table-fields-start--
 # --field-start--
@@ -59,7 +59,7 @@ fieldName=isActive
 # --table-end--
 #################################
 # --table-start--
-dataClass=com.ultimatepolish.db.PlayerStats
+dataClass=com.pocketleague.manager.db.PlayerStats
 tableName=playerstats
 # --table-fields-start--
 # --field-start--
@@ -77,7 +77,7 @@ fieldName=nLosses
 # --table-end--
 #################################
 # --table-start--
-dataClass=com.ultimatepolish.db.Game
+dataClass=com.pocketleague.manager.db.Game
 tableName=game
 # --table-fields-start--
 # --field-start--
@@ -130,7 +130,7 @@ fieldName=isTracked
 # --table-end--
 #################################
 # --table-start--
-dataClass=com.ultimatepolish.db.Throw
+dataClass=com.pocketleague.manager.db.Throw
 tableName=throw
 # --table-fields-start--
 # --field-start--
@@ -228,7 +228,7 @@ fieldName=initialDefensivePlayerScore
 # --table-end--
 #################################
 # --table-start--
-dataClass=com.ultimatepolish.db.SessionMember
+dataClass=com.pocketleague.manager.db.SessionMember
 tableName=sessionmember
 # --table-fields-start--
 # --field-start--
@@ -258,7 +258,7 @@ canBeNull=false
 # --table-end--
 #################################
 # --table-start--
-dataClass=com.ultimatepolish.db.Badge
+dataClass=com.pocketleague.manager.db.Badge
 tableName=badge
 # --table-fields-start--
 # --field-start--
@@ -281,7 +281,7 @@ canBeNull=false
 # --table-end--
 #################################
 # --table-start--
-dataClass=com.ultimatepolish.db.Session
+dataClass=com.pocketleague.manager.db.Session
 tableName=session
 # --table-fields-start--
 # --field-start--
@@ -320,7 +320,7 @@ foreignCollection=true
 # --table-end--
 #################################
 # --table-start--
-dataClass=com.ultimatepolish.db.Venue
+dataClass=com.pocketleague.manager.db.Venue
 tableName=venue
 # --table-fields-start--
 # --field-start--
