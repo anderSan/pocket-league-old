@@ -1,13 +1,21 @@
 package com.pocketleague.manager.enums;
 
-public final class SessionType {
-	public static final int OPEN = 0;
-	public static final int LEAGUE = 1;
-	public static final int LADDER = 2;
-	//leave some room for other non-tourney types to be added later
-	public static final int SNGL_ELIM = 10;
-	public static final int DBL_ELIM = 11;
+/** Enum for the different session types */
+public enum SessionType {
+	OPEN("Open"),
+	LEAGUE("League"),
+	LADDER("Ladder"),
+	SNGL_ELIM("Single-elimination Tournament"),
+	DBL_ELIM("Double-elimination Tournament");
 
-    public static final String[] typeString = {"Open", "League", "Ladder", "", "", "", "", "", "", "",
-    	"Single-elimination Tournament", "Double-elimination Tournament"};
+	private String sessiontype_label;
+
+	private SessionType(String label) {
+		sessiontype_label = label;
+	}
+
+	@Override
+	public String toString() {
+		return sessiontype_label;
+	}
 }
