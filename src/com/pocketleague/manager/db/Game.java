@@ -14,12 +14,12 @@ import com.pocketleague.manager.enums.GameType;
 
 @DatabaseTable
 public class Game {
-	public static final String FIRST_PLAYER = "firstPlayer_id";
-	public static final String SECOND_PLAYER = "secondPlayer_id";
+	public static final String RULESET = "ruleset_id";
 	public static final String SESSION = "session_id";
 	public static final String VENUE = "venue_id";
 	public static final String DATE_PLAYED = "date_played";
 	public static final String IS_COMPLETE = "is_complete";
+	public static final String IS_TRACKED = "is_tracked";
 
 	@DatabaseField(generatedId = true)
 	private long id;
@@ -60,11 +60,11 @@ public class Game {
 
 	}
 
-	public Game(Session session, Venue venue, int rule_set, boolean is_tracked) {
+	public Game(Session session, Venue venue, int ruleset, boolean is_tracked) {
 		super();
 		this.session = session;
 		this.venue = venue;
-		this.ruleset_id = rule_set;
+		this.ruleset_id = ruleset;
 		this.is_tracked = is_tracked;
 		this.date_played = new Date();
 	}
@@ -117,8 +117,8 @@ public class Game {
 		return date_played;
 	}
 
-	public void setDatePlayed(Date datePlayed) {
-		this.date_played = datePlayed;
+	public void setDatePlayed(Date date_played) {
+		this.date_played = date_played;
 	}
 
 	public boolean getIsComplete() {
