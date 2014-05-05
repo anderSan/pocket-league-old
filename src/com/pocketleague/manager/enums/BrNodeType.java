@@ -1,38 +1,35 @@
 package com.pocketleague.manager.enums;
 
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
-
 /** Enum for the nodes in a bracket */
-public final class BrNodeType {
-	// These are the different types. Negative numbers used to avoid conflict
-	// with seed numbers.
-	public static final int TIP = -1;
-	public static final int WIN = -2;
-	public static final int LOSS = -3;
-	public static final int BYE = -4;
-	public static final int UNSET = -5;
-	public static final int RESPAWN = -6;
-	public static final int NA = -7;
+public enum BrNodeType {
+	TIP("Tip", -1),
+	WIN("Win", -2),
+	LOSS("Loss", -3),
+	BYE("Bye", -4),
+	UNSET("Unset", -5),
+	RESPAWN("Respawn", -6),
+	NA("N/A", -7),
 
-	// These are used to modify viewIds for easy classification
-	public static final int UPPER = 1000;
-	public static final int LOWER = 2000;
-	public static final int U2L = 1000;
-	public static final int L2U = -1000;
-	public static final int MOD = 1000;
+	UPPER("Upper)", 1000),
+	LOWER("Lower", 2000),
+	U2L("Upper to Lower difference", 1000),
+	L2U("Lower to Upper difference", -1000),
+	MOD("Modulus", 1000);
 
-	public static final Map<Integer, String> map;
-	static {
-		Map<Integer, String> tempMap = new HashMap<Integer, String>();
-		tempMap.put(TIP, "Tip");
-		tempMap.put(WIN, "Win");
-		tempMap.put(LOSS, "Loss");
-		tempMap.put(BYE, "Bye");
-		tempMap.put(UNSET, "Unset");
-		tempMap.put(RESPAWN, "Respawn");
-		tempMap.put(NA, "N/A");
-		map = Collections.unmodifiableMap(tempMap);
+	private String node_label;
+	private int node_value;
+
+	private BrNodeType(String label, int value) {
+		node_label = label;
+		node_value = value;
+	}
+
+	@Override
+	public String toString() {
+		return node_label;
+	}
+
+	public int value() {
+		return node_value;
 	}
 }
