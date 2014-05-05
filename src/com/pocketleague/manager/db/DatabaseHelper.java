@@ -54,12 +54,12 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
 	@Override
 	public void onCreate(SQLiteDatabase sqliteDatabase,
 			ConnectionSource connectionSource) {
-		Log.i("DatabaseHelper.onCreate()", "Attempting to create db");
+		Log.i("DatabaseHelper.onCreate()", "Attempting to create db... ");
 		try {
 			createAll(connectionSource);
 		} catch (SQLException e) {
-			Log.e(DatabaseHelper.class.getName(), "Unable to create database",
-					e);
+			Log.e(DatabaseHelper.class.getName(),
+					"Unable to create database: ", e);
 		}
 	}
 
@@ -69,7 +69,7 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
 			final int newVer) {
 		Log.i("DatabaseHelper.onUpgrade()",
 				"Attempting to upgrade from version " + oldVer + " to version "
-						+ newVer);
+						+ newVer + ".");
 
 		switch (oldVer) {
 		// case 9:
@@ -84,7 +84,8 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
 			} catch (SQLException e) {
 				Log.e(DatabaseHelper.class.getName(),
 						"Unable to upgrade database from version " + oldVer
-								+ " to " + newVer, e);
+								+ " to " + newVer + ": ", e);
+
 			}
 		}
 	}
@@ -93,7 +94,7 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
 			ConnectionSource connectionSource) {
 		try {
 			Log.i("DatabaseHelper.increment_09",
-					"Attempting to upgrade from version 09 to version 10");
+					"Attempting to upgrade from version 09 to version 10.");
 			Dao<Game, Long> gDao = getGameDao();
 			Dao<Player, Long> pDao = getPlayerDao();
 			Dao<Session, Long> sDao = getSessionDao();
@@ -107,7 +108,7 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
 		} catch (SQLException e) {
 			Log.e(DatabaseHelper.class.getName(),
 					"Unable to upgrade database from version " + 9 + " to "
-							+ 10, e);
+							+ 10 + ": ", e);
 		}
 	}
 
@@ -115,7 +116,7 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
 			ConnectionSource connectionSource) {
 		try {
 			Log.i("DatabaseHelper.increment_10",
-					"Attempting to upgrade from version 10 to version 11");
+					"Attempting to upgrade from version 10 to version 11.");
 			// throw table
 			Dao<Game, Long> gDao = getGameDao();
 			// DatabaseUpgrader.increment_10(connectionSource, gDao, tDao);
@@ -123,7 +124,7 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
 		} catch (SQLException e) {
 			Log.e(DatabaseHelper.class.getName(),
 					"Unable to upgrade database from version " + 10 + " to "
-							+ 11, e);
+							+ 11 + ": ", e);
 		}
 	}
 
@@ -145,17 +146,17 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
 		}
 	}
 
-	protected void createAll(ConnectionSource connectionSource)
+	protected void createAll(ConnectionSource connection_source)
 			throws SQLException {
 		for (Class c : tableClasses) {
-			TableUtils.createTableIfNotExists(connectionSource, c);
+			TableUtils.createTableIfNotExists(connection_source, c);
 		}
 	}
 
-	protected void dropAll(ConnectionSource connectionSource)
+	protected void dropAll(ConnectionSource connection_source)
 			throws SQLException {
 		for (Class c : tableClasses) {
-			TableUtils.dropTable(connectionSource, c, true);
+			TableUtils.dropTable(connection_source, c, true);
 		}
 	}
 

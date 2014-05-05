@@ -18,6 +18,7 @@ import com.pocketleague.manager.enums.SessionType;
 @DatabaseTable
 public class Session {
 	public static final String IS_ACTIVE = "is_active";
+	public static final String IS_FAVORITE = "is_favorite";
 
 	@DatabaseField(generatedId = true)
 	private long id;

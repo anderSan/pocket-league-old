@@ -256,11 +256,11 @@ public class View_Games extends OrmLiteFragment {
 		}
 	};
 
-	private void addSession(String sessionName) {
+	private void addSession(String session_name) {
 		ViewHolderHeader_Game vhh_Game = new ViewHolderHeader_Game();
-		vhh_Game.setName(sessionName);
+		vhh_Game.setName(session_name);
 		sessionList.add(vhh_Game);
-		sHash.put(sessionName, vhh_Game);
+		sHash.put(session_name, vhh_Game);
 	}
 
 	private void addGame(String sort, String gameId, String p1, String p2,
