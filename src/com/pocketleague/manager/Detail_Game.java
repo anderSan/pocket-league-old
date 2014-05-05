@@ -70,14 +70,14 @@ public class Detail_Game extends MenuContainerActivity {
 				Dao<Venue, Long> venueDao = Venue.getDao(context);
 
 				g = gDao.queryForId(gId);
-				playerDao.refresh(g.getFirstPlayer());
-				playerDao.refresh(g.getSecondPlayer());
+				// playerDao.refresh(g.getFirstPlayer());
+				// playerDao.refresh(g.getSecondPlayer());
 
 				sessionDao.refresh(g.getSession());
 				venueDao.refresh(g.getVenue());
 
-				p[0] = g.getFirstPlayer();
-				p[1] = g.getSecondPlayer();
+				// p[0] = g.getFirstPlayer();
+				// p[1] = g.getSecondPlayer();
 			} catch (SQLException e) {
 				Toast.makeText(getApplicationContext(), e.getMessage(),
 						Toast.LENGTH_LONG).show();
@@ -104,9 +104,9 @@ public class Detail_Game extends MenuContainerActivity {
 		// ") "
 		// + RuleType.map.get(g.ruleSetId).getDescription());
 
-		TextView gameScore = (TextView) findViewById(R.id.gDet_score);
-		gameScore.setText(String.valueOf(g.getFirstPlayerScore()) + "/"
-				+ String.valueOf(g.getSecondPlayerScore()));
+		// TextView gameScore = (TextView) findViewById(R.id.gDet_score);
+		// gameScore.setText(String.valueOf(g.getFirstPlayerScore()) + "/"
+		// + String.valueOf(g.getSecondPlayerScore()));
 
 		DateFormat df = new SimpleDateFormat("EEE MMM dd, yyyy @HH:mm",
 				Locale.US);

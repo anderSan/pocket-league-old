@@ -66,11 +66,11 @@ public class Detail_Team extends MenuContainerActivity {
 				t = tDao.queryForId(tId);
 
 				pDao = Player.getDao(context);
-				pDao.refresh(t.getFirstPlayer());
-				pDao.refresh(t.getSecondPlayer());
-
-				p[0] = t.getFirstPlayer();
-				p[1] = t.getSecondPlayer();
+				// pDao.refresh(t.getFirstPlayer());
+				// pDao.refresh(t.getSecondPlayer());
+				//
+				// p[0] = t.getFirstPlayer();
+				// p[1] = t.getSecondPlayer();
 
 			} catch (SQLException e) {
 				Toast.makeText(context, e.getMessage(), Toast.LENGTH_LONG)

@@ -3,7 +3,6 @@ package com.pocketleague.manager;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
@@ -108,10 +107,10 @@ public class NewSession extends MenuContainerActivity {
 		isActiveCB = (CheckBox) findViewById(R.id.newSession_isActive);
 
 		List<String> sessionTypes = new ArrayList<String>();
-		sessionTypes.add(SessionType.typeString[SessionType.LEAGUE]);
-		sessionTypes.add(SessionType.typeString[SessionType.LADDER]);
-		sessionTypes.add(SessionType.typeString[SessionType.SNGL_ELIM]);
-		sessionTypes.add(SessionType.typeString[SessionType.DBL_ELIM]);
+		sessionTypes.add(SessionType.LEAGUE.toString());
+		sessionTypes.add(SessionType.LADDER.toString());
+		sessionTypes.add(SessionType.SNGL_ELIM.toString());
+		sessionTypes.add(SessionType.DBL_ELIM.toString());
 		ArrayAdapter<String> sAdapter = new ArrayAdapter<String>(this,
 				android.R.layout.simple_spinner_dropdown_item, sessionTypes);
 		sAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -230,12 +229,10 @@ public class NewSession extends MenuContainerActivity {
 	public void createNewSession(View view) {
 		Context context = getApplicationContext();
 		Session session = null;
-		String sessionName = null;
+		String session_name = null;
 		// int ruleSetId = RuleType.rsNull;
-		int sessionType = 0;
-		Date startDate;
-		Boolean isTeam;
-		Boolean isActive = true;
+		SessionType session_type;
+		Boolean is_active = true;
 
 		List<SessionMember> sMembers = new ArrayList<SessionMember>();
 
@@ -243,26 +240,26 @@ public class NewSession extends MenuContainerActivity {
 		String st;
 		st = name.getText().toString().trim().toLowerCase(Locale.US);
 		if (!st.isEmpty()) {
-			sessionName = st;
+			session_name = st;
 		}
 
 		// get the session type
 		switch (sessionTypeSpinner.getSelectedItemPosition()) {
 		case 0:
 			// is league
-			sessionType = SessionType.LEAGUE;
+			session_type = SessionType.LEAGUE;
 			break;
 		case 1:
 			// is ladder
-			sessionType = SessionType.LADDER;
+			session_type = SessionType.LADDER;
 			break;
 		case 2:
 			// is single elimination tourny
-			sessionType = SessionType.SNGL_ELIM;
+			session_type = SessionType.SNGL_ELIM;
 			break;
 		case 3:
 			// is double elimination tourny
-			sessionType = SessionType.DBL_ELIM;
+			session_type = SessionType.DBL_ELIM;
 			break;
 		}
 
@@ -271,19 +268,13 @@ public class NewSession extends MenuContainerActivity {
 			// ruleSetId = ruleSetIds.get(ruleSet_pos);
 		}
 
-		// get the start date
-		startDate = new Date();
-
-		// get isTeam
-		isTeam = isTeamCB.isChecked();
-
 		// get isActive
-		isActive = isActiveCB.isChecked();
+		is_active = isActiveCB.isChecked();
 
 		// make the new session or modify an existing one
 		if (sId != -1) {
-			s.setSessionName(sessionName);
-			s.setIsActive(isActive);
+			s.setSessionName(session_name);
+			s.setIsActive(is_active);
 
 			try {
 				sDao.update(s);

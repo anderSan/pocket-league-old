@@ -50,9 +50,9 @@ public class Detail_Session extends MenuContainerActivity {
 			}
 		}
 
-		if (s.sessionType == SessionType.SNGL_ELIM
-				|| s.sessionType == SessionType.DBL_ELIM) {
-			boolean isDblElim = s.sessionType == SessionType.DBL_ELIM;
+		if (s.session_type == SessionType.SNGL_ELIM
+				|| s.session_type == SessionType.DBL_ELIM) {
+			boolean isDblElim = s.session_type == SessionType.DBL_ELIM;
 
 			setContentView(R.layout.activity_detail_session_singleelim);
 			ScrollView sv = (ScrollView) findViewById(R.id.scrollView1);
@@ -142,7 +142,7 @@ public class Detail_Session extends MenuContainerActivity {
 		sId.setText(String.valueOf(s.getId()));
 
 		TextView sType = (TextView) findViewById(R.id.sDet_type);
-		sType.setText(SessionType.typeString[s.getSessionType()]);
+		sType.setText(s.getSessionType().toString());
 
 		TextView sessionRuleSet = (TextView) findViewById(R.id.sDet_ruleSet);
 		// if (s.getRuleSetId() == -1) {
@@ -152,19 +152,6 @@ public class Detail_Session extends MenuContainerActivity {
 		// + RuleType.map.get(s.getRuleSetId()).getId() + ") "
 		// + RuleType.map.get(s.getRuleSetId()).getDescription());
 		// }
-
-		TextView sStartDate = (TextView) findViewById(R.id.sDet_startDate);
-		sStartDate.setText("Start date: " + String.valueOf(s.getStartDate()));
-
-		TextView sEndDate = (TextView) findViewById(R.id.sDet_endDate);
-		sEndDate.setText("End date: " + String.valueOf(s.getEndDate()));
-
-		TextView sIsTeam = (TextView) findViewById(R.id.sDet_isTeam);
-		if (s.getIsTeam()) {
-			sIsTeam.setText("Doubles session");
-		} else {
-			sIsTeam.setText("Singles session");
-		}
 
 		TextView sIsActive = (TextView) findViewById(R.id.sDet_isActive);
 		if (s.getIsActive()) {

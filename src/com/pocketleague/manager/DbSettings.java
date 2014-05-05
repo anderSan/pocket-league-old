@@ -252,9 +252,9 @@ public class DbSettings extends OrmLiteFragment {
 		// Date(),
 		// false);
 		Dao<Venue, Long> venueDao = null;
-		Venue v1 = new Venue("cogswell", true);
-		Venue v2 = new Venue("verndale", true);
-		Venue v3 = new Venue("oxford", true);
+		Venue v1 = new Venue("cogswell");
+		Venue v2 = new Venue("verndale");
+		Venue v3 = new Venue("oxford");
 		try {
 			playerDao = getHelper().getPlayerDao();
 			for (int i = 0; i < players.length; i++) {

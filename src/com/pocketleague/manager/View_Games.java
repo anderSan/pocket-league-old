@@ -147,8 +147,8 @@ public class View_Games extends OrmLiteFragment {
 			Dao<Player, Long> playerDao = Player.getDao(context);
 
 			for (Session sess : sessionDao) {
-				if (sess.sessionType != SessionType.SNGL_ELIM
-						&& sess.sessionType != SessionType.DBL_ELIM) {
+				if (sess.session_type != SessionType.SNGL_ELIM
+						&& sess.session_type != SessionType.DBL_ELIM) {
 					addSession(sess.getSessionName());
 				}
 			}
@@ -172,15 +172,14 @@ public class View_Games extends OrmLiteFragment {
 				sessionDao.refresh(g.getSession());
 				s = g.getSession();
 
-				if (s.sessionType != SessionType.SNGL_ELIM
-						&& s.sessionType != SessionType.DBL_ELIM) {
-					p[0] = playerDao.queryForId(g.getFirstPlayer().getId());
-					p[1] = playerDao.queryForId(g.getSecondPlayer().getId());
+				if (s.session_type != SessionType.SNGL_ELIM
+						&& s.session_type != SessionType.DBL_ELIM) {
+					// p[0] = playerDao.queryForId(g.getFirstPlayer().getId());
+					// p[1] = playerDao.queryForId(g.getSecondPlayer().getId());
 
 					addGame(s.getSessionName(), String.valueOf(g.getId()),
 							p[0].getNickName(), p[1].getNickName(),
-							String.valueOf(g.getFirstPlayerScore()) + " / "
-									+ String.valueOf(g.getSecondPlayerScore()));
+							0 + " / " + 0);
 				}
 			}
 		} catch (SQLException e) {

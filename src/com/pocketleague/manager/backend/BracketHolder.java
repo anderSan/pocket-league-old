@@ -121,11 +121,11 @@ public class BracketHolder implements View.OnClickListener {
 		// expand the list size to the next power of two
 		Integer n = Bracket.factorTwos(sMembers.size());
 
-		SessionMember dummySessionMember = new SessionMember(BrNodeType.BYE,
-				-1000);
+		SessionMember dummy_sMember = new SessionMember(
+				BrNodeType.BYE.value(), -1000);
 
 		while (sMembers.size() < Math.pow(2, n)) {
-			sMembers.add(dummySessionMember);
+			sMembers.add(dummy_sMember);
 		}
 		List<SessionMember> tempRoster = new ArrayList<SessionMember>();
 		for (Integer i = 0; i < n - 1; i++) {
