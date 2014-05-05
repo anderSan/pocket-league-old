@@ -5,7 +5,6 @@ import java.util.List;
 
 import android.app.Fragment;
 import android.app.FragmentManager;
-import android.content.Intent;
 import android.content.res.Configuration;
 import android.content.res.TypedArray;
 import android.os.Bundle;
@@ -38,7 +37,7 @@ public class PocketLeague extends MenuContainerActivity implements
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
-		setContentView(R.layout.activity_polish_scorebook);
+		setContentView(R.layout.activity_pocket_league);
 
 		mTitle = mDrawerTitle = getTitle();
 		mDrawerItems = makeDrawerItemArray();
@@ -216,9 +215,9 @@ public class PocketLeague extends MenuContainerActivity implements
 	}
 
 	public void loadGame(long gId) {
-		Intent intent = new Intent(getApplicationContext(),
-				GameInProgress.class);
-		intent.putExtra("GID", gId);
-		startActivity(intent);
+		// Intent intent = new Intent(getApplicationContext(),
+		// GameInProgress.class);
+		// intent.putExtra("GID", gId);
+		// startActivity(intent);
 	}
 }

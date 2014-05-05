@@ -5,26 +5,20 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Locale;
 
-import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.j256.ormlite.dao.Dao;
-import com.j256.ormlite.stmt.DeleteBuilder;
 import com.pocketleague.manager.backend.MenuContainerActivity;
 import com.pocketleague.manager.db.Game;
 import com.pocketleague.manager.db.Player;
 import com.pocketleague.manager.db.Session;
-import com.pocketleague.manager.db.Throw;
 import com.pocketleague.manager.db.Venue;
-import com.pocketleague.manager.enums.RuleType;
 
 public class Detail_Game extends MenuContainerActivity {
 	Long gId;
@@ -47,10 +41,10 @@ public class Detail_Game extends MenuContainerActivity {
 		fav.setIcon(R.drawable.ic_action_edit);
 		fav.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
 
-		Intent intent = new Intent(this, GameInProgress.class);
-		intent.putExtra("GID", gId);
+		// Intent intent = new Intent(this, GameInProgress.class);
+		// intent.putExtra("GID", gId);
 
-		fav.setIntent(intent);
+		// fav.setIntent(intent);
 		return super.onCreateOptionsMenu(menu);
 	}
 
@@ -105,9 +99,10 @@ public class Detail_Game extends MenuContainerActivity {
 		TextView gameVenue = (TextView) findViewById(R.id.gDet_venue);
 		gameVenue.setText(g.getVenue().getName());
 
-		TextView gameRuleSet = (TextView) findViewById(R.id.gDet_ruleSet);
-		gameRuleSet.setText("(" + RuleType.map.get(g.ruleSetId).getId() + ") "
-				+ RuleType.map.get(g.ruleSetId).getDescription());
+		// TextView gameRuleSet = (TextView) findViewById(R.id.gDet_ruleSet);
+		// gameRuleSet.setText("(" + RuleType.map.get(g.ruleSetId).getId() +
+		// ") "
+		// + RuleType.map.get(g.ruleSetId).getDescription());
 
 		TextView gameScore = (TextView) findViewById(R.id.gDet_score);
 		gameScore.setText(String.valueOf(g.getFirstPlayerScore()) + "/"
@@ -119,42 +114,42 @@ public class Detail_Game extends MenuContainerActivity {
 		gameDate.setText(df.format(g.getDatePlayed()));
 	}
 
-	public void deleteGame(View view) {
-		AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
-				view.getContext());
-		alertDialogBuilder.setTitle("Delete this game?");
-		alertDialogBuilder
-				.setMessage("This action can not be undone.")
-				.setPositiveButton("Delete",
-						new DialogInterface.OnClickListener() {
-							public void onClick(DialogInterface dialog, int id) {
-								try {
-									Dao<Throw, Long> tDao = Throw
-											.getDao(getApplicationContext());
-									DeleteBuilder<Throw, Long> tdb = tDao
-											.deleteBuilder();
-									tdb.where().eq(Throw.GAME_ID, g.getId());
-									tDao.delete(tdb.prepare());
-
-									gDao.deleteById(g.getId());
-									finish();
-								} catch (SQLException e) {
-									Toast.makeText(getApplicationContext(),
-											e.getMessage(), Toast.LENGTH_LONG)
-											.show();
-								}
-							}
-						})
-				.setNegativeButton("Cancel",
-						new DialogInterface.OnClickListener() {
-							public void onClick(DialogInterface dialog, int id) {
-								dialog.cancel();
-							}
-						});
-
-		AlertDialog alertDialog = alertDialogBuilder.create();
-		alertDialog.show();
-
-	}
+	// public void deleteGame(View view) {
+	// AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
+	// view.getContext());
+	// alertDialogBuilder.setTitle("Delete this game?");
+	// alertDialogBuilder
+	// .setMessage("This action can not be undone.")
+	// .setPositiveButton("Delete",
+	// new DialogInterface.OnClickListener() {
+	// public void onClick(DialogInterface dialog, int id) {
+	// try {
+	// Dao<Throw, Long> tDao = Throw
+	// .getDao(getApplicationContext());
+	// DeleteBuilder<Throw, Long> tdb = tDao
+	// .deleteBuilder();
+	// tdb.where().eq(Throw.GAME_ID, g.getId());
+	// tDao.delete(tdb.prepare());
+	//
+	// gDao.deleteById(g.getId());
+	// finish();
+	// } catch (SQLException e) {
+	// Toast.makeText(getApplicationContext(),
+	// e.getMessage(), Toast.LENGTH_LONG)
+	// .show();
+	// }
+	// }
+	// })
+	// .setNegativeButton("Cancel",
+	// new DialogInterface.OnClickListener() {
+	// public void onClick(DialogInterface dialog, int id) {
+	// dialog.cancel();
+	// }
+	// });
+	//
+	// AlertDialog alertDialog = alertDialogBuilder.create();
+	// alertDialog.show();
+	//
+	// }
 
 }

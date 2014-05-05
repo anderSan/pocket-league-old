@@ -20,7 +20,6 @@ import com.pocketleague.manager.backend.Bracket.MatchInfo;
 import com.pocketleague.manager.backend.BracketHolder;
 import com.pocketleague.manager.backend.MenuContainerActivity;
 import com.pocketleague.manager.db.Session;
-import com.pocketleague.manager.enums.RuleType;
 import com.pocketleague.manager.enums.SessionType;
 
 public class Detail_Session extends MenuContainerActivity {
@@ -146,13 +145,13 @@ public class Detail_Session extends MenuContainerActivity {
 		sType.setText(SessionType.typeString[s.getSessionType()]);
 
 		TextView sessionRuleSet = (TextView) findViewById(R.id.sDet_ruleSet);
-		if (s.getRuleSetId() == -1) {
-			sessionRuleSet.setText("Ruleset not enforced.");
-		} else {
-			sessionRuleSet.setText("("
-					+ RuleType.map.get(s.getRuleSetId()).getId() + ") "
-					+ RuleType.map.get(s.getRuleSetId()).getDescription());
-		}
+		// if (s.getRuleSetId() == -1) {
+		// sessionRuleSet.setText("Ruleset not enforced.");
+		// } else {
+		// sessionRuleSet.setText("("
+		// + RuleType.map.get(s.getRuleSetId()).getId() + ") "
+		// + RuleType.map.get(s.getRuleSetId()).getDescription());
+		// }
 
 		TextView sStartDate = (TextView) findViewById(R.id.sDet_startDate);
 		sStartDate.setText("Start date: " + String.valueOf(s.getStartDate()));
@@ -187,10 +186,10 @@ public class Detail_Session extends MenuContainerActivity {
 	private OnLongClickListener mMatchGIPListener = new OnLongClickListener() {
 		@Override
 		public boolean onLongClick(View v) {
-			Intent intent = new Intent(v.getContext(), GameInProgress.class);
-			intent.putExtra("GID", mInfo.gameId);
-			startActivity(intent);
-			finish();
+			// Intent intent = new Intent(v.getContext(), GameInProgress.class);
+			// intent.putExtra("GID", mInfo.gameId);
+			// startActivity(intent);
+			// finish();
 			return true;
 		}
 	};

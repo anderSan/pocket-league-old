@@ -1,29 +1,22 @@
 package com.pocketleague.manager;
 
 import java.sql.SQLException;
-import java.util.List;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.j256.ormlite.dao.Dao;
 import com.pocketleague.manager.backend.MenuContainerActivity;
 import com.pocketleague.manager.db.Player;
-import com.pocketleague.manager.db.Throw;
-import com.pocketleague.manager.throwstats.IndicatorNode;
-import com.pocketleague.manager.throwstats.ReadingVisitor;
-import com.pocketleague.manager.throwstats.SimpleThrowStats;
 
 public class Detail_Player extends MenuContainerActivity {
 	Long pId;
 	Player p;
 	Dao<Player, Long> pDao;
-	Dao<Throw, Long> tDao;
 
 	public static String LOGTAG = "DET_PLAYER";
 
@@ -67,7 +60,6 @@ public class Detail_Player extends MenuContainerActivity {
 				pDao = Player.getDao(getApplicationContext());
 				p = pDao.queryForId(pId);
 
-				tDao = Throw.getDao(getApplicationContext());
 			} catch (SQLException e) {
 				Toast.makeText(getApplicationContext(), e.getMessage(),
 						Toast.LENGTH_LONG).show();
@@ -105,70 +97,6 @@ public class Detail_Player extends MenuContainerActivity {
 
 		TextView pStatsSummary = (TextView) findViewById(R.id.pDet_statsSummary);
 		pStatsSummary.setText("Stats \n will \n go \n here");
-		View oStatButton = findViewById(R.id.button_ComputeOffensiveStats);
-		computeOffensiveStats(oStatButton);
 	}
 
-	public void computeOffensiveStats(View view) {
-		log("Will now compute offensive stats");
-		log("Summoning throws from db");
-		List<Throw> tList;
-
-		try {
-			tList = tDao.queryForEq(Throw.OFFENSIVE_PLAYER, pId);
-		} catch (SQLException e) {
-			Toast.makeText(getApplicationContext(), e.getMessage(),
-					Toast.LENGTH_LONG).show();
-			log("NO STATS FOR YOU!");
-			return;
-		}
-
-		String stats = computeStats(tList);
-
-		TextView pStatsSummary = (TextView) findViewById(R.id.pDet_statsSummary);
-		pStatsSummary.setText("OFFENSIVE STATS\n" + stats);
-	}
-
-	public void computeDefensiveStats(View view) {
-		log("Will now compute defensive stats");
-		log("Summoning throws from db");
-		List<Throw> tList;
-
-		try {
-			tList = tDao.queryForEq(Throw.DEFENSIVE_PLAYER, pId);
-		} catch (SQLException e) {
-			Toast.makeText(getApplicationContext(), e.getMessage(),
-					Toast.LENGTH_LONG).show();
-			log("NO STATS FOR YOU!");
-			return;
-		}
-
-		String stats = computeStats(tList);
-
-		TextView pStatsSummary = (TextView) findViewById(R.id.pDet_statsSummary);
-		pStatsSummary.setText("DEFENSIVE STATS\n" + stats);
-	}
-
-	public String computeStats(List<Throw> tList) {
-
-		log("Aggregating...");
-		SimpleThrowStats sts = new SimpleThrowStats(tList);
-		log("Tree is built");
-
-		IndicatorNode statsTree = sts.computeStats();
-		log("Stats are computed");
-		ReadingVisitor rv = new ReadingVisitor();
-		rv.visit(statsTree);
-		log("Stats are read");
-
-		String stats = "";
-		int cnt = 0;
-		for (String stat : rv) {
-			// log(stat);
-			stats += stat + "\n";
-			cnt++;
-		}
-		return stats;
-
-	}
 }
