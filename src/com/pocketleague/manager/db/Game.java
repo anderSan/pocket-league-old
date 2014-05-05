@@ -2,9 +2,7 @@ package com.pocketleague.manager.db;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 
 import android.content.Context;
@@ -12,8 +10,6 @@ import android.content.Context;
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
-import com.pocketleague.manager.enums.ThrowResult;
-import com.pocketleague.manager.enums.ThrowType;
 
 @DatabaseTable
 public class Game {
@@ -107,91 +103,6 @@ public class Game {
 			games.add(g);
 		}
 		return games;
-	}
-
-	public boolean isValidThrow(Throw t) {
-		boolean isValid = true;
-		int idx = t.throwIdx;
-		switch (idx % 2) {
-		// TODO: do players need to be refreshed now that foreign variable is
-		// used?
-		// first player is on offense
-		case 0:
-			isValid = isValid && (t.getOffensivePlayer() == firstPlayer);
-			break;
-		// second player is on defense
-		case 1:
-			isValid = isValid && (t.getOffensivePlayer() == secondPlayer);
-			break;
-		default:
-			throw new RuntimeException("invalid index " + idx);
-		}
-		return isValid;
-	}
-
-	public ArrayList<Throw> getThrowList(Context context) throws SQLException {
-		int tidx, maxThrowIndex;
-		ArrayList<Throw> throwArray = new ArrayList<Throw>();
-
-		HashMap<Integer, Throw> throwMap = new HashMap<Integer, Throw>();
-		HashMap<String, Object> m = new HashMap<String, Object>();
-		m.put("game_id", getId());
-
-		Dao<Throw, Long> d = Throw.getDao(context);
-		List<Throw> dbThrows = d.queryForFieldValuesArgs(m);
-
-		maxThrowIndex = 0;
-		if (!dbThrows.isEmpty()) {
-			Collections.sort(dbThrows);
-
-			for (Throw t : dbThrows) {
-				tidx = t.throwIdx;
-
-				// purge any throws with negative index
-				if (tidx < 0) {
-					d.delete(t);
-				}
-
-				// populate the map
-				throwMap.put(tidx, t);
-
-				// keep track of the maximum index
-				if (tidx > maxThrowIndex) {
-					maxThrowIndex = tidx;
-				}
-			}
-
-			// ensure throws in correct order and complete
-			Throw t = null;
-			for (int i = 0; i <= maxThrowIndex; i++) {
-				t = throwMap.get(i);
-				// infill with a caught strike if necessary
-				if (t == null) {
-					t = makeNewThrow(i);
-					t.throwType = ThrowType.STRIKE;
-					t.throwResult = ThrowResult.CATCH;
-				}
-				throwArray.add(t);
-			}
-		}
-
-		return throwArray;
-	}
-
-	public Throw makeNewThrow(int throwNumber) {
-		Player offensivePlayer, defensivePlayer;
-		if (throwNumber % 2 == 0) {
-			offensivePlayer = getFirstPlayer();
-			defensivePlayer = getSecondPlayer();
-		} else {
-			offensivePlayer = getSecondPlayer();
-			defensivePlayer = getFirstPlayer();
-		}
-		Date timestamp = new Date(System.currentTimeMillis());
-		Throw t = new Throw(throwNumber, this, offensivePlayer,
-				defensivePlayer, timestamp);
-
-		return t;
 	}
 
 	public long getId() {

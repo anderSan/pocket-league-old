@@ -31,9 +31,7 @@ import com.pocketleague.manager.backend.MenuContainerActivity;
 import com.pocketleague.manager.db.Player;
 import com.pocketleague.manager.db.Session;
 import com.pocketleague.manager.db.SessionMember;
-import com.pocketleague.manager.enums.RuleType;
 import com.pocketleague.manager.enums.SessionType;
-import com.pocketleague.manager.rulesets.RuleSet;
 
 public class NewSession extends MenuContainerActivity {
 	Long sId;
@@ -91,10 +89,10 @@ public class NewSession extends MenuContainerActivity {
 		sessionTypeSpinner = (Spinner) findViewById(R.id.newSession_sessionType);
 
 		spinner_ruleSet = (Spinner) findViewById(R.id.newSession_spinner_ruleSet);
-		for (RuleSet rs : RuleType.map.values()) {
-			ruleSetDescriptions.add(rs.getDescription());
-			ruleSetIds.add(rs.getId());
-		}
+		// for (RuleSet rs : RuleType.map.values()) {
+		// ruleSetDescriptions.add(rs.getDescription());
+		// ruleSetIds.add(rs.getId());
+		// }
 		ArrayAdapter<String> rsAdapter = new ArrayAdapter<String>(this,
 				android.R.layout.simple_spinner_dropdown_item,
 				ruleSetDescriptions);
@@ -233,7 +231,7 @@ public class NewSession extends MenuContainerActivity {
 		Context context = getApplicationContext();
 		Session session = null;
 		String sessionName = null;
-		int ruleSetId = RuleType.rsNull;
+		// int ruleSetId = RuleType.rsNull;
 		int sessionType = 0;
 		Date startDate;
 		Boolean isTeam;
@@ -270,7 +268,7 @@ public class NewSession extends MenuContainerActivity {
 
 		// get the ruleset
 		if (switch_forceRuleSet.isChecked() == true) {
-			ruleSetId = ruleSetIds.get(ruleSet_pos);
+			// ruleSetId = ruleSetIds.get(ruleSet_pos);
 		}
 
 		// get the start date
@@ -302,8 +300,8 @@ public class NewSession extends MenuContainerActivity {
 			}
 		} else {
 			// create the session
-			session = new Session(sessionName, sessionType, ruleSetId,
-					startDate, isTeam);
+			// session = new Session(sessionName, sessionType, ruleSetId,
+			// startDate, isTeam);
 
 			try {
 				sDao = getHelper().getSessionDao();

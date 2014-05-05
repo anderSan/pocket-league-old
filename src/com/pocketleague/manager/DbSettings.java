@@ -35,15 +35,11 @@ import com.dropbox.sync.android.DbxFileSystem;
 import com.dropbox.sync.android.DbxPath;
 import com.j256.ormlite.dao.Dao;
 import com.pocketleague.manager.db.DatabaseHelper;
-import com.pocketleague.manager.db.DatabaseUpgrader;
-import com.pocketleague.manager.db.Game;
 import com.pocketleague.manager.db.OrmLiteFragment;
 import com.pocketleague.manager.db.Player;
 import com.pocketleague.manager.db.Session;
-import com.pocketleague.manager.db.Throw;
 import com.pocketleague.manager.db.Venue;
 import com.pocketleague.manager.enums.DbxInfo;
-import com.pocketleague.manager.enums.RuleType;
 
 public class DbSettings extends OrmLiteFragment {
 
@@ -142,13 +138,14 @@ public class DbSettings extends OrmLiteFragment {
 			}
 		});
 
-		Button mUpdtBtn = (Button) rootView.findViewById(R.id.db_updateScores);
-		mUpdtBtn.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				updateScores();
-			}
-		});
+		// Button mUpdtBtn = (Button)
+		// rootView.findViewById(R.id.db_updateScores);
+		// mUpdtBtn.setOnClickListener(new OnClickListener() {
+		// @Override
+		// public void onClick(View v) {
+		// updateScores();
+		// }
+		// });
 
 		return rootView;
 	}
@@ -249,9 +246,11 @@ public class DbSettings extends OrmLiteFragment {
 						true, false, 182, 63, emptyImage, getResources()
 								.getColor(R.color.Khaki)) };
 		Dao<Session, Long> sessionDao = null;
-		Session s1 = new Session("league", 1, RuleType.rs01, new Date(), false);
-		Session s2 = new Session("side_books", 0, RuleType.rsNull, new Date(),
-				false);
+		// Session s1 = new Session("league", 1, RuleType.rs01, new Date(),
+		// false);
+		// Session s2 = new Session("side_books", 0, RuleType.rsNull, new
+		// Date(),
+		// false);
 		Dao<Venue, Long> venueDao = null;
 		Venue v1 = new Venue("cogswell", true);
 		Venue v2 = new Venue("verndale", true);
@@ -263,8 +262,8 @@ public class DbSettings extends OrmLiteFragment {
 			}
 
 			sessionDao = getHelper().getSessionDao();
-			sessionDao.create(s1);
-			sessionDao.create(s2);
+			// sessionDao.create(s1);
+			// sessionDao.create(s2);
 			venueDao = getHelper().getVenueDao();
 			venueDao.create(v1);
 			venueDao.create(v2);
@@ -276,39 +275,39 @@ public class DbSettings extends OrmLiteFragment {
 		}
 	}
 
-	public void updateScores() {
-		List<Long> badGames = null;
-		List<Long> badThrows = null;
-		Dao<Game, Long> gDao;
-		Dao<Throw, Long> tDao;
-		try {
-
-			gDao = Game.getDao(context);
-			tDao = Throw.getDao(context);
-			badGames = DatabaseUpgrader.updateScores(gDao, context);
-			if (badGames.size() > 0) {
-				Log.w("SimpleSettings",
-						"The following games had different scores after upgrade: "
-								+ badGames.toString());
-				// throw new RuntimeException("Scores changed on upgrade");
-			} else {
-				Log.i("SimpleSettings",
-						"All game scores unchanged after upgrade!");
-			}
-
-			badThrows = DatabaseUpgrader.checkThrows(tDao, context);
-			if (badThrows.size() > 0) {
-				Log.w("SimpleSettings", "The following throws are not valid: "
-						+ badThrows.toString());
-			} else {
-				Log.i("SimpleSettings", "All throws are valid!");
-			}
-		} catch (SQLException e) {
-			int duration = Toast.LENGTH_LONG;
-			Toast.makeText(context, e.getMessage(), duration).show();
-			Log.e(PocketLeague.class.getName(), "Update of scores failed", e);
-		}
-	}
+	// public void updateScores() {
+	// List<Long> badGames = null;
+	// List<Long> badThrows = null;
+	// Dao<Game, Long> gDao;
+	// Dao<Throw, Long> tDao;
+	// try {
+	//
+	// gDao = Game.getDao(context);
+	// tDao = Throw.getDao(context);
+	// badGames = DatabaseUpgrader.updateScores(gDao, context);
+	// if (badGames.size() > 0) {
+	// Log.w("SimpleSettings",
+	// "The following games had different scores after upgrade: "
+	// + badGames.toString());
+	// // throw new RuntimeException("Scores changed on upgrade");
+	// } else {
+	// Log.i("SimpleSettings",
+	// "All game scores unchanged after upgrade!");
+	// }
+	//
+	// badThrows = DatabaseUpgrader.checkThrows(tDao, context);
+	// if (badThrows.size() > 0) {
+	// Log.w("SimpleSettings", "The following throws are not valid: "
+	// + badThrows.toString());
+	// } else {
+	// Log.i("SimpleSettings", "All throws are valid!");
+	// }
+	// } catch (SQLException e) {
+	// int duration = Toast.LENGTH_LONG;
+	// Toast.makeText(context, e.getMessage(), duration).show();
+	// Log.e(PocketLeague.class.getName(), "Update of scores failed", e);
+	// }
+	// }
 
 	public void saveDBdropbox() {
 		Toast.makeText(context, "Saved to dropbox", Toast.LENGTH_SHORT).show();

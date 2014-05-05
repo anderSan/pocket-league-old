@@ -23,8 +23,6 @@ import com.pocketleague.manager.db.Game;
 import com.pocketleague.manager.db.Player;
 import com.pocketleague.manager.db.Session;
 import com.pocketleague.manager.db.Venue;
-import com.pocketleague.manager.enums.RuleType;
-import com.pocketleague.manager.rulesets.RuleSet;
 
 public class NewGame extends MenuContainerActivity {
 	Spinner spinner_p1;
@@ -47,7 +45,7 @@ public class NewGame extends MenuContainerActivity {
 	List<Player> players = new ArrayList<Player>();
 	List<Session> sessions = new ArrayList<Session>();
 	List<Venue> venues = new ArrayList<Venue>();
-	List<RuleSet> ruleSets = new ArrayList<RuleSet>();
+	// List<RuleSet> ruleSets = new ArrayList<RuleSet>();
 
 	List<String> playerNames = new ArrayList<String>();
 	List<String> sessionNames = new ArrayList<String>();
@@ -192,10 +190,10 @@ public class NewGame extends MenuContainerActivity {
 		for (Venue v : venues) {
 			venueNames.add(String.valueOf(v.getId()) + " " + v.getName());
 		}
-		for (RuleSet rs : RuleType.map.values()) {
-			ruleSetDescriptions.add(rs.getDescription());
-			ruleSetIds.add(rs.getId());
-		}
+		// for (RuleSet rs : RuleType.map.values()) {
+		// ruleSetDescriptions.add(rs.getDescription());
+		// ruleSetIds.add(rs.getId());
+		// }
 
 		ArrayAdapter<String> pAdapter = new ArrayAdapter<String>(this,
 				android.R.layout.simple_spinner_dropdown_item, playerNames);
@@ -248,10 +246,10 @@ public class NewGame extends MenuContainerActivity {
 			Dao<Game, Long> d = Game.getDao(getApplicationContext());
 			d.createIfNotExists(g);
 			gid = g.getId();
-			Intent intent = new Intent(this, GameInProgress.class);
-			intent.putExtra("GID", gid);
-			startActivity(intent);
-			finish();
+			// Intent intent = new Intent(this, GameInProgress.class);
+			// intent.putExtra("GID", gid);
+			// startActivity(intent);
+			// finish();
 
 		} catch (SQLException e) {
 			Toast.makeText(getApplicationContext(), e.getMessage(),

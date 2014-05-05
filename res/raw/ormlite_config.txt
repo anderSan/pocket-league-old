@@ -1,5 +1,5 @@
 #
-# generated on 2014/01/12 10:17:50
+# generated on 2014/05/05 11:24:25
 #
 # --table-start--
 dataClass=com.pocketleague.manager.db.Player
@@ -59,19 +59,35 @@ fieldName=isActive
 # --table-end--
 #################################
 # --table-start--
-dataClass=com.pocketleague.manager.db.PlayerStats
-tableName=playerstats
+dataClass=com.pocketleague.manager.db.Team
+tableName=team
 # --table-fields-start--
 # --field-start--
-fieldName=player
+fieldName=id
+generatedId=true
+# --field-end--
+# --field-start--
+fieldName=teamName
+canBeNull=false
+# --field-end--
+# --field-start--
+fieldName=firstPlayer
+canBeNull=false
 foreign=true
-unique=true
+uniqueCombo=true
 # --field-end--
 # --field-start--
-fieldName=nWins
+fieldName=secondPlayer
+canBeNull=false
+foreign=true
+uniqueCombo=true
 # --field-end--
 # --field-start--
-fieldName=nLosses
+fieldName=imageBytes
+dataPersister=BYTE_ARRAY
+# --field-end--
+# --field-start--
+fieldName=isActive
 # --field-end--
 # --table-fields-end--
 # --table-end--
@@ -125,104 +141,6 @@ fieldName=isComplete
 # --field-end--
 # --field-start--
 fieldName=isTracked
-# --field-end--
-# --table-fields-end--
-# --table-end--
-#################################
-# --table-start--
-dataClass=com.pocketleague.manager.db.Throw
-tableName=throw
-# --table-fields-start--
-# --field-start--
-fieldName=id
-generatedId=true
-# --field-end--
-# --field-start--
-fieldName=throwIdx
-canBeNull=false
-uniqueCombo=true
-# --field-end--
-# --field-start--
-fieldName=game
-canBeNull=false
-foreign=true
-uniqueCombo=true
-# --field-end--
-# --field-start--
-fieldName=offensivePlayer
-canBeNull=false
-foreign=true
-# --field-end--
-# --field-start--
-fieldName=defensivePlayer
-canBeNull=false
-foreign=true
-# --field-end--
-# --field-start--
-fieldName=timestamp
-canBeNull=false
-# --field-end--
-# --field-start--
-fieldName=throwType
-canBeNull=false
-# --field-end--
-# --field-start--
-fieldName=throwResult
-canBeNull=false
-# --field-end--
-# --field-start--
-fieldName=deadType
-# --field-end--
-# --field-start--
-fieldName=isTipped
-# --field-end--
-# --field-start--
-fieldName=isGoaltend
-# --field-end--
-# --field-start--
-fieldName=isGrabbed
-# --field-end--
-# --field-start--
-fieldName=isDrinkHit
-# --field-end--
-# --field-start--
-fieldName=isLineFault
-# --field-end--
-# --field-start--
-fieldName=isOffensiveDrinkDropped
-# --field-end--
-# --field-start--
-fieldName=isOffensivePoleKnocked
-# --field-end--
-# --field-start--
-fieldName=isOffensiveBottleKnocked
-# --field-end--
-# --field-start--
-fieldName=isOffensiveBreakError
-# --field-end--
-# --field-start--
-fieldName=isDefensiveDrinkDropped
-# --field-end--
-# --field-start--
-fieldName=isDefensivePoleKnocked
-# --field-end--
-# --field-start--
-fieldName=isDefensiveBottleKnocked
-# --field-end--
-# --field-start--
-fieldName=isDefensiveBreakError
-# --field-end--
-# --field-start--
-fieldName=offenseFireCount
-# --field-end--
-# --field-start--
-fieldName=defenseFireCount
-# --field-end--
-# --field-start--
-fieldName=initialOffensivePlayerScore
-# --field-end--
-# --field-start--
-fieldName=initialDefensivePlayerScore
 # --field-end--
 # --table-fields-end--
 # --table-end--

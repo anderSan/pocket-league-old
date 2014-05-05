@@ -17,21 +17,13 @@ import com.pocketleague.manager.R;
 public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
 
 	private static final String DATABASE_NAME = "pocketleague.db";
-	private static final int DATABASE_VERSION = 11;
+	private static final int DATABASE_VERSION = 1;
 
 	private Dao<Player, Long> playerDao;
-	private Dao<PlayerStats, Long> playerStatsDao;
+	private Dao<Team, Long> teamDao;
 	private Dao<Game, Long> gameDao;
-	private Dao<Throw, Long> throwDao;
 	private Dao<SessionMember, Long> sessionMemberDao;
 	private Dao<Badge, Long> badgeDao;
-
-	// private Dao<Team, Long> teamDao;
-	// private Dao<TeamStats, Long> teamStatsDao;
-	// private Dao<TeamGame, Long> teamGameDao;
-	// private Dao<TeamThrow, Long> teamThrowDao;
-	// private Dao<TeamSessionMember, Long> teamSessionMemberDao;
-	// private Dao<TeamBadge, Long> teamBadgeDao;
 
 	private Dao<Session, Long> sessionDao;
 	private Dao<Venue, Long> venueDao;
@@ -44,18 +36,10 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
 		super(context, DATABASE_NAME, null, DATABASE_VERSION,
 				R.raw.ormlite_config);
 		tableClasses.add(Player.class);
-		tableClasses.add(PlayerStats.class);
+		tableClasses.add(Team.class);
 		tableClasses.add(Game.class);
-		tableClasses.add(Throw.class);
 		tableClasses.add(SessionMember.class);
 		tableClasses.add(Badge.class);
-
-		// tableClasses.add( Team.class);
-		// tableClasses.add( TeamStats.class);
-		// tableClasses.add( TeamGame.class);
-		// tableClasses.add( TeamThrow.class);
-		// tableClasses.add( TeamSessionMember.class);
-		// tableClasses.add( TeamBadge.class);
 
 		tableClasses.add(Session.class);
 		tableClasses.add(Venue.class);
@@ -84,11 +68,11 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
 						+ newVer);
 
 		switch (oldVer) {
-		case 9:
-			increment_09(sqliteDatabase, connectionSource);
-		case 10:
-			increment_10(sqliteDatabase, connectionSource);
-			break;
+		// case 9:
+		// increment_09(sqliteDatabase, connectionSource);
+		// case 10:
+		// increment_10(sqliteDatabase, connectionSource);
+		// break;
 		default:
 			try {
 				dropAll(connectionSource);
@@ -110,10 +94,9 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
 			Dao<Player, Long> pDao = getPlayerDao();
 			Dao<Session, Long> sDao = getSessionDao();
 			Dao<Venue, Long> vDao = getVenueDao();
-			Dao<Throw, Long> tDao = getThrowDao();
 
-			DatabaseUpgrader.increment_09(connectionSource, gDao, pDao, sDao,
-					vDao, tDao);
+			// DatabaseUpgrader.increment_09(connectionSource, gDao, pDao, sDao,
+			// vDao, tDao);
 
 			createAll();
 
@@ -131,8 +114,7 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
 					"Attempting to upgrade from version 10 to version 11");
 			// throw table
 			Dao<Game, Long> gDao = getGameDao();
-			Dao<Throw, Long> tDao = getThrowDao();
-			DatabaseUpgrader.increment_10(connectionSource, gDao, tDao);
+			// DatabaseUpgrader.increment_10(connectionSource, gDao, tDao);
 
 		} catch (SQLException e) {
 			Log.e(DatabaseHelper.class.getName(),
@@ -180,25 +162,13 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
 		return playerDao;
 	}
 
-	public Dao<PlayerStats, Long> getPlayerStatsDao() throws SQLException {
-		if (playerStatsDao == null) {
-			playerStatsDao = getDao(PlayerStats.class);
+	public Dao<Team, Long> getTeamDao() throws SQLException {
+		if (teamDao == null) {
+			teamDao = getDao(Team.class);
 		}
-		return playerStatsDao;
+		return teamDao;
 	}
 
-	// public Dao<Team, Long> getTeamDao() throws SQLException {
-	// if (teamDao == null) {
-	// teamDao = getDao(Team.class);
-	// }
-	// return teamDao;
-	// }
-	// public Dao<TeamStats, Long> getTeamStatsDao() throws SQLException {
-	// if (teamStatsDao == null) {
-	// teamStatsDao = getDao(TeamStats.class);
-	// }
-	// return teamStatsDao;
-	// }
 	public Dao<Badge, Long> getBadgeDao() throws SQLException {
 		if (badgeDao == null) {
 			badgeDao = getDao(Badge.class);
@@ -225,13 +195,6 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
 			sessionMemberDao = getDao(SessionMember.class);
 		}
 		return sessionMemberDao;
-	}
-
-	public Dao<Throw, Long> getThrowDao() throws SQLException {
-		if (throwDao == null) {
-			throwDao = getDao(Throw.class);
-		}
-		return throwDao;
 	}
 
 	public Dao<Venue, Long> getVenueDao() throws SQLException {
