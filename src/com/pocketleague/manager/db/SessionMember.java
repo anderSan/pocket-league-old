@@ -14,8 +14,8 @@ import com.j256.ormlite.table.DatabaseTable;
 public class SessionMember implements Comparable<SessionMember> {
 	public static final String SESSION = "session_id";
 	public static final String PLAYER = "player_id";
-	public static final String PLAYER_SEED = "playerSeed";
-	public static final String PLAYER_RANK = "playerRank";
+	public static final String PLAYER_SEED = "player_seed";
+	public static final String PLAYER_RANK = "player_rank";
 
 	@DatabaseField(generatedId = true)
 	private long id;
@@ -26,42 +26,40 @@ public class SessionMember implements Comparable<SessionMember> {
 	@DatabaseField(uniqueCombo = true, foreign = true)
 	private Player player;
 
-	@DatabaseField(canBeNull = false)
-	private int playerSeed;
+	@DatabaseField()
+	private int faction;
 
 	@DatabaseField(canBeNull = false)
-	public int playerRank;
+	private int player_seed;
 
-	// would be nice to force both seed and rank to be unique for a given
-	// session
-	// but i dont think it is possible to have multiple independent uniqueCombos
-	// will just have to handle carefully elsewhere?
+	@DatabaseField(canBeNull = false)
+	public int player_rank;
 
 	public SessionMember() {
 	}
 
-	public SessionMember(int playerSeed, int playerRank) {
+	public SessionMember(int player_seed, int player_rank) {
 		// for dummy member creation
 		super();
-		this.playerSeed = playerSeed;
-		this.playerRank = playerRank;
+		this.player_seed = player_seed;
+		this.player_rank = player_rank;
 	}
 
-	public SessionMember(Session session, Player player, int playerSeed) {
+	public SessionMember(Session session, Player player, int player_seed) {
 		super();
 		this.session = session;
 		this.player = player;
-		this.playerSeed = playerSeed;
-		this.playerRank = 0;
+		this.player_seed = player_seed;
+		this.player_rank = 0;
 	}
 
-	public SessionMember(Session session, Player player, int playerSeed,
-			int playerRank) {
+	public SessionMember(Session session, Player player, int player_seed,
+			int player_rank) {
 		super();
 		this.session = session;
 		this.player = player;
-		this.playerSeed = playerSeed;
-		this.playerRank = playerRank;
+		this.player_seed = player_seed;
+		this.player_rank = player_rank;
 	}
 
 	public static Dao<SessionMember, Long> getDao(Context context)
@@ -98,7 +96,7 @@ public class SessionMember implements Comparable<SessionMember> {
 	// }
 
 	public int getSeed() {
-		return playerSeed;
+		return player_seed;
 	}
 
 	public int compareTo(SessionMember another) {

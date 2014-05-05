@@ -12,17 +12,14 @@ import com.j256.ormlite.table.DatabaseTable;
 
 @DatabaseTable
 public class Venue {
-	public static final String VENUE_NAME = "venueName";
-	public static final String IS_ACTIVE = "isActive";
+	public static final String VENUE_NAME = "name";
+	public static final String IS_ACTIVE = "is_active";
 
 	@DatabaseField(generatedId = true)
 	private long id;
 
 	@DatabaseField(canBeNull = false, unique = true, columnName = VENUE_NAME)
-	private String venueName;
-
-	@DatabaseField(canBeNull = true)
-	public boolean scoreKeptFromTop = true;
+	private String name;
 
 	@DatabaseField
 	private long longitude;
@@ -34,15 +31,17 @@ public class Venue {
 	private long zipCode;
 
 	@DatabaseField
-	private boolean isActive = true;
+	private boolean is_active = true;
+
+	@DatabaseField
+	private boolean is_favorite = false;
 
 	Venue() {
 	}
 
-	public Venue(String venueName, boolean scoreKeptFromTop) {
+	public Venue(String name) {
 		super();
-		this.venueName = venueName;
-		this.scoreKeptFromTop = scoreKeptFromTop;
+		this.name = name;
 	}
 
 	public static Dao<Venue, Long> getDao(Context context) {
@@ -65,25 +64,16 @@ public class Venue {
 		return venues;
 	}
 
-	public Venue(String venueName) {
-		super();
-		this.venueName = venueName;
-	}
-
 	public long getId() {
 		return id;
 	}
 
 	public String getName() {
-		return venueName;
+		return name;
 	}
 
-	public void setName(String venueName) {
-		this.venueName = venueName;
-	}
-
-	public void setScoreFromTop(Boolean sfTop) {
-		this.scoreKeptFromTop = sfTop;
+	public void setName(String venue_name) {
+		this.name = venue_name;
 	}
 
 	public boolean exists(Context context) {
@@ -92,10 +82,10 @@ public class Venue {
 	}
 
 	public boolean getIsActive() {
-		return isActive;
+		return is_active;
 	}
 
-	public void setIsActive(boolean isActive) {
-		this.isActive = isActive;
+	public void setIsActive(boolean is_active) {
+		this.is_active = is_active;
 	}
 }

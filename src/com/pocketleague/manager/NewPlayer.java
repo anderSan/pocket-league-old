@@ -65,17 +65,11 @@ public class NewPlayer extends MenuContainerActivity {
 				nick.setText(p.getNickName());
 				weight.setText(String.valueOf(p.getWeight_kg()));
 				height.setText(String.valueOf(p.getHeight_cm()));
-				if (p.throwsLeftHanded == true) {
+				if (p.is_left_handed == true) {
 					lh.setChecked(true);
 				}
-				if (p.throwsRightHanded == true) {
+				if (p.is_right_handed == true) {
 					rh.setChecked(true);
-				}
-				if (p.prefersLeftSide == true) {
-					prefL.setChecked(true);
-				}
-				if (p.prefersRightSide == true) {
-					prefR.setChecked(true);
 				}
 				playerColorBtn.setBackgroundColor(p.getColor());
 				playerColor = p.getColor();
@@ -137,10 +131,8 @@ public class NewPlayer extends MenuContainerActivity {
 			p.setNickName(nickname);
 			p.setWeight_kg(weight_kg);
 			p.setHeight_cm(height_cm);
-			p.setLeftHanded(throwsLeftHanded);
-			p.setRightHanded(throwsRightHanded);
-			p.setPrefersLeftSide(prefersLeftSide);
-			p.setPrefersRightSide(prefersRightSide);
+			p.is_left_handed = throwsLeftHanded;
+			p.is_right_handed = throwsRightHanded;
 			p.setColor(playerColor);
 			p.setIsActive(isActive);
 			try {

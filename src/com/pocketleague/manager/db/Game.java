@@ -10,6 +10,7 @@ import android.content.Context;
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
+import com.pocketleague.manager.enums.GameType;
 
 @DatabaseTable
 public class Game {
@@ -17,17 +18,17 @@ public class Game {
 	public static final String SECOND_PLAYER = "secondPlayer_id";
 	public static final String SESSION = "session_id";
 	public static final String VENUE = "venue_id";
-	public static final String DATE_PLAYED = "datePlayed";
-	public static final String IS_COMPLETE = "isComplete";
+	public static final String DATE_PLAYED = "date_played";
+	public static final String IS_COMPLETE = "is_complete";
 
 	@DatabaseField(generatedId = true)
 	private long id;
 
-	@DatabaseField(canBeNull = false, foreign = true)
-	private Player firstPlayer;
+	@DatabaseField(canBeNull = false)
+	private GameType gametype;
 
-	@DatabaseField(canBeNull = false, foreign = true)
-	private Player secondPlayer;
+	@DatabaseField(canBeNull = false)
+	public int ruleset_id;
 
 	@DatabaseField(foreign = true)
 	private Session session;
@@ -36,53 +37,36 @@ public class Game {
 	private Venue venue;
 
 	@DatabaseField(canBeNull = false)
-	public int ruleSetId;
-
-	@DatabaseField(canBeNull = false)
-	public boolean firstPlayerOnTop;
-
-	@DatabaseField(canBeNull = false)
-	private Date datePlayed;
+	private Date date_played;
 
 	@DatabaseField
-	private int firstPlayerScore;
+	private boolean is_complete = false;
 
 	@DatabaseField
-	private int secondPlayerScore;
-
-	@DatabaseField
-	private boolean isComplete = false;
-
-	@DatabaseField
-	private boolean isTracked = true;
+	private boolean is_tracked = true;
 
 	public Game() {
 		super();
 	}
 
-	public Game(Player firstPlayer, Player secondPlayer, Session session,
-			Venue venue, int ruleSet, boolean isTracked, Date datePlayed) {
+	public Game(Session session, Venue venue, int ruleset, boolean is_tracked,
+			Date date_played) {
 		super();
-		this.firstPlayer = firstPlayer;
-		this.secondPlayer = secondPlayer;
 		this.session = session;
 		this.venue = venue;
-		this.ruleSetId = ruleSet;
-		this.isTracked = isTracked;
-		this.datePlayed = datePlayed;
+		this.ruleset_id = ruleset;
+		this.is_tracked = is_tracked;
+		this.date_played = date_played;
 
 	}
 
-	public Game(Player firstPlayer, Player secondPlayer, Session session,
-			Venue venue, int ruleSet, boolean isTracked) {
+	public Game(Session session, Venue venue, int rule_set, boolean is_tracked) {
 		super();
-		this.firstPlayer = firstPlayer;
-		this.secondPlayer = secondPlayer;
 		this.session = session;
 		this.venue = venue;
-		this.ruleSetId = ruleSet;
-		this.isTracked = isTracked;
-		this.datePlayed = new Date();
+		this.ruleset_id = rule_set;
+		this.is_tracked = is_tracked;
+		this.date_played = new Date();
 	}
 
 	public static Dao<Game, Long> getDao(Context context) {
@@ -113,22 +97,6 @@ public class Game {
 		this.id = id;
 	}
 
-	public Player getFirstPlayer() {
-		return firstPlayer;
-	}
-
-	public void setFirstPlayer(Player firstPlayer) {
-		this.firstPlayer = firstPlayer;
-	}
-
-	public Player getSecondPlayer() {
-		return secondPlayer;
-	}
-
-	public void setSecondPlayer(Player secondPlayer) {
-		this.secondPlayer = secondPlayer;
-	}
-
 	public Session getSession() {
 		return session;
 	}
@@ -146,67 +114,39 @@ public class Game {
 	}
 
 	public Date getDatePlayed() {
-		return datePlayed;
+		return date_played;
 	}
 
 	public void setDatePlayed(Date datePlayed) {
-		this.datePlayed = datePlayed;
-	}
-
-	public int getFirstPlayerScore() {
-		return firstPlayerScore;
-	}
-
-	public void setFirstPlayerScore(int firstPlayerScore) {
-		this.firstPlayerScore = firstPlayerScore;
-		checkGameComplete();
-	}
-
-	public int getSecondPlayerScore() {
-		return secondPlayerScore;
-	}
-
-	public void setSecondPlayerScore(int secondPlayerScore) {
-		this.secondPlayerScore = secondPlayerScore;
-		checkGameComplete();
+		this.date_played = datePlayed;
 	}
 
 	public boolean getIsComplete() {
-		return isComplete;
+		return is_complete;
 	}
 
 	public void setIsComplete(boolean isComplete) {
-		this.isComplete = isComplete;
+		this.is_complete = isComplete;
 	}
 
 	public boolean getIsTracked() {
-		return isTracked;
+		return is_tracked;
 	}
 
-	public void checkGameComplete() {
-		Integer s1 = getFirstPlayerScore();
-		Integer s2 = getSecondPlayerScore();
-		if (Math.abs(s1 - s2) >= 2 && (s1 >= 11 || s2 >= 11)) {
-			setIsComplete(true);
-		} else {
-			setIsComplete(false);
-		}
-	}
+	// public Player getWinner() {
+	// // TODO: should raise an error if game is not complete
+	// Player winner = firstPlayer;
+	// if (getSecondPlayerScore() > getFirstPlayerScore()) {
+	// winner = secondPlayer;
+	// }
+	// return winner;
+	// }
 
-	public Player getWinner() {
-		// TODO: should raise an error if game is not complete
-		Player winner = firstPlayer;
-		if (getSecondPlayerScore() > getFirstPlayerScore()) {
-			winner = secondPlayer;
-		}
-		return winner;
-	}
-
-	public Player getLoser() {
-		Player loser = firstPlayer;
-		if (getSecondPlayerScore() < getFirstPlayerScore()) {
-			loser = secondPlayer;
-		}
-		return loser;
-	}
+	// public Player getLoser() {
+	// Player loser = firstPlayer;
+	// if (getSecondPlayerScore() < getFirstPlayerScore()) {
+	// loser = secondPlayer;
+	// }
+	// return loser;
+	// }
 }

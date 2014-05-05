@@ -237,8 +237,8 @@ public class NewGame extends MenuContainerActivity {
 
 		int ruleSetId = ruleSetIds.get(ruleSet_pos);
 
-		Game g = new Game(p1, p2, sessions.get(session_pos),
-				venues.get(venue_pos), ruleSetId, true);
+		Game g = new Game(sessions.get(session_pos), venues.get(venue_pos),
+				ruleSetId, true);
 		long gid;
 		g.setDatePlayed(new Date());
 

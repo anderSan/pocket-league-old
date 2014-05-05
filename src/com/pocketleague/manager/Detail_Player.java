@@ -85,8 +85,8 @@ public class Detail_Player extends MenuContainerActivity {
 		pWinRatio.setText("Win Ratio here eventually...");
 
 		TextView pHanded = (TextView) findViewById(R.id.pDet_handed);
-		if (p.throwsLeftHanded) {
-			if (p.throwsRightHanded) {
+		if (p.is_left_handed) {
+			if (p.is_right_handed) {
 				pHanded.setText("L + R");
 			} else {
 				pHanded.setText("L");

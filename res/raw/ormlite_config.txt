@@ -1,5 +1,5 @@
 #
-# generated on 2014/05/05 11:24:25
+# generated on 2014/05/05 07:13:20
 #
 # --table-start--
 dataClass=com.pocketleague.manager.db.Player
@@ -10,34 +10,34 @@ fieldName=id
 generatedId=true
 # --field-end--
 # --field-start--
-fieldName=firstName
-columnName=firstName
+fieldName=first_name
+columnName=first_name
 canBeNull=false
 uniqueCombo=true
 # --field-end--
 # --field-start--
-fieldName=lastName
-columnName=lastName
+fieldName=last_name
+columnName=last_name
 canBeNull=false
 uniqueCombo=true
 # --field-end--
 # --field-start--
-fieldName=nickName
-columnName=nickName
+fieldName=nickname
+columnName=nickname
 canBeNull=false
 uniqueCombo=true
 # --field-end--
 # --field-start--
-fieldName=throwsRightHanded
+fieldName=is_right_handed
 # --field-end--
 # --field-start--
-fieldName=throwsLeftHanded
+fieldName=is_left_handed
 # --field-end--
 # --field-start--
-fieldName=prefersRightSide
+fieldName=is_right_footed
 # --field-end--
 # --field-start--
-fieldName=prefersLeftSide
+fieldName=is_left_footed
 # --field-end--
 # --field-start--
 fieldName=height_cm
@@ -46,14 +46,17 @@ fieldName=height_cm
 fieldName=weight_kg
 # --field-end--
 # --field-start--
-fieldName=imageBytes
+fieldName=image_bytes
 dataPersister=BYTE_ARRAY
 # --field-end--
 # --field-start--
 fieldName=color
 # --field-end--
 # --field-start--
-fieldName=isActive
+fieldName=is_active
+# --field-end--
+# --field-start--
+fieldName=is_favorite
 # --field-end--
 # --table-fields-end--
 # --table-end--
@@ -67,27 +70,18 @@ fieldName=id
 generatedId=true
 # --field-end--
 # --field-start--
-fieldName=teamName
+fieldName=name
 canBeNull=false
 # --field-end--
 # --field-start--
-fieldName=firstPlayer
-canBeNull=false
-foreign=true
-uniqueCombo=true
-# --field-end--
-# --field-start--
-fieldName=secondPlayer
-canBeNull=false
-foreign=true
-uniqueCombo=true
-# --field-end--
-# --field-start--
-fieldName=imageBytes
+fieldName=image_bytes
 dataPersister=BYTE_ARRAY
 # --field-end--
 # --field-start--
-fieldName=isActive
+fieldName=is_active
+# --field-end--
+# --field-start--
+fieldName=is_favorite
 # --field-end--
 # --table-fields-end--
 # --table-end--
@@ -101,14 +95,12 @@ fieldName=id
 generatedId=true
 # --field-end--
 # --field-start--
-fieldName=firstPlayer
+fieldName=gametype
 canBeNull=false
-foreign=true
 # --field-end--
 # --field-start--
-fieldName=secondPlayer
+fieldName=ruleset_id
 canBeNull=false
-foreign=true
 # --field-end--
 # --field-start--
 fieldName=session
@@ -119,28 +111,14 @@ fieldName=venue
 foreign=true
 # --field-end--
 # --field-start--
-fieldName=ruleSetId
+fieldName=date_played
 canBeNull=false
 # --field-end--
 # --field-start--
-fieldName=firstPlayerOnTop
-canBeNull=false
+fieldName=is_complete
 # --field-end--
 # --field-start--
-fieldName=datePlayed
-canBeNull=false
-# --field-end--
-# --field-start--
-fieldName=firstPlayerScore
-# --field-end--
-# --field-start--
-fieldName=secondPlayerScore
-# --field-end--
-# --field-start--
-fieldName=isComplete
-# --field-end--
-# --field-start--
-fieldName=isTracked
+fieldName=is_tracked
 # --field-end--
 # --table-fields-end--
 # --table-end--
@@ -165,19 +143,22 @@ foreign=true
 uniqueCombo=true
 # --field-end--
 # --field-start--
-fieldName=playerSeed
+fieldName=faction
+# --field-end--
+# --field-start--
+fieldName=player_seed
 canBeNull=false
 # --field-end--
 # --field-start--
-fieldName=playerRank
+fieldName=player_rank
 canBeNull=false
 # --field-end--
 # --table-fields-end--
 # --table-end--
 #################################
 # --table-start--
-dataClass=com.pocketleague.manager.db.Badge
-tableName=badge
+dataClass=com.pocketleague.manager.db.PlayerBadge
+tableName=playerbadge
 # --table-fields-start--
 # --field-start--
 fieldName=id
@@ -207,28 +188,28 @@ fieldName=id
 generatedId=true
 # --field-end--
 # --field-start--
-fieldName=sessionName
+fieldName=name
 canBeNull=false
 # --field-end--
 # --field-start--
-fieldName=sessionType
+fieldName=game_type
 canBeNull=false
 # --field-end--
 # --field-start--
-fieldName=ruleSetId
-# --field-end--
-# --field-start--
-fieldName=startDate
+fieldName=session_type
 canBeNull=false
 # --field-end--
 # --field-start--
-fieldName=endDate
+fieldName=team_size
 # --field-end--
 # --field-start--
-fieldName=isTeam
+fieldName=ruleset_id
 # --field-end--
 # --field-start--
-fieldName=isActive
+fieldName=is_active
+# --field-end--
+# --field-start--
+fieldName=is_favorite
 # --field-end--
 # --field-start--
 fieldName=games
@@ -246,13 +227,10 @@ fieldName=id
 generatedId=true
 # --field-end--
 # --field-start--
-fieldName=venueName
-columnName=venueName
+fieldName=name
+columnName=name
 canBeNull=false
 unique=true
-# --field-end--
-# --field-start--
-fieldName=scoreKeptFromTop
 # --field-end--
 # --field-start--
 fieldName=longitude
@@ -264,7 +242,10 @@ fieldName=latitude
 fieldName=zipCode
 # --field-end--
 # --field-start--
-fieldName=isActive
+fieldName=is_active
+# --field-end--
+# --field-start--
+fieldName=is_favorite
 # --field-end--
 # --table-fields-end--
 # --table-end--

@@ -26,7 +26,6 @@ import com.pocketleague.manager.backend.ViewHolderHeader_Session;
 import com.pocketleague.manager.backend.ViewHolder_Session;
 import com.pocketleague.manager.db.OrmLiteFragment;
 import com.pocketleague.manager.db.Session;
-import com.pocketleague.manager.enums.SessionType;
 
 public class View_Sessions extends OrmLiteFragment {
 	private static final String LOGTAG = "View_Sessions";
@@ -108,14 +107,11 @@ public class View_Sessions extends OrmLiteFragment {
 		try {
 			sessionDao = getHelper().getSessionDao();
 			for (Session s : sessionDao) {
-				String isTeam = "Singles";
-				if (s.getIsTeam()) {
-					isTeam = "Doubles";
-				}
+				String is_team = "Singles";
 
 				addSession(s.getIsActive(), String.valueOf(s.getId()),
-						s.getSessionName(),
-						SessionType.typeString[s.getSessionType()], isTeam);
+						s.getSessionName(), s.getSessionType().toString(),
+						is_team);
 			}
 		} catch (SQLException e) {
 			Toast.makeText(context, e.getMessage(), Toast.LENGTH_LONG).show();

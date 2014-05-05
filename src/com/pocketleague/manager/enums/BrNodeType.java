@@ -8,16 +8,16 @@ public enum BrNodeType {
 	BYE("Bye", -4),
 	UNSET("Unset", -5),
 	RESPAWN("Respawn", -6),
-	NA("N/A", -7),
-
-	UPPER("Upper)", 1000),
-	LOWER("Lower", 2000),
-	U2L("Upper to Lower difference", 1000),
-	L2U("Lower to Upper difference", -1000),
-	MOD("Modulus", 1000);
+	NA("N/A", -7);
 
 	private String node_label;
 	private int node_value;
+
+	public static final int UPPER = 1000;
+	public static final int LOWER = 2000;
+	public static final int U2L = 1000;
+	public static final int L2U = -1000;
+	public static final int MOD = 1000;
 
 	private BrNodeType(String label, int value) {
 		node_label = label;

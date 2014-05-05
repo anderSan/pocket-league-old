@@ -44,7 +44,6 @@ public class NewVenue extends MenuContainerActivity {
 				v = vDao.queryForId(vId);
 				createButton.setText("Modify");
 				name.setText(v.getName());
-				sfTop.setChecked(v.scoreKeptFromTop);
 				isActiveCB.setVisibility(View.VISIBLE);
 				isActiveCB.setChecked(v.getIsActive());
 			} catch (SQLException e) {
@@ -57,18 +56,17 @@ public class NewVenue extends MenuContainerActivity {
 	public void createNewVenue(View view) {
 		Context context = getApplicationContext();
 		Venue venue = null;
-		String venueName = null;
+		String venue_name = null;
 		boolean scoreKeptFromTop;
 
 		String s;
 		s = name.getText().toString().trim().toLowerCase(Locale.US);
 		if (!s.isEmpty()) {
-			venueName = new String(s);
+			venue_name = new String(s);
 		}
 
 		if (vId != -1) {
-			v.setName(venueName);
-			v.setScoreFromTop(sfTop.isChecked());
+			v.setName(venue_name);
 			v.setIsActive(isActiveCB.isChecked());
 			try {
 				vDao.update(v);
@@ -82,7 +80,7 @@ public class NewVenue extends MenuContainerActivity {
 						Toast.LENGTH_SHORT).show();
 			}
 		} else {
-			venue = new Venue(venueName, sfTop.isChecked());
+			venue = new Venue(venue_name);
 
 			try {
 				Dao<Venue, Long> dao = getHelper().getVenueDao();

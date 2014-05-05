@@ -11,43 +11,29 @@ import com.j256.ormlite.table.DatabaseTable;
 
 @DatabaseTable
 public class Team {
-	public static final String TEAM_NAME = "teamName";
-	public static final String FIRST_PLAYER = "firstPlayer_id";
-	public static final String SECOND_PLAYER = "secondPlayer_id";
+	public static final String TEAM_NAME = "name";
 
 	@DatabaseField(generatedId = true)
 	private long id;
 
 	@DatabaseField(canBeNull = false)
-	private String teamName;
-
-	@DatabaseField(canBeNull = false, uniqueCombo = true, foreign = true)
-	private Player firstPlayer;
-
-	@DatabaseField(canBeNull = false, uniqueCombo = true, foreign = true)
-	private Player secondPlayer;
+	private String name;
 
 	@DatabaseField(dataType = DataType.BYTE_ARRAY)
-	byte[] imageBytes;
+	byte[] image_bytes;
 
 	@DatabaseField
-	private boolean isActive = true;
+	private boolean is_active = true;
+
+	@DatabaseField
+	private boolean is_favorite = false;
 
 	Team() {
 	}
 
-	public Team(String teamName, Player firstPlayer, Player secondPlayer) {
+	public Team(String team_name) {
 		super();
-		this.teamName = teamName;
-		this.firstPlayer = firstPlayer;
-		this.secondPlayer = secondPlayer;
-	}
-
-	public Team(String teamName, Player[] players) {
-		super();
-		this.teamName = teamName;
-		this.firstPlayer = players[0];
-		this.secondPlayer = players[1];
+		this.name = team_name;
 	}
 
 	// public static Dao<Team, Long> getDao(Context context) throws
@@ -75,7 +61,7 @@ public class Team {
 	}
 
 	public boolean exists(Context context) throws SQLException {
-		return exists(teamName, context);
+		return exists(name, context);
 	}
 
 	// public static List<Team> getAll(Context context) throws SQLException{
@@ -92,35 +78,26 @@ public class Team {
 	}
 
 	public String getTeamName() {
-		return teamName;
+		return name;
 	}
 
 	public void setTeamName(String teamName) {
-		this.teamName = teamName;
-	}
-
-	public Player getFirstPlayer() {
-		return firstPlayer;
-	}
-
-	public Player getSecondPlayer() {
-		return secondPlayer;
+		this.name = teamName;
 	}
 
 	public byte[] getImageBytes() {
-		return imageBytes;
+		return image_bytes;
 	}
 
-	public void setImageBytes(byte[] imageBytes) {
-		this.imageBytes = imageBytes;
+	public void setImageBytes(byte[] image_bytes) {
+		this.image_bytes = image_bytes;
 	}
 
 	public boolean getIsActive() {
-		return isActive;
+		return is_active;
 	}
 
-	public void setIsActive(boolean isActive) {
-		this.isActive = isActive;
+	public void setIsActive(boolean is_active) {
+		this.is_active = is_active;
 	}
-
 }

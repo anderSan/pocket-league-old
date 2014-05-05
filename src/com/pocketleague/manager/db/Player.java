@@ -15,34 +15,34 @@ import com.j256.ormlite.table.DatabaseTable;
 
 @DatabaseTable
 public class Player implements Comparable<Player> {
-	public static final String FIRST_NAME = "firstName";
-	public static final String LAST_NAME = "lastName";
-	public static final String NICK_NAME = "nickName";
-	public static final String IS_ACTIVE = "isActive";
+	public static final String FIRST_NAME = "first_name";
+	public static final String LAST_NAME = "last_name";
+	public static final String NICK_NAME = "nickname";
+	public static final String IS_ACTIVE = "is_active";
 
 	@DatabaseField(generatedId = true)
 	private long id;
 
 	@DatabaseField(columnName = FIRST_NAME, canBeNull = false, uniqueCombo = true)
-	private String firstName;
+	private String first_name;
 
 	@DatabaseField(columnName = LAST_NAME, canBeNull = false, uniqueCombo = true)
-	private String lastName;
+	private String last_name;
 
 	@DatabaseField(columnName = NICK_NAME, canBeNull = false, uniqueCombo = true)
-	private String nickName;
+	private String nickname;
 
 	@DatabaseField
-	public boolean throwsRightHanded;
+	public boolean is_right_handed;
 
 	@DatabaseField
-	public boolean throwsLeftHanded;
+	public boolean is_left_handed;
 
 	@DatabaseField
-	public boolean prefersRightSide;
+	public boolean is_right_footed;
 
 	@DatabaseField
-	public boolean prefersLeftSide;
+	public boolean is_left_footed;
 
 	@DatabaseField
 	private int height_cm;
@@ -51,32 +51,35 @@ public class Player implements Comparable<Player> {
 	private int weight_kg;
 
 	@DatabaseField(dataType = DataType.BYTE_ARRAY)
-	byte[] imageBytes;
+	byte[] image_bytes;
 
 	@DatabaseField
 	public int color;
 
 	@DatabaseField
-	private boolean isActive = true;
+	private boolean is_active = true;
+
+	@DatabaseField
+	private boolean is_favorite = false;
 
 	Player() {
 	}
 
-	public Player(String firstName, String lastName, String nickName,
-			boolean throwsRightHanded, boolean throwsLeftHanded,
-			boolean prefersRightSide, boolean prefersLeftSide, int height_cm,
-			int weight_kg, byte[] imageBytes, int color) {
+	public Player(String first_name, String last_name, String nickname,
+			boolean is_right_handed, boolean is_left_handed,
+			boolean is_right_footed, boolean is_left_footed, int height_cm,
+			int weight_kg, byte[] image_bytes, int color) {
 		super();
-		this.firstName = firstName;
-		this.lastName = lastName;
-		this.nickName = nickName;
-		this.throwsRightHanded = throwsRightHanded;
-		this.throwsLeftHanded = throwsLeftHanded;
-		this.prefersRightSide = prefersRightSide;
-		this.prefersLeftSide = prefersLeftSide;
+		this.first_name = first_name;
+		this.last_name = last_name;
+		this.nickname = nickname;
+		this.is_right_handed = is_right_handed;
+		this.is_left_handed = is_left_handed;
+		this.is_right_footed = is_right_footed;
+		this.is_left_footed = is_left_footed;
 		this.height_cm = height_cm;
 		this.weight_kg = weight_kg;
-		this.imageBytes = imageBytes;
+		this.image_bytes = image_bytes;
 		this.color = color;
 	}
 
@@ -130,7 +133,7 @@ public class Player implements Comparable<Player> {
 	}
 
 	public boolean exists(Context context) throws SQLException {
-		return exists(firstName, lastName, nickName, context);
+		return exists(first_name, last_name, nickname, context);
 	}
 
 	public static List<Player> getAll(Context context) throws SQLException {
@@ -160,63 +163,31 @@ public class Player implements Comparable<Player> {
 	}
 
 	public String getDisplayName() {
-		return firstName + " \"" + nickName + "\" " + lastName;
+		return first_name + " \"" + nickname + "\" " + last_name;
 	}
 
 	public String getFirstName() {
-		return firstName;
+		return first_name;
 	}
 
 	public void setFirstName(String firstName) {
-		this.firstName = firstName;
+		this.first_name = firstName;
 	}
 
 	public String getLastName() {
-		return lastName;
+		return last_name;
 	}
 
 	public void setLastName(String lastName) {
-		this.lastName = lastName;
+		this.last_name = lastName;
 	}
 
 	public String getNickName() {
-		return nickName;
+		return nickname;
 	}
 
 	public void setNickName(String nickName) {
-		this.nickName = nickName;
-	}
-
-	public boolean getRightHanded() {
-		return throwsRightHanded;
-	}
-
-	public void setRightHanded(boolean rightHanded) {
-		this.throwsRightHanded = rightHanded;
-	}
-
-	public boolean getLeftHanded() {
-		return throwsLeftHanded;
-	}
-
-	public void setLeftHanded(boolean leftHanded) {
-		this.throwsLeftHanded = leftHanded;
-	}
-
-	public boolean getPrefersRightSide() {
-		return prefersRightSide;
-	}
-
-	public void setPrefersRightSide(boolean prefersRightSide) {
-		this.prefersRightSide = prefersRightSide;
-	}
-
-	public boolean getPrefersLeftSide() {
-		return prefersLeftSide;
-	}
-
-	public void setPrefersLeftSide(boolean prefersLeftSide) {
-		this.prefersLeftSide = prefersLeftSide;
+		this.nickname = nickName;
 	}
 
 	public int getHeight_cm() {
@@ -236,11 +207,11 @@ public class Player implements Comparable<Player> {
 	}
 
 	public byte[] getImageBytes() {
-		return imageBytes;
+		return image_bytes;
 	}
 
-	public void setImageBytes(byte[] imageBytes) {
-		this.imageBytes = imageBytes;
+	public void setImageBytes(byte[] image_bytes) {
+		this.image_bytes = image_bytes;
 	}
 
 	public int getColor() {
@@ -252,11 +223,11 @@ public class Player implements Comparable<Player> {
 	}
 
 	public boolean getIsActive() {
-		return isActive;
+		return is_active;
 	}
 
-	public void setIsActive(boolean isActive) {
-		this.isActive = isActive;
+	public void setIsActive(boolean is_active) {
+		this.is_active = is_active;
 	}
 
 	public int compareTo(Player another) {

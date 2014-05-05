@@ -69,13 +69,6 @@ public class Detail_Venue extends MenuContainerActivity {
 		TextView vId = (TextView) findViewById(R.id.vDet_id);
 		vId.setText(String.valueOf(v.getId()));
 
-		TextView pFromTop = (TextView) findViewById(R.id.vDet_fromTop);
-		if (v.scoreKeptFromTop) {
-			pFromTop.setText("Scored from top");
-		} else {
-			pFromTop.setText("Scored from bottom");
-		}
-
 		TextView vIsActive = (TextView) findViewById(R.id.vDet_isActive);
 		if (v.getIsActive()) {
 			vIsActive.setText("This venue is active.");
