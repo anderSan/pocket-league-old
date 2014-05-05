@@ -35,11 +35,11 @@ import com.dropbox.sync.android.DbxFileSystem;
 import com.dropbox.sync.android.DbxPath;
 import com.j256.ormlite.dao.Dao;
 import com.pocketleague.manager.db.DatabaseHelper;
+import com.pocketleague.manager.db.DbxInfo;
 import com.pocketleague.manager.db.OrmLiteFragment;
 import com.pocketleague.manager.db.Player;
 import com.pocketleague.manager.db.Session;
 import com.pocketleague.manager.db.Venue;
-import com.pocketleague.manager.enums.DbxInfo;
 
 public class DbSettings extends OrmLiteFragment {
 
