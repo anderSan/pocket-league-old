@@ -25,7 +25,7 @@ import com.pocketleague.manager.backend.ListAdapter_Player;
 import com.pocketleague.manager.backend.ViewHolderHeader_Player;
 import com.pocketleague.manager.backend.ViewHolder_Player;
 import com.pocketleague.manager.db.OrmLiteFragment;
-import com.pocketleague.manager.db.Player;
+import com.pocketleague.manager.db.tables.Player;
 
 public class View_Players extends OrmLiteFragment {
 	private static final String LOGTAG = "View_Players";
@@ -107,8 +107,8 @@ public class View_Players extends OrmLiteFragment {
 		try {
 			playerDao = getHelper().getPlayerDao();
 			for (Player p : playerDao) {
-				addPlayer(p.getIsActive(), String.valueOf(p.getId()), p.color,
-						p.getFirstName() + " " + p.getLastName(),
+				addPlayer(p.getIsActive(), String.valueOf(p.getId()),
+						p.getColor(), p.getFirstName() + " " + p.getLastName(),
 						"(" + p.getNickName() + ")");
 			}
 		} catch (SQLException e) {

@@ -23,7 +23,7 @@ import com.pocketleague.manager.backend.ListAdapter_Team;
 import com.pocketleague.manager.backend.ViewHolderHeader_Team;
 import com.pocketleague.manager.backend.ViewHolder_Team;
 import com.pocketleague.manager.db.OrmLiteFragment;
-import com.pocketleague.manager.db.Player;
+import com.pocketleague.manager.db.tables.Player;
 
 public class View_Teams extends OrmLiteFragment {
 	private static final String LOGTAG = "View_Teams";

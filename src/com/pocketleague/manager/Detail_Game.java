@@ -15,10 +15,10 @@ import android.widget.Toast;
 
 import com.j256.ormlite.dao.Dao;
 import com.pocketleague.manager.backend.MenuContainerActivity;
-import com.pocketleague.manager.db.Game;
-import com.pocketleague.manager.db.Player;
-import com.pocketleague.manager.db.Session;
-import com.pocketleague.manager.db.Venue;
+import com.pocketleague.manager.db.tables.Game;
+import com.pocketleague.manager.db.tables.Player;
+import com.pocketleague.manager.db.tables.Session;
+import com.pocketleague.manager.db.tables.Venue;
 
 public class Detail_Game extends MenuContainerActivity {
 	Long gId;

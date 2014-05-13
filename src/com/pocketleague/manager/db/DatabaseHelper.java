@@ -13,6 +13,14 @@ import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.support.ConnectionSource;
 import com.j256.ormlite.table.TableUtils;
 import com.pocketleague.manager.R;
+import com.pocketleague.manager.db.tables.Game;
+import com.pocketleague.manager.db.tables.GameMember;
+import com.pocketleague.manager.db.tables.Player;
+import com.pocketleague.manager.db.tables.Session;
+import com.pocketleague.manager.db.tables.SessionMember;
+import com.pocketleague.manager.db.tables.Team;
+import com.pocketleague.manager.db.tables.TeamMember;
+import com.pocketleague.manager.db.tables.Venue;
 
 public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
 
@@ -22,11 +30,11 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
 	private Dao<Game, Long> gameDao;
 	private Dao<GameMember, Long> gameMemberDao;
 	private Dao<Player, Long> playerDao;
-	private Dao<PlayerBadge, Long> playerBadgeDao;
+	// private Dao<PlayerBadge, Long> playerBadgeDao;
 	private Dao<Session, Long> sessionDao;
 	private Dao<SessionMember, Long> sessionMemberDao;
 	private Dao<Team, Long> teamDao;
-	private Dao<TeamBadge, Long> teamBadgeDao;
+	// private Dao<TeamBadge, Long> teamBadgeDao;
 	private Dao<TeamMember, Long> teamMemberDao;
 	private Dao<Venue, Long> venueDao;
 
@@ -40,11 +48,11 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
 		tableClasses.add(Game.class);
 		tableClasses.add(GameMember.class);
 		tableClasses.add(Player.class);
-		tableClasses.add(PlayerBadge.class);
+		// tableClasses.add(PlayerBadge.class);
 		tableClasses.add(Session.class);
 		tableClasses.add(SessionMember.class);
 		tableClasses.add(Team.class);
-		tableClasses.add(TeamBadge.class);
+		// tableClasses.add(TeamBadge.class);
 		tableClasses.add(TeamMember.class);
 		tableClasses.add(Venue.class);
 
@@ -181,12 +189,12 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
 		return playerDao;
 	}
 
-	public Dao<PlayerBadge, Long> getPlayerBadgeDao() throws SQLException {
-		if (playerBadgeDao == null) {
-			playerBadgeDao = getDao(PlayerBadge.class);
-		}
-		return playerBadgeDao;
-	}
+	// public Dao<PlayerBadge, Long> getPlayerBadgeDao() throws SQLException {
+	// if (playerBadgeDao == null) {
+	// playerBadgeDao = getDao(PlayerBadge.class);
+	// }
+	// return playerBadgeDao;
+	// }
 
 	public Dao<Session, Long> getSessionDao() throws SQLException {
 		if (sessionDao == null) {
@@ -209,12 +217,12 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
 		return teamDao;
 	}
 
-	public Dao<TeamBadge, Long> getTeamBadgeDao() throws SQLException {
-		if (teamBadgeDao == null) {
-			teamBadgeDao = getDao(TeamBadge.class);
-		}
-		return teamBadgeDao;
-	}
+	// public Dao<TeamBadge, Long> getTeamBadgeDao() throws SQLException {
+	// if (teamBadgeDao == null) {
+	// teamBadgeDao = getDao(TeamBadge.class);
+	// }
+	// return teamBadgeDao;
+	// }
 
 	public Dao<TeamMember, Long> getTeamMemberDao() throws SQLException {
 		if (teamMemberDao == null) {

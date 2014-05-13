@@ -18,8 +18,8 @@ import android.view.View.OnClickListener;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.pocketleague.manager.db.Game;
-import com.pocketleague.manager.db.SessionMember;
+import com.pocketleague.manager.db.tables.Game;
+import com.pocketleague.manager.db.tables.SessionMember;
 import com.pocketleague.manager.enums.BrDrawable;
 import com.pocketleague.manager.enums.BrNodeType;
 
@@ -56,7 +56,7 @@ public class Bracket {
 		for (SessionMember sm : sMembers) {
 			seed = sm.getSeed();
 			if (seed >= 0 && !smSeedMap.containsKey(seed)) {
-				smIdMap.put(sm.getPlayer().getId(), seed);
+				smIdMap.put(sm.getTeam().getId(), seed);
 				smSeedMap.put(seed, sm);
 			}
 		}
@@ -339,9 +339,9 @@ public class Bracket {
 			if (smType == BrNodeType.TIP) {
 				sm = smSeedMap.get(sm1Idcs.get(idx));
 				tv.setText("(" + String.valueOf(sm.getSeed() + 1) + ") "
-						+ sm.getPlayer().getNickName());
+						+ sm.getTeam().getTeamName());
 				drwStr += "_labeled";
-				drwColor = sm.getPlayer().getColor();
+				drwColor = sm.getTeam().getColor();
 			} else if (smType == BrNodeType.RESPAWN) {
 				tv.setText("(" + (char) (sm1Idcs.get(idx) + 65) + ") ");
 				drwStr += "_labeled";
@@ -356,9 +356,9 @@ public class Bracket {
 			if (smType == BrNodeType.TIP) {
 				sm = smSeedMap.get(sm2Idcs.get(idx));
 				tv.setText("(" + String.valueOf(sm.getSeed() + 1) + ") "
-						+ sm.getPlayer().getNickName());
+						+ sm.getTeam().getTeamName());
 				drwStr += "_labeled";
-				drwColor = sm.getPlayer().getColor();
+				drwColor = sm.getTeam().getColor();
 			} else if (smType == BrNodeType.RESPAWN) {
 				tv.setText("(" + (char) (sm2Idcs.get(idx) + 65) + ") ");
 				drwStr += "_labeled";
@@ -430,7 +430,7 @@ public class Bracket {
 			isLabeled = tv.getText() != "";
 
 			if (smType != BrNodeType.UNSET && smType != BrNodeType.RESPAWN) {
-				drwColor = smSeedMap.get(sm1Idcs.get(idx)).getPlayer().color;
+				drwColor = smSeedMap.get(sm1Idcs.get(idx)).getTeam().getColor();
 			}
 			if (smType == BrNodeType.LOSS) {
 				drwString += "_eliminated";
@@ -439,7 +439,7 @@ public class Bracket {
 				if (sm1Types.get(idx) != BrNodeType.RESPAWN) {
 					SessionMember sm = smSeedMap.get(sm1Idcs.get(idx));
 					String nickname = "(" + String.valueOf(sm.getSeed() + 1)
-							+ ") " + sm.getPlayer().getNickName();
+							+ ") " + sm.getTeam().getTeamName();
 					tv.setText(nickname);
 				}
 				drwString += "_labeled";
@@ -465,7 +465,8 @@ public class Bracket {
 				isLabeled = tv.getText() != "";
 
 				if (smType != BrNodeType.UNSET && smType != BrNodeType.RESPAWN) {
-					drwColor = smSeedMap.get(sm2Idcs.get(idx)).getPlayer().color;
+					drwColor = smSeedMap.get(sm2Idcs.get(idx)).getTeam()
+							.getColor();
 				}
 				if (smType == BrNodeType.LOSS) {
 					drwString += "_eliminated";
@@ -475,7 +476,7 @@ public class Bracket {
 						SessionMember sm = smSeedMap.get(sm2Idcs.get(idx));
 						String nickname = "("
 								+ String.valueOf(sm.getSeed() + 1) + ") "
-								+ sm.getPlayer().getNickName();
+								+ sm.getTeam().getTeamName();
 						tv.setText(nickname);
 					}
 					drwString += "_labeled";
@@ -926,12 +927,12 @@ public class Bracket {
 
 			if (sm1Type == BrNodeType.TIP || sm1Type == BrNodeType.WIN
 					|| sm1Type == BrNodeType.LOSS) {
-				p1Id = smSeedMap.get(sm1Idcs.get(idx)).getPlayer().getId();
+				p1Id = smSeedMap.get(sm1Idcs.get(idx)).getTeam().getId();
 			}
 
 			if (sm2Type == BrNodeType.TIP || sm2Type == BrNodeType.WIN
 					|| sm2Type == BrNodeType.LOSS) {
-				p2Id = smSeedMap.get(sm2Idcs.get(idx)).getPlayer().getId();
+				p2Id = smSeedMap.get(sm2Idcs.get(idx)).getTeam().getId();
 			}
 
 			if (sm1Type == BrNodeType.TIP && sm2Type == BrNodeType.TIP) {
@@ -949,8 +950,8 @@ public class Bracket {
 			if (sm1Type == BrNodeType.UNSET || sm1Type == BrNodeType.RESPAWN) {
 				marquee += "Unknown";
 			} else {
-				marquee += smSeedMap.get(sm1Idcs.get(idx)).getPlayer()
-						.getNickName();
+				marquee += smSeedMap.get(sm1Idcs.get(idx)).getTeam()
+						.getTeamName();
 				if (sm1Type == BrNodeType.WIN) {
 					marquee += " (W)";
 				} else if (sm1Type == BrNodeType.LOSS) {
@@ -965,8 +966,8 @@ public class Bracket {
 				marquee += ", bracket winner.";
 			} else {
 				marquee += " -vs- "
-						+ smSeedMap.get(sm2Idcs.get(idx)).getPlayer()
-								.getNickName();
+						+ smSeedMap.get(sm2Idcs.get(idx)).getTeam()
+								.getTeamName();
 				if (sm2Type == BrNodeType.WIN) {
 					marquee += " (W)";
 				} else if (sm2Type == BrNodeType.LOSS) {

@@ -30,10 +30,10 @@ import com.pocketleague.manager.backend.ListAdapter_Game;
 import com.pocketleague.manager.backend.NavigationInterface;
 import com.pocketleague.manager.backend.ViewHolderHeader_Game;
 import com.pocketleague.manager.backend.ViewHolder_Game;
-import com.pocketleague.manager.db.Game;
 import com.pocketleague.manager.db.OrmLiteFragment;
-import com.pocketleague.manager.db.Player;
-import com.pocketleague.manager.db.Session;
+import com.pocketleague.manager.db.tables.Game;
+import com.pocketleague.manager.db.tables.Player;
+import com.pocketleague.manager.db.tables.Session;
 import com.pocketleague.manager.enums.SessionType;
 
 public class View_Games extends OrmLiteFragment {
@@ -147,8 +147,8 @@ public class View_Games extends OrmLiteFragment {
 			Dao<Player, Long> playerDao = Player.getDao(context);
 
 			for (Session sess : sessionDao) {
-				if (sess.session_type != SessionType.SNGL_ELIM
-						&& sess.session_type != SessionType.DBL_ELIM) {
+				if (sess.getSessionType() != SessionType.SNGL_ELIM
+						&& sess.getSessionType() != SessionType.DBL_ELIM) {
 					addSession(sess.getSessionName());
 				}
 			}
@@ -172,8 +172,8 @@ public class View_Games extends OrmLiteFragment {
 				sessionDao.refresh(g.getSession());
 				s = g.getSession();
 
-				if (s.session_type != SessionType.SNGL_ELIM
-						&& s.session_type != SessionType.DBL_ELIM) {
+				if (s.getSessionType() != SessionType.SNGL_ELIM
+						&& s.getSessionType() != SessionType.DBL_ELIM) {
 					// p[0] = playerDao.queryForId(g.getFirstPlayer().getId());
 					// p[1] = playerDao.queryForId(g.getSecondPlayer().getId());
 

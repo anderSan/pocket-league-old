@@ -14,10 +14,10 @@ import android.widget.Toast;
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.stmt.QueryBuilder;
 import com.pocketleague.manager.backend.Bracket.MatchInfo;
-import com.pocketleague.manager.db.Game;
-import com.pocketleague.manager.db.Player;
-import com.pocketleague.manager.db.Session;
-import com.pocketleague.manager.db.SessionMember;
+import com.pocketleague.manager.db.tables.Game;
+import com.pocketleague.manager.db.tables.Session;
+import com.pocketleague.manager.db.tables.SessionMember;
+import com.pocketleague.manager.db.tables.Team;
 import com.pocketleague.manager.enums.BrNodeType;
 
 public class BracketHolder implements View.OnClickListener {
@@ -33,7 +33,7 @@ public class BracketHolder implements View.OnClickListener {
 
 	Dao<Session, Long> sDao;
 	Dao<SessionMember, Long> smDao;
-	Dao<Player, Long> pDao;
+	Dao<Team, Long> tDao;
 	Dao<Game, Long> gDao;
 
 	public BracketHolder(ScrollView sv, Session s, Boolean isDoubleElim) {
@@ -45,17 +45,17 @@ public class BracketHolder implements View.OnClickListener {
 		try {
 			sDao = Session.getDao(context);
 			smDao = SessionMember.getDao(context);
-			pDao = Player.getDao(context);
+			tDao = Team.getDao(context);
 			gDao = Game.getDao(context);
 
 			// get all the session members
 			QueryBuilder<Session, Long> sQue = sDao.queryBuilder();
 			sQue.where().eq("id", s.getId());
 			QueryBuilder<SessionMember, Long> smQue = smDao.queryBuilder();
-			sMembers = smQue.join(sQue)
-					.orderBy(SessionMember.PLAYER_SEED, true).query();
+			sMembers = smQue.join(sQue).orderBy(SessionMember.TEAM_SEED, true)
+					.query();
 			for (SessionMember member : sMembers) {
-				pDao.refresh(member.getPlayer());
+				tDao.refresh(member.getTeam());
 			}
 		} catch (SQLException e) {
 			Toast.makeText(context, e.getMessage(), Toast.LENGTH_LONG).show();
@@ -121,8 +121,8 @@ public class BracketHolder implements View.OnClickListener {
 		// expand the list size to the next power of two
 		Integer n = Bracket.factorTwos(sMembers.size());
 
-		SessionMember dummy_sMember = new SessionMember(
-				BrNodeType.BYE.value(), -1000);
+		SessionMember dummy_sMember = new SessionMember(BrNodeType.BYE.value(),
+				-1000);
 
 		while (sMembers.size() < Math.pow(2, n)) {
 			sMembers.add(dummy_sMember);

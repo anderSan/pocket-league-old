@@ -26,7 +26,7 @@ import com.pocketleague.manager.backend.ListAdapter_Venue;
 import com.pocketleague.manager.backend.ViewHolderHeader_Venue;
 import com.pocketleague.manager.backend.ViewHolder_Venue;
 import com.pocketleague.manager.db.OrmLiteFragment;
-import com.pocketleague.manager.db.Venue;
+import com.pocketleague.manager.db.tables.Venue;
 
 public class View_Venues extends OrmLiteFragment {
 	private static final String LOGTAG = "View_Venues";
