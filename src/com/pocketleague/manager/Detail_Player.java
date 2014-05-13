@@ -11,7 +11,7 @@ import android.widget.Toast;
 
 import com.j256.ormlite.dao.Dao;
 import com.pocketleague.manager.backend.MenuContainerActivity;
-import com.pocketleague.manager.db.Player;
+import com.pocketleague.manager.db.tables.Player;
 
 public class Detail_Player extends MenuContainerActivity {
 	Long pId;
@@ -85,8 +85,8 @@ public class Detail_Player extends MenuContainerActivity {
 		pWinRatio.setText("Win Ratio here eventually...");
 
 		TextView pHanded = (TextView) findViewById(R.id.pDet_handed);
-		if (p.is_left_handed) {
-			if (p.is_right_handed) {
+		if (p.getIsLeftHanded()) {
+			if (p.getIsRightHanded()) {
 				pHanded.setText("L + R");
 			} else {
 				pHanded.setText("L");

@@ -17,20 +17,20 @@
         <item >Break</item>
     </string-array>
     <string-array name="menuItems">
-        <item >Games</item>
+        <item >Sessions</item>
+        <item >Game</item>
         <item >Players</item>
         <item >Teams</item>
-        <item >Sessions</item>
         <item >Venues</item>
         <item >Preferences</item>
         <item >Database</item>
         <item >About</item>
     </string-array>
     <string-array name="menuIcons">
+        <item >@drawable/ic_session</item>
         <item >@drawable/ic_action_edit</item>
         <item >@drawable/ic_player</item>
         <item >@drawable/ic_team</item>
-        <item >@drawable/ic_session</item>
         <item >@drawable/ic_venue</item>
         <item >@drawable/ic_action_settings</item>
         <item >@drawable/ic_database</item>

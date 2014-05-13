@@ -25,7 +25,7 @@ import com.pocketleague.manager.backend.ListAdapter_Session;
 import com.pocketleague.manager.backend.ViewHolderHeader_Session;
 import com.pocketleague.manager.backend.ViewHolder_Session;
 import com.pocketleague.manager.db.OrmLiteFragment;
-import com.pocketleague.manager.db.Session;
+import com.pocketleague.manager.db.tables.Session;
 
 public class View_Sessions extends OrmLiteFragment {
 	private static final String LOGTAG = "View_Sessions";

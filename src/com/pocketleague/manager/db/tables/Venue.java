@@ -1,4 +1,4 @@
-package com.pocketleague.manager.db;
+package com.pocketleague.manager.db.tables;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -9,23 +9,28 @@ import android.content.Context;
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
+import com.pocketleague.manager.db.DatabaseHelper;
 
 @DatabaseTable
 public class Venue {
-	public static final String VENUE_NAME = "name";
+	public static final String NAME = "name";
+	public static final String LATITUDE = "latitude";
+	public static final String LONGITUDE = "longitude";
+	public static final String ZIP_CODE = "zip_code";
 	public static final String IS_ACTIVE = "is_active";
+	public static final String IS_FAVORITE = "is_favorite";
 
 	@DatabaseField(generatedId = true)
 	private long id;
 
-	@DatabaseField(canBeNull = false, unique = true, columnName = VENUE_NAME)
+	@DatabaseField(canBeNull = false, unique = true)
 	private String name;
 
 	@DatabaseField
-	private long longitude;
+	private long latitude;
 
 	@DatabaseField
-	private long latitude;
+	private long longitude;
 
 	@DatabaseField
 	private long zipCode;

@@ -37,9 +37,9 @@ import com.j256.ormlite.dao.Dao;
 import com.pocketleague.manager.db.DatabaseHelper;
 import com.pocketleague.manager.db.DbxInfo;
 import com.pocketleague.manager.db.OrmLiteFragment;
-import com.pocketleague.manager.db.Player;
-import com.pocketleague.manager.db.Session;
-import com.pocketleague.manager.db.Venue;
+import com.pocketleague.manager.db.tables.Player;
+import com.pocketleague.manager.db.tables.Session;
+import com.pocketleague.manager.db.tables.Venue;
 
 public class DbSettings extends OrmLiteFragment {
 

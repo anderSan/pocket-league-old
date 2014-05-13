@@ -12,8 +12,8 @@ import android.widget.Toast;
 
 import com.j256.ormlite.dao.Dao;
 import com.pocketleague.manager.backend.MenuContainerActivity;
-import com.pocketleague.manager.db.Player;
-import com.pocketleague.manager.db.Team;
+import com.pocketleague.manager.db.tables.Player;
+import com.pocketleague.manager.db.tables.Team;
 
 public class Detail_Team extends MenuContainerActivity {
 	Long tId;

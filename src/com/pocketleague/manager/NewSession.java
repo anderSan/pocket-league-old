@@ -27,9 +27,9 @@ import android.widget.Toast;
 
 import com.j256.ormlite.dao.Dao;
 import com.pocketleague.manager.backend.MenuContainerActivity;
-import com.pocketleague.manager.db.Player;
-import com.pocketleague.manager.db.Session;
-import com.pocketleague.manager.db.SessionMember;
+import com.pocketleague.manager.db.tables.Player;
+import com.pocketleague.manager.db.tables.Session;
+import com.pocketleague.manager.db.tables.SessionMember;
 import com.pocketleague.manager.enums.SessionType;
 
 public class NewSession extends MenuContainerActivity {
@@ -331,7 +331,8 @@ public class NewSession extends MenuContainerActivity {
 
 			int ii = 0;
 			for (Player p : roster) {
-				sMembers.add(new SessionMember(session, p, ii));
+				// TODO: change players to teams
+				// sMembers.add(new SessionMember(session, p, ii));
 				ii++;
 			}
 			// }

@@ -1,21 +1,19 @@
-package com.pocketleague.manager.db;
+package com.pocketleague.manager.db.tables;
 
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
 
 import android.content.Context;
 
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
+import com.pocketleague.manager.db.DatabaseHelper;
 
 @DatabaseTable
 public class GameMember implements Comparable<GameMember> {
 	public static final String GAME = "game_id";
-	public static final String PLAYER = "player_id";
-	public static final String FACTION = "faction_id";
-	public static final String END_RANK = "end_ranking";
+	public static final String TEAM = "team_id";
+	public static final String SCORE = "score";
 
 	@DatabaseField(generatedId = true)
 	private long id;
@@ -24,38 +22,29 @@ public class GameMember implements Comparable<GameMember> {
 	private Game game;
 
 	@DatabaseField(canBeNull = false, uniqueCombo = true, foreign = true)
-	private Player player;
-
-	@DatabaseField()
-	private int faction_id;
+	private Team team;
 
 	@DatabaseField(canBeNull = false)
-	private int end_ranking;
+	private int score;
 
 	public GameMember() {
 	}
 
-	public GameMember(Game game, Player player, int faction_id) {
+	public GameMember(Game game, Team team) {
 		super();
 		this.game = game;
-		this.player = player;
-		this.faction_id = faction_id;
+		this.team = team;
 	}
 
-	public static Dao<GameMember, Long> getDao(Context context)
-			throws SQLException {
+	public static Dao<GameMember, Long> getDao(Context context) {
 		DatabaseHelper helper = new DatabaseHelper(context);
-		Dao<GameMember, Long> d = helper.getGameMemberDao();
-		return d;
-	}
-
-	public static List<GameMember> getAll(Context context) throws SQLException {
-		Dao<GameMember, Long> d = GameMember.getDao(context);
-		List<GameMember> gameMembers = new ArrayList<GameMember>();
-		for (GameMember s : d) {
-			gameMembers.add(s);
+		Dao<GameMember, Long> d = null;
+		try {
+			d = helper.getGameMemberDao();
+		} catch (SQLException e) {
+			throw new RuntimeException("Could not get game member dao: ", e);
 		}
-		return gameMembers;
+		return d;
 	}
 
 	public long getId() {
@@ -66,13 +55,13 @@ public class GameMember implements Comparable<GameMember> {
 		return game;
 	}
 
-	public Player getPlayer() {
-		return player;
+	public Team getTeam() {
+		return team;
 	}
 
-	public int get_faction() {
-		return faction_id;
-	}
+	// =========================================================================
+	// Additional methods
+	// =========================================================================
 
 	public int compareTo(GameMember another) {
 		if (id < another.id) {

@@ -11,7 +11,7 @@ import android.widget.Toast;
 
 import com.j256.ormlite.dao.Dao;
 import com.pocketleague.manager.backend.MenuContainerActivity;
-import com.pocketleague.manager.db.Venue;
+import com.pocketleague.manager.db.tables.Venue;
 
 public class Detail_Venue extends MenuContainerActivity {
 	Long vId;

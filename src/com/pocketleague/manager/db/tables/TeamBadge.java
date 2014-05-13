@@ -1,12 +1,5 @@
-package com.pocketleague.manager.db;
+package com.pocketleague.manager.db.tables;
 
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
-
-import android.content.Context;
-
-import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
@@ -41,21 +34,12 @@ public class TeamBadge {
 		this.badgeType = badgeType;
 	}
 
-	public static Dao<TeamBadge, Long> getDao(Context context)
-			throws SQLException {
-		DatabaseHelper helper = new DatabaseHelper(context);
-		Dao<TeamBadge, Long> d = helper.getTeamBadgeDao();
-		return d;
-	}
-
-	public static List<TeamBadge> getAll(Context context) throws SQLException {
-		Dao<TeamBadge, Long> d = TeamBadge.getDao(context);
-		List<TeamBadge> badges = new ArrayList<TeamBadge>();
-		for (TeamBadge b : d) {
-			badges.add(b);
-		}
-		return badges;
-	}
+	// public static Dao<TeamBadge, Long> getDao(Context context)
+	// throws SQLException {
+	// DatabaseHelper helper = new DatabaseHelper(context);
+	// Dao<TeamBadge, Long> d = helper.getTeamBadgeDao();
+	// return d;
+	// }
 
 	public long getId() {
 		return id;

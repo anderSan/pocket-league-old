@@ -19,7 +19,7 @@ import com.j256.ormlite.dao.Dao;
 import com.pocketleague.manager.backend.Bracket.MatchInfo;
 import com.pocketleague.manager.backend.BracketHolder;
 import com.pocketleague.manager.backend.MenuContainerActivity;
-import com.pocketleague.manager.db.Session;
+import com.pocketleague.manager.db.tables.Session;
 import com.pocketleague.manager.enums.SessionType;
 
 public class Detail_Session extends MenuContainerActivity {
@@ -50,9 +50,9 @@ public class Detail_Session extends MenuContainerActivity {
 			}
 		}
 
-		if (s.session_type == SessionType.SNGL_ELIM
-				|| s.session_type == SessionType.DBL_ELIM) {
-			boolean isDblElim = s.session_type == SessionType.DBL_ELIM;
+		if (s.getSessionType() == SessionType.SNGL_ELIM
+				|| s.getSessionType() == SessionType.DBL_ELIM) {
+			boolean isDblElim = s.getSessionType() == SessionType.DBL_ELIM;
 
 			setContentView(R.layout.activity_detail_session_singleelim);
 			ScrollView sv = (ScrollView) findViewById(R.id.scrollView1);

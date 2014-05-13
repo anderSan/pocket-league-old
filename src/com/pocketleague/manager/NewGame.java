@@ -2,7 +2,6 @@ package com.pocketleague.manager;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import android.content.Context;
@@ -19,10 +18,9 @@ import android.widget.Toast;
 
 import com.j256.ormlite.dao.Dao;
 import com.pocketleague.manager.backend.MenuContainerActivity;
-import com.pocketleague.manager.db.Game;
-import com.pocketleague.manager.db.Player;
-import com.pocketleague.manager.db.Session;
-import com.pocketleague.manager.db.Venue;
+import com.pocketleague.manager.db.tables.Player;
+import com.pocketleague.manager.db.tables.Session;
+import com.pocketleague.manager.db.tables.Venue;
 
 public class NewGame extends MenuContainerActivity {
 	Spinner spinner_p1;
@@ -45,13 +43,12 @@ public class NewGame extends MenuContainerActivity {
 	List<Player> players = new ArrayList<Player>();
 	List<Session> sessions = new ArrayList<Session>();
 	List<Venue> venues = new ArrayList<Venue>();
-	// List<RuleSet> ruleSets = new ArrayList<RuleSet>();
 
-	List<String> playerNames = new ArrayList<String>();
-	List<String> sessionNames = new ArrayList<String>();
-	List<String> venueNames = new ArrayList<String>();
-	List<String> ruleSetDescriptions = new ArrayList<String>();
-	List<Integer> ruleSetIds = new ArrayList<Integer>();
+	List<String> player_names = new ArrayList<String>();
+	List<String> session_names = new ArrayList<String>();
+	List<String> venue_names = new ArrayList<String>();
+	List<String> ruleset_descriptions = new ArrayList<String>();
+	List<Integer> ruleset_ids = new ArrayList<Integer>();
 
 	Dao<Player, Long> pDao;
 	Dao<Session, Long> sDao;
@@ -113,8 +110,8 @@ public class NewGame extends MenuContainerActivity {
 			} else {
 				spinner_ruleSet.setEnabled(false);
 				int selectedId = sessions.get(position).getRuleSetId();
-				spinner_ruleSet.setSelection(ruleSetIds.indexOf(selectedId));
-				ruleSet_pos = ruleSetIds.indexOf(selectedId);
+				spinner_ruleSet.setSelection(ruleset_ids.indexOf(selectedId));
+				ruleSet_pos = ruleset_ids.indexOf(selectedId);
 			}
 		}
 
@@ -174,21 +171,21 @@ public class NewGame extends MenuContainerActivity {
 			Log.e(PocketLeague.class.getName(), "Could not get objects", e);
 			Toast.makeText(context, e.getMessage(), Toast.LENGTH_LONG).show();
 		}
-		playerNames.clear();
-		sessionNames.clear();
-		venueNames.clear();
-		ruleSetDescriptions.clear();
-		ruleSetIds.clear();
+		player_names.clear();
+		session_names.clear();
+		venue_names.clear();
+		ruleset_descriptions.clear();
+		ruleset_ids.clear();
 
 		for (Player p : players) {
-			playerNames.add(p.getFirstName() + " " + p.getLastName());
+			player_names.add(p.getFirstName() + " " + p.getLastName());
 		}
 		for (Session s : sessions) {
-			sessionNames.add(String.valueOf(s.getId()) + " "
+			session_names.add(String.valueOf(s.getId()) + " "
 					+ s.getSessionName());
 		}
 		for (Venue v : venues) {
-			venueNames.add(String.valueOf(v.getId()) + " " + v.getName());
+			venue_names.add(String.valueOf(v.getId()) + " " + v.getName());
 		}
 		// for (RuleSet rs : RuleType.map.values()) {
 		// ruleSetDescriptions.add(rs.getDescription());
@@ -196,20 +193,20 @@ public class NewGame extends MenuContainerActivity {
 		// }
 
 		ArrayAdapter<String> pAdapter = new ArrayAdapter<String>(this,
-				android.R.layout.simple_spinner_dropdown_item, playerNames);
+				android.R.layout.simple_spinner_dropdown_item, player_names);
 		pAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
 		ArrayAdapter<String> sAdapter = new ArrayAdapter<String>(this,
-				android.R.layout.simple_spinner_dropdown_item, sessionNames);
+				android.R.layout.simple_spinner_dropdown_item, session_names);
 		sAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
 		ArrayAdapter<String> vAdapter = new ArrayAdapter<String>(this,
-				android.R.layout.simple_spinner_dropdown_item, venueNames);
+				android.R.layout.simple_spinner_dropdown_item, venue_names);
 		vAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
 		ArrayAdapter<String> rsAdapter = new ArrayAdapter<String>(this,
 				android.R.layout.simple_spinner_dropdown_item,
-				ruleSetDescriptions);
+				ruleset_descriptions);
 		rsAdapter
 				.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
@@ -235,25 +232,25 @@ public class NewGame extends MenuContainerActivity {
 		Player p1 = players.get(p1_pos);
 		Player p2 = players.get(p2_pos);
 
-		int ruleSetId = ruleSetIds.get(ruleSet_pos);
+		int ruleSetId = ruleset_ids.get(ruleSet_pos);
 
-		Game g = new Game(sessions.get(session_pos), venues.get(venue_pos),
-				ruleSetId, true);
-		long gid;
-		g.setDatePlayed(new Date());
+		// Game g = new Game(sessions.get(session_pos), venues.get(venue_pos),
+		// ruleSetId, true);
+		// long gid;
+		// g.setDatePlayed(new Date());
 
-		try {
-			Dao<Game, Long> d = Game.getDao(getApplicationContext());
-			d.createIfNotExists(g);
-			gid = g.getId();
-			// Intent intent = new Intent(this, GameInProgress.class);
-			// intent.putExtra("GID", gid);
-			// startActivity(intent);
-			// finish();
-
-		} catch (SQLException e) {
-			Toast.makeText(getApplicationContext(), e.getMessage(),
-					Toast.LENGTH_LONG).show();
-		}
+		// try {
+		// Dao<Game, Long> d = Game.getDao(getApplicationContext());
+		// d.createIfNotExists(g);
+		// gid = g.getId();
+		// // Intent intent = new Intent(this, GameInProgress.class);
+		// // intent.putExtra("GID", gid);
+		// // startActivity(intent);
+		// // finish();
+		//
+		// } catch (SQLException e) {
+		// Toast.makeText(getApplicationContext(), e.getMessage(),
+		// Toast.LENGTH_LONG).show();
+		// }
 	}
 }

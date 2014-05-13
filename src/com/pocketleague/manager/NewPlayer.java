@@ -18,7 +18,7 @@ import android.widget.Toast;
 
 import com.j256.ormlite.dao.Dao;
 import com.pocketleague.manager.backend.MenuContainerActivity;
-import com.pocketleague.manager.db.Player;
+import com.pocketleague.manager.db.tables.Player;
 
 public class NewPlayer extends MenuContainerActivity {
 	Long pId;
@@ -65,10 +65,10 @@ public class NewPlayer extends MenuContainerActivity {
 				nick.setText(p.getNickName());
 				weight.setText(String.valueOf(p.getWeight_kg()));
 				height.setText(String.valueOf(p.getHeight_cm()));
-				if (p.is_left_handed == true) {
+				if (p.getIsLeftHanded() == true) {
 					lh.setChecked(true);
 				}
-				if (p.is_right_handed == true) {
+				if (p.getIsRightHanded() == true) {
 					rh.setChecked(true);
 				}
 				playerColorBtn.setBackgroundColor(p.getColor());
@@ -131,8 +131,8 @@ public class NewPlayer extends MenuContainerActivity {
 			p.setNickName(nickname);
 			p.setWeight_kg(weight_kg);
 			p.setHeight_cm(height_cm);
-			p.is_left_handed = throwsLeftHanded;
-			p.is_right_handed = throwsRightHanded;
+			p.setIsLeftHanded(throwsLeftHanded);
+			p.setIsRightHanded(throwsRightHanded);
 			p.setColor(playerColor);
 			p.setIsActive(isActive);
 			try {
