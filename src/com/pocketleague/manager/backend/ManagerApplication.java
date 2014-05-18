@@ -2,7 +2,7 @@ package com.pocketleague.manager.backend;
 
 import android.app.Application;
 
-import com.pocketleague.manager.enums.GameType;
+import com.pocketleague.gametypes.GameType;
 
 public class ManagerApplication extends Application {
 
