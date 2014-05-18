@@ -1,4 +1,4 @@
-package com.pocketleague.manager;
+package com.pocketleague.manager.backend;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -8,7 +8,6 @@ import java.util.List;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -28,18 +27,17 @@ import android.widget.Toast;
 
 import com.j256.ormlite.dao.Dao;
 import com.pocketleague.gametypes.GameType;
-import com.pocketleague.manager.backend.ListAdapter_Game;
-import com.pocketleague.manager.backend.NavigationInterface;
-import com.pocketleague.manager.backend.ViewHolderHeader_Game;
-import com.pocketleague.manager.backend.ViewHolder_Game;
+import com.pocketleague.manager.Detail_Game;
+import com.pocketleague.manager.NewGame;
+import com.pocketleague.manager.R;
 import com.pocketleague.manager.db.OrmLiteFragment;
 import com.pocketleague.manager.db.tables.Game;
 import com.pocketleague.manager.db.tables.Player;
 import com.pocketleague.manager.db.tables.Session;
 import com.pocketleague.manager.enums.SessionType;
 
-public class View_GameTypes extends OrmLiteFragment {
-	private static final String LOGTAG = "View_GameTypes";
+public class SessionFragment_Open extends OrmLiteFragment {
+	private static final String LOGTAG = "View_Games";
 	NavigationInterface mNav;
 
 	private LinkedHashMap<String, ViewHolderHeader_Game> sHash = new LinkedHashMap<String, ViewHolderHeader_Game>();
@@ -49,8 +47,6 @@ public class View_GameTypes extends OrmLiteFragment {
 	private Switch viewAllGames;
 	private View rootView;
 	private Context context;
-
-	private SharedPreferences.Editor prefs_editor;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -99,15 +95,6 @@ public class View_GameTypes extends OrmLiteFragment {
 	public void onAttach(Activity activity) {
 		super.onAttach(activity);
 		context = getActivity();
-
-		SharedPreferences settings = this.getActivity().getSharedPreferences(
-				APP_PREFS, 0);
-		GameType currentGameType = GameType.valueOf(settings.getString(
-				"currentGameType", GameType.UNDEFINED.name()));
-
-		Toast.makeText(context, "Game type is " + currentGameType.name(),
-				Toast.LENGTH_SHORT).show();
-		prefs_editor = settings.edit();
 
 		try {
 			mNav = (NavigationInterface) activity;
@@ -224,17 +211,9 @@ public class View_GameTypes extends OrmLiteFragment {
 							+ String.valueOf(gameInfo.getId()),
 					Toast.LENGTH_SHORT).show();
 
-			prefs_editor
-					.putString("currentGameType", GameType.BILLIARDS.name());
-			prefs_editor.commit();
-
-			Toast.makeText(context,
-					"Game type is now " + GameType.BILLIARDS.name(),
-					Toast.LENGTH_SHORT).show();
-
 			// load the game in progress screen
-			// Long gId = Long.valueOf(gameInfo.getId());
-			// mNav.loadGame(gId);
+			Long gId = Long.valueOf(gameInfo.getId());
+			mNav.loadGame(gId);
 			return true;
 		}
 	};

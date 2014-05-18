@@ -92,7 +92,8 @@ public class PocketLeague extends MenuContainerActivity implements
 			items.add(new NavDrawerItem(mLabels[ii], mIcons.getResourceId(ii,
 					-1)));
 		}
-		items.add(5, new NavDrawerItem());
+		items.add(1, new NavDrawerItem());
+		items.add(6, new NavDrawerItem());
 		mIcons.recycle();
 		// items.get(0).counter = 3;
 		return items.toArray(new NavDrawerItem[0]);

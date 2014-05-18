@@ -7,6 +7,7 @@ import com.j256.ormlite.android.apptools.OpenHelperManager;
 
 public class OrmLiteFragment extends Fragment {
 	public static String LOGTAG = "OrmLiteFragment";
+	public static final String APP_PREFS = "PocketLeaguePreferences";
 
 	private DatabaseHelper databaseHelper = null;
 
