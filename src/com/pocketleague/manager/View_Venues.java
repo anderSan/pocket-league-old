@@ -113,7 +113,7 @@ public class View_Venues extends OrmLiteFragment {
 			}
 		} catch (SQLException e) {
 			Toast.makeText(context, e.getMessage(), Toast.LENGTH_LONG).show();
-			Log.e(View_Games.class.getName(), "Retrieval of venues failed", e);
+			Log.e(View_GameTypes.class.getName(), "Retrieval of venues failed", e);
 		}
 
 		expandAll();

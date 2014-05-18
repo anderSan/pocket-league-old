@@ -1,8 +1,68 @@
 #
-# generated on 2014/05/05 07:13:20
+# generated on 2014/05/18 06:39:03
 #
 # --table-start--
-dataClass=com.pocketleague.manager.db.Player
+dataClass=com.pocketleague.manager.db.tables.Game
+tableName=game
+# --table-fields-start--
+# --field-start--
+fieldName=id
+generatedId=true
+# --field-end--
+# --field-start--
+fieldName=session
+foreign=true
+# --field-end--
+# --field-start--
+fieldName=venue
+foreign=true
+# --field-end--
+# --field-start--
+fieldName=date_played
+canBeNull=false
+# --field-end--
+# --field-start--
+fieldName=is_complete
+# --field-end--
+# --field-start--
+fieldName=is_tracked
+# --field-end--
+# --field-start--
+fieldName=game_members
+foreignCollection=true
+# --field-end--
+# --table-fields-end--
+# --table-end--
+#################################
+# --table-start--
+dataClass=com.pocketleague.manager.db.tables.GameMember
+tableName=gamemember
+# --table-fields-start--
+# --field-start--
+fieldName=id
+generatedId=true
+# --field-end--
+# --field-start--
+fieldName=game
+canBeNull=false
+foreign=true
+uniqueCombo=true
+# --field-end--
+# --field-start--
+fieldName=team
+canBeNull=false
+foreign=true
+uniqueCombo=true
+# --field-end--
+# --field-start--
+fieldName=score
+canBeNull=false
+# --field-end--
+# --table-fields-end--
+# --table-end--
+#################################
+# --table-start--
+dataClass=com.pocketleague.manager.db.tables.Player
 tableName=player
 # --table-fields-start--
 # --field-start--
@@ -10,34 +70,27 @@ fieldName=id
 generatedId=true
 # --field-end--
 # --field-start--
-fieldName=first_name
-columnName=first_name
+fieldName=nickname
 canBeNull=false
-uniqueCombo=true
+unique=true
+# --field-end--
+# --field-start--
+fieldName=first_name
 # --field-end--
 # --field-start--
 fieldName=last_name
-columnName=last_name
-canBeNull=false
-uniqueCombo=true
-# --field-end--
-# --field-start--
-fieldName=nickname
-columnName=nickname
-canBeNull=false
-uniqueCombo=true
-# --field-end--
-# --field-start--
-fieldName=is_right_handed
 # --field-end--
 # --field-start--
 fieldName=is_left_handed
 # --field-end--
 # --field-start--
-fieldName=is_right_footed
+fieldName=is_right_handed
 # --field-end--
 # --field-start--
 fieldName=is_left_footed
+# --field-end--
+# --field-start--
+fieldName=is_right_footed
 # --field-end--
 # --field-start--
 fieldName=height_cm
@@ -62,125 +115,7 @@ fieldName=is_favorite
 # --table-end--
 #################################
 # --table-start--
-dataClass=com.pocketleague.manager.db.Team
-tableName=team
-# --table-fields-start--
-# --field-start--
-fieldName=id
-generatedId=true
-# --field-end--
-# --field-start--
-fieldName=name
-canBeNull=false
-# --field-end--
-# --field-start--
-fieldName=image_bytes
-dataPersister=BYTE_ARRAY
-# --field-end--
-# --field-start--
-fieldName=is_active
-# --field-end--
-# --field-start--
-fieldName=is_favorite
-# --field-end--
-# --table-fields-end--
-# --table-end--
-#################################
-# --table-start--
-dataClass=com.pocketleague.manager.db.Game
-tableName=game
-# --table-fields-start--
-# --field-start--
-fieldName=id
-generatedId=true
-# --field-end--
-# --field-start--
-fieldName=gametype
-canBeNull=false
-# --field-end--
-# --field-start--
-fieldName=ruleset_id
-canBeNull=false
-# --field-end--
-# --field-start--
-fieldName=session
-foreign=true
-# --field-end--
-# --field-start--
-fieldName=venue
-foreign=true
-# --field-end--
-# --field-start--
-fieldName=date_played
-canBeNull=false
-# --field-end--
-# --field-start--
-fieldName=is_complete
-# --field-end--
-# --field-start--
-fieldName=is_tracked
-# --field-end--
-# --table-fields-end--
-# --table-end--
-#################################
-# --table-start--
-dataClass=com.pocketleague.manager.db.SessionMember
-tableName=sessionmember
-# --table-fields-start--
-# --field-start--
-fieldName=id
-generatedId=true
-# --field-end--
-# --field-start--
-fieldName=session
-canBeNull=false
-foreign=true
-uniqueCombo=true
-# --field-end--
-# --field-start--
-fieldName=player
-foreign=true
-uniqueCombo=true
-# --field-end--
-# --field-start--
-fieldName=faction
-# --field-end--
-# --field-start--
-fieldName=player_seed
-canBeNull=false
-# --field-end--
-# --field-start--
-fieldName=player_rank
-canBeNull=false
-# --field-end--
-# --table-fields-end--
-# --table-end--
-#################################
-# --table-start--
-dataClass=com.pocketleague.manager.db.PlayerBadge
-tableName=playerbadge
-# --table-fields-start--
-# --field-start--
-fieldName=id
-generatedId=true
-# --field-end--
-# --field-start--
-fieldName=player
-foreign=true
-# --field-end--
-# --field-start--
-fieldName=session
-foreign=true
-# --field-end--
-# --field-start--
-fieldName=badgeType
-canBeNull=false
-# --field-end--
-# --table-fields-end--
-# --table-end--
-#################################
-# --table-start--
-dataClass=com.pocketleague.manager.db.Session
+dataClass=com.pocketleague.manager.db.tables.Session
 tableName=session
 # --table-fields-start--
 # --field-start--
@@ -190,10 +125,14 @@ generatedId=true
 # --field-start--
 fieldName=name
 canBeNull=false
+unique=true
 # --field-end--
 # --field-start--
 fieldName=game_type
 canBeNull=false
+# --field-end--
+# --field-start--
+fieldName=ruleset_id
 # --field-end--
 # --field-start--
 fieldName=session_type
@@ -201,9 +140,6 @@ canBeNull=false
 # --field-end--
 # --field-start--
 fieldName=team_size
-# --field-end--
-# --field-start--
-fieldName=ruleset_id
 # --field-end--
 # --field-start--
 fieldName=is_active
@@ -215,11 +151,90 @@ fieldName=is_favorite
 fieldName=games
 foreignCollection=true
 # --field-end--
+# --field-start--
+fieldName=session_members
+foreignCollection=true
+# --field-end--
 # --table-fields-end--
 # --table-end--
 #################################
 # --table-start--
-dataClass=com.pocketleague.manager.db.Venue
+dataClass=com.pocketleague.manager.db.tables.SessionMember
+tableName=sessionmember
+# --table-fields-start--
+# --field-start--
+fieldName=session
+canBeNull=false
+foreign=true
+uniqueCombo=true
+# --field-end--
+# --field-start--
+fieldName=team
+foreign=true
+uniqueCombo=true
+# --field-end--
+# --field-start--
+fieldName=team_seed
+canBeNull=false
+# --field-end--
+# --field-start--
+fieldName=team_rank
+canBeNull=false
+# --field-end--
+# --table-fields-end--
+# --table-end--
+#################################
+# --table-start--
+dataClass=com.pocketleague.manager.db.tables.Team
+tableName=team
+# --table-fields-start--
+# --field-start--
+fieldName=id
+generatedId=true
+# --field-end--
+# --field-start--
+fieldName=name
+canBeNull=false
+# --field-end--
+# --field-start--
+fieldName=team_size
+# --field-end--
+# --field-start--
+fieldName=color
+# --field-end--
+# --field-start--
+fieldName=is_active
+# --field-end--
+# --field-start--
+fieldName=is_favorite
+# --field-end--
+# --field-start--
+fieldName=team_members
+foreignCollection=true
+# --field-end--
+# --table-fields-end--
+# --table-end--
+#################################
+# --table-start--
+dataClass=com.pocketleague.manager.db.tables.TeamMember
+tableName=teammember
+# --table-fields-start--
+# --field-start--
+fieldName=team
+canBeNull=false
+foreign=true
+uniqueCombo=true
+# --field-end--
+# --field-start--
+fieldName=player
+foreign=true
+uniqueCombo=true
+# --field-end--
+# --table-fields-end--
+# --table-end--
+#################################
+# --table-start--
+dataClass=com.pocketleague.manager.db.tables.Venue
 tableName=venue
 # --table-fields-start--
 # --field-start--
@@ -228,15 +243,14 @@ generatedId=true
 # --field-end--
 # --field-start--
 fieldName=name
-columnName=name
 canBeNull=false
 unique=true
 # --field-end--
 # --field-start--
-fieldName=longitude
+fieldName=latitude
 # --field-end--
 # --field-start--
-fieldName=latitude
+fieldName=longitude
 # --field-end--
 # --field-start--
 fieldName=zipCode

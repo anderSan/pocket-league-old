@@ -18,7 +18,7 @@
     </string-array>
     <string-array name="menuItems">
         <item >Sessions</item>
-        <item >Game</item>
+        <item >Select Game</item>
         <item >Players</item>
         <item >Teams</item>
         <item >Venues</item>

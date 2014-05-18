@@ -145,30 +145,31 @@ public class PocketLeague extends MenuContainerActivity implements
 
 	private void selectItem(int position) {
 		Fragment fragment = null;
-		switch (position) {
-		case 0: // games
-			fragment = new View_Games();
+		String[] menuItems = getResources().getStringArray(R.array.menuItems);
+		switch (menuItems[position]) {
+		case "About": // about
+			fragment = new AboutPage();
 			break;
-		case 1: // players
-			fragment = new View_Players();
-			break;
-		case 2: // teams
-			fragment = new View_Teams();
-			break;
-		case 3: // sessions
-			fragment = new View_Sessions();
-			break;
-		case 4: // venues
-			fragment = new View_Venues();
-			break;
-		case 6: // preferences
-			fragment = new Preferences();
-			break;
-		case 7: // database
+		case "Database": // database
 			fragment = new DbSettings();
 			break;
-		case 8: // about
-			fragment = new AboutPage();
+		case "Select Game": // games
+			fragment = new View_GameTypes();
+			break;
+		case "Players": // players
+			fragment = new View_Players();
+			break;
+		case "Preferences": // preferences
+			fragment = new Preferences();
+			break;
+		case "Sessions": // sessions
+			fragment = new View_Sessions();
+			break;
+		case "Teams": // teams
+			fragment = new View_Teams();
+			break;
+		case "Venues": // venues
+			fragment = new View_Venues();
 			break;
 		}
 		// update the main content by replacing fragments

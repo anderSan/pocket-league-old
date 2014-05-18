@@ -36,7 +36,7 @@ import com.pocketleague.manager.db.tables.Player;
 import com.pocketleague.manager.db.tables.Session;
 import com.pocketleague.manager.enums.SessionType;
 
-public class View_Games extends OrmLiteFragment {
+public class View_GameTypes extends OrmLiteFragment {
 	private static final String LOGTAG = "View_Games";
 	NavigationInterface mNav;
 

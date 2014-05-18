@@ -53,7 +53,7 @@
 		<activity
 			android:name="com.pocketleague.manager.GameInProgress"
 			android:label="@string/title_activity_game_in_progress"
-			android:parentActivityName="com.pocketleague.manager.View_Games" >
+			android:parentActivityName="com.pocketleague.manager.View_GameTypes" >
 		</activity>
 		<activity
 			android:name="com.pocketleague.manager.backend.MenuContainerActivity"
@@ -63,7 +63,7 @@
 		<activity
 			android:name="com.pocketleague.manager.NewGame"
 			android:label="@string/title_activity_new_game"
-			android:parentActivityName="com.pocketleague.manager.View_Games" >
+			android:parentActivityName="com.pocketleague.manager.View_GameTypes" >
 		</activity>
 		<activity
 			android:name="com.pocketleague.manager.NewPlayer"
@@ -86,7 +86,7 @@
 			android:parentActivityName="com.pocketleague.manager.View_Venues" >
 		</activity>
 		<activity
-			android:name="com.pocketleague.manager.View_Games"
+			android:name="com.pocketleague.manager.View_GameTypes"
 			android:label="@string/title_activity_games"
 			android:parentActivityName="com.pocketleague.manager.PocketLeague" >
 		</activity>
@@ -118,7 +118,7 @@
 		<activity
 			android:name="com.pocketleague.manager.Detail_Game"
 			android:label="@string/title_activity_detail_game"
-			android:parentActivityName="com.pocketleague.manager.View_Games" >
+			android:parentActivityName="com.pocketleague.manager.View_GameTypes" >
 		</activity>
 		<activity
 			android:name="com.pocketleague.manager.Detail_Player"
