@@ -6,16 +6,16 @@
 
     <ImageView
         android:id="@+id/navIcon"
-        android:layout_width="?android:attr/listPreferredItemHeight"
-    	android:layout_height="?android:attr/listPreferredItemHeight"
+        android:layout_width="?android:attr/listPreferredItemHeightSmall"
+    	android:layout_height="?android:attr/listPreferredItemHeightSmall"
     	android:background="?android:attr/activatedBackgroundIndicator"
-    	android:padding="10dp"
+    	android:padding="8dp"
     	android:gravity="center_vertical" />
         
 	<TextView
 	    android:id="@+id/navLabel"
 	    android:layout_width="wrap_content"
-	    android:layout_height="wrap_content"
+	    android:layout_height="?android:attr/listPreferredItemHeightSmall"
 	    android:textAppearance="?android:attr/textAppearanceListItemSmall"
 	    android:gravity="center_vertical"
 	    android:paddingLeft="6dp"
@@ -27,7 +27,7 @@
 	<TextView
 	    android:id="@+id/navCounter"
 	    android:layout_width="match_parent"
-	    android:layout_height="wrap_content"
+	    android:layout_height="?android:attr/listPreferredItemHeightSmall"
 	    android:textAppearance="?android:attr/textAppearanceListItemSmall"
 	    android:gravity="center_vertical|right"
 	    android:paddingLeft="16dp"

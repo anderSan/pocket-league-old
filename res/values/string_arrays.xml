@@ -17,8 +17,8 @@
         <item >Break</item>
     </string-array>
     <string-array name="menuItems">
-        <item >Sessions</item>
         <item >Select Game</item>
+        <item >Sessions</item>
         <item >Players</item>
         <item >Teams</item>
         <item >Venues</item>
@@ -27,8 +27,8 @@
         <item >About</item>
     </string-array>
     <string-array name="menuIcons">
-        <item >@drawable/ic_session</item>
         <item >@drawable/ic_action_edit</item>
+        <item >@drawable/ic_session</item>
         <item >@drawable/ic_player</item>
         <item >@drawable/ic_team</item>
         <item >@drawable/ic_venue</item>

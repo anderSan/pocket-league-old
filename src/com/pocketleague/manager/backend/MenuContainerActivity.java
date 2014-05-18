@@ -9,6 +9,7 @@ import com.pocketleague.manager.db.DatabaseHelper;
 
 public class MenuContainerActivity extends OrmLiteBaseActivity<DatabaseHelper> {
 	public static String LOGTAG = "MenuContainer";
+	public static final String APP_PREFS = "PocketLeaguePreferences";
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
