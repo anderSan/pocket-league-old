@@ -140,14 +140,23 @@ public class PocketLeague extends MenuContainerActivity implements
 		@Override
 		public void onItemClick(AdapterView<?> parent, View view, int position,
 				long id) {
-			selectItem(position);
+			String label = (String) view.getTag();
+			selectItem(position, label);
 		}
 	}
 
 	private void selectItem(int position) {
+		selectItem(position, null);
+	}
+
+	private void selectItem(int position, String label) {
 		Fragment fragment = null;
-		String[] menuItems = getResources().getStringArray(R.array.menuItems);
-		switch (menuItems[position]) {
+
+		if (label == null) {
+			label = "Select Game";
+		}
+
+		switch (label) {
 		case "About": // about
 			fragment = new AboutPage();
 			break;

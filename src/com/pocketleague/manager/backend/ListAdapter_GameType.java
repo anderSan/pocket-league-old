@@ -40,6 +40,7 @@ public class ListAdapter_GameType extends ArrayAdapter<ViewHolder_GameType> {
 					.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 			gridView = new View(context);
 			gridView = inflater.inflate(R.layout.grid_item, null);
+			gridView.setTag(gametype_list.get(position).getGameType());
 		} else {
 			gridView = convertView;
 		}

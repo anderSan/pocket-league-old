@@ -15,6 +15,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.GridView;
 import android.widget.RelativeLayout;
 import android.widget.Switch;
@@ -56,7 +58,7 @@ public class View_GameTypes extends OrmLiteFragment {
 		gameTypeAdapter = new ListAdapter_GameType(context, R.layout.grid_item,
 				gametypes_list);
 		gv.setAdapter(gameTypeAdapter);
-		// gv.setOnClickListener(elvItemClicked);
+		gv.setOnItemClickListener(gvItemClicked);
 		// gv.setOnItemLongClickListener(elvItemLongClicked);
 
 		viewAllGames = new Switch(context);
@@ -123,6 +125,7 @@ public class View_GameTypes extends OrmLiteFragment {
 
 		for (GameType gt : GameType.values()) {
 			ViewHolder_GameType gtvh = new ViewHolder_GameType();
+			gtvh.setGameType(gt);
 			gtvh.setName(gt.name());
 			gtvh.setDrawableId(gt.toDrawableId());
 			gametypes_list.add(gtvh);
@@ -131,37 +134,23 @@ public class View_GameTypes extends OrmLiteFragment {
 		// required if list has changed
 		gameTypeAdapter.notifyDataSetChanged();
 	}
-	// private OnChildClickListener elvItemClicked = new OnChildClickListener()
-	// {
-	// public boolean onChildClick(ExpandableListView parent, View v,
-	// int groupPosition, int childPosition, long id) {
-	//
-	// // get the group header
-	// ViewHolderHeader_Game sessionInfo = sessionList.get(groupPosition);
-	// // get the child info
-	// ViewHolder_Game gameInfo = sessionInfo.getGameList().get(
-	// childPosition);
-	// // display it or do something with it
-	// Toast.makeText(
-	// context,
-	// "Selected " + sessionInfo.getName() + "/"
-	// + String.valueOf(gameInfo.getId()),
-	// Toast.LENGTH_SHORT).show();
-	//
-	// prefs_editor
-	// .putString("currentGameType", GameType.BILLIARDS.name());
-	// prefs_editor.commit();
-	//
-	// Toast.makeText(context,
-	// "Game type is now " + GameType.BILLIARDS.name(),
-	// Toast.LENGTH_SHORT).show();
-	//
-	// // load the game in progress screen
-	// // Long gId = Long.valueOf(gameInfo.getId());
-	// // mNav.loadGame(gId);
-	// return true;
-	// }
-	// };
+
+	private OnItemClickListener gvItemClicked = new OnItemClickListener() {
+		@Override
+		public void onItemClick(AdapterView<?> parent, View view, int position,
+				long id) {
+			GameType gt = (GameType) view.getTag();
+			Toast.makeText(context, "Selected " + gt.name(), Toast.LENGTH_SHORT)
+					.show();
+
+			prefs_editor.putString("currentGameType", gt.name());
+			prefs_editor.commit();
+
+			// load the game in progress screen
+			// Long gId = Long.valueOf(gameInfo.getId());
+			// mNav.loadGame(gId);
+		}
+	};
 
 	// private OnItemLongClickListener elvItemLongClicked = new
 	// OnItemLongClickListener() {
