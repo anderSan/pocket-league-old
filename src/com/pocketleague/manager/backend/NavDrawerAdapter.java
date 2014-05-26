@@ -24,62 +24,44 @@ public class NavDrawerAdapter extends ArrayAdapter<NavDrawerItem> {
 		this.drawerItems = drawerItems;
 	}
 
-	static class NavViewHolder {
-		public final TextView labelView;
-		public final ImageView iconView;
-		public final TextView counterView;
-
-		public NavViewHolder(TextView tvLabel, ImageView ivIcon,
-				TextView tvCounter) {
-			this.labelView = tvLabel;
-			this.iconView = ivIcon;
-			this.counterView = tvCounter;
-		}
-	}
-
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 		View v = convertView;
-		NavViewHolder holder = null;
 		NavDrawerItem item = getItem(position);
+		TextView tvLabel = null;
+		ImageView ivIcon = null;
+		TextView tvCounter = null;
 
 		if (!item.isHeader) {
 			if (v == null) {
 				int layout = R.layout.nav_drawer_item;
-
 				v = LayoutInflater.from(getContext()).inflate(layout, null);
-
-				TextView tvLabel = (TextView) v.findViewById(R.id.navLabel);
-				ImageView ivIcon = (ImageView) v.findViewById(R.id.navIcon);
-				TextView tvCounter = (TextView) v.findViewById(R.id.navCounter);
-				v.setTag(new NavViewHolder(tvLabel, ivIcon, tvCounter));
 			}
 
-			if (holder == null && v != null) {
-				Object tag = v.getTag();
-				if (tag instanceof NavViewHolder) {
-					holder = (NavViewHolder) tag;
+			tvLabel = (TextView) v.findViewById(R.id.navLabel);
+			ivIcon = (ImageView) v.findViewById(R.id.navIcon);
+			tvCounter = (TextView) v.findViewById(R.id.navCounter);
+
+			if (item != null) {
+				if (tvLabel != null) {
+					tvLabel.setText(item.label);
+					v.setTag(item.label);
 				}
-			}
 
-			if (item != null && holder != null) {
-				if (holder.labelView != null)
-					holder.labelView.setText(item.label);
-
-				if (holder.counterView != null) {
+				if (tvCounter != null) {
 					if (item.counter > 0) {
-						holder.counterView.setText("" + item.counter);
+						tvCounter.setText("" + item.counter);
 					} else {
-						holder.counterView.setText("");
+						tvCounter.setText("");
 					}
 				}
 
-				if (holder.iconView != null) {
+				if (ivIcon != null) {
 					if (item.iconId > 0) {
-						holder.iconView.setVisibility(View.VISIBLE);
-						holder.iconView.setImageResource(item.iconId);
+						ivIcon.setVisibility(View.VISIBLE);
+						ivIcon.setImageResource(item.iconId);
 					} else {
-						holder.iconView.setVisibility(View.GONE);
+						ivIcon.setVisibility(View.GONE);
 					}
 				}
 			}
