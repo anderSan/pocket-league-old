@@ -5,9 +5,10 @@
 
     <TextView
         android:id="@+id/textView_playerId"
-        android:layout_width="wrap_content"
+        android:layout_width="80sp"
 		android:layout_height="45sp"
 		android:gravity="right|center_vertical"
+        android:paddingLeft="35sp"
         android:paddingRight="15dp"
         android:hint="pid"
         android:textAppearance="?android:attr/textAppearanceMedium" />
