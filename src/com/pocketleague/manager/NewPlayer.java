@@ -148,7 +148,7 @@ public class NewPlayer extends MenuContainerActivity {
 			}
 
 		} else {
-			newPlayer = new Player(firstName, lastName, nickname,
+			newPlayer = new Player(nickname, firstName, lastName,
 					throwsRightHanded, throwsLeftHanded, prefersRightSide,
 					prefersLeftSide, height_cm, weight_kg, emptyImage,
 					playerColor);
