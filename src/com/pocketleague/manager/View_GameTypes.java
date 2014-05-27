@@ -6,7 +6,6 @@ import java.util.List;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -38,8 +37,6 @@ public class View_GameTypes extends OrmLiteFragment {
 	private Switch viewAllGames;
 	private View rootView;
 	private Context context;
-
-	private SharedPreferences.Editor prefs_editor;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -88,15 +85,6 @@ public class View_GameTypes extends OrmLiteFragment {
 	public void onAttach(Activity activity) {
 		super.onAttach(activity);
 		context = getActivity();
-
-		SharedPreferences settings = this.getActivity().getSharedPreferences(
-				APP_PREFS, 0);
-		GameType currentGameType = GameType.valueOf(settings.getString(
-				"currentGameType", GameType.UNDEFINED.name()));
-
-		Toast.makeText(context, "Game type is " + currentGameType.name(),
-				Toast.LENGTH_SHORT).show();
-		prefs_editor = settings.edit();
 
 		try {
 			mNav = (NavigationInterface) activity;

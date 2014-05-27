@@ -1,5 +1,7 @@
 package com.pocketleague.manager.backend;
 
+import android.content.SharedPreferences;
+import android.os.Bundle;
 import android.support.v4.app.NavUtils;
 import android.util.Log;
 import android.view.MenuItem;
@@ -11,6 +13,15 @@ public class MenuContainerActivity extends OrmLiteBaseActivity<DatabaseHelper> {
 	public static String LOGTAG = "MenuContainer";
 	public static final String APP_PREFS = "PocketLeaguePreferences";
 
+	private SharedPreferences settings;
+	private SharedPreferences.Editor prefs_editor;
+
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		settings = this.getSharedPreferences(APP_PREFS, 0);
+		prefs_editor = settings.edit();
+	}
+
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		// Handle item selection
@@ -21,6 +32,15 @@ public class MenuContainerActivity extends OrmLiteBaseActivity<DatabaseHelper> {
 		default:
 			return super.onOptionsItemSelected(item);
 		}
+	}
+
+	public String getPreference(String pref_name, String pref_default) {
+		return settings.getString(pref_name, pref_default);
+	}
+
+	public void setPreference(String pref_name, String pref_value) {
+		prefs_editor.putString(pref_name, pref_value);
+		prefs_editor.commit();
 	}
 
 	public void log(String msg) {
