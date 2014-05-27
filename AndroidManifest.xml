@@ -50,11 +50,6 @@
 			android:label="Dropbox Sync" />
 
 		<activity
-			android:name="com.pocketleague.manager.GameInProgress"
-			android:label="@string/title_activity_game_in_progress"
-			android:parentActivityName="com.pocketleague.manager.View_GameTypes" >
-		</activity>
-		<activity
 			android:name="com.pocketleague.manager.backend.MenuContainerActivity"
 			android:label="@string/title_activity_menu_container"
 			android:parentActivityName="com.pocketleague.manager.PocketLeague" >
@@ -142,7 +137,7 @@
 		<activity
 			android:name="com.pocketleague.manager.AboutPage"
 			android:label="@string/title_activity_about_page"
-			android:parentActivityName="com.pocketleague.manager.PocketLeague" >
+			android:parentActivityName="com.pocketleague.manager.View_Sessions" >
 			<meta-data
 				android:name="android.support.PARENT_ACTIVITY"
 				android:value="com.pocketleague.manager.PocketLeague" />

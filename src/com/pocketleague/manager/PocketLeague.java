@@ -18,6 +18,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
+import com.pocketleague.gametypes.GameType;
 import com.pocketleague.manager.backend.MenuContainerActivity;
 import com.pocketleague.manager.backend.NavDrawerAdapter;
 import com.pocketleague.manager.backend.NavDrawerItem;
@@ -79,7 +80,7 @@ public class PocketLeague extends MenuContainerActivity implements
 		mDrawerLayout.setDrawerListener(mDrawerToggle);
 
 		if (savedInstanceState == null) {
-			selectItem(0);
+			selectItem(0, "Select Game");
 		}
 	}
 
@@ -145,16 +146,8 @@ public class PocketLeague extends MenuContainerActivity implements
 		}
 	}
 
-	private void selectItem(int position) {
-		selectItem(position, null);
-	}
-
 	private void selectItem(int position, String label) {
 		Fragment fragment = null;
-
-		if (label == null) {
-			label = "Select Game";
-		}
 
 		switch (label) {
 		case "About": // about
@@ -202,7 +195,10 @@ public class PocketLeague extends MenuContainerActivity implements
 
 	@Override
 	public void setTitle(CharSequence title) {
-		mTitle = title;
+		GameType currentGameType = GameType.valueOf(getPreference(
+				"currentGameType", GameType.UNDEFINED.toString()));
+		mTitle = "(" + currentGameType.toString() + ") " + title;
+
 		getActionBar().setTitle(mTitle);
 	}
 
