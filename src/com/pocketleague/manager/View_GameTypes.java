@@ -19,17 +19,14 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.GridView;
 import android.widget.RelativeLayout;
 import android.widget.Switch;
-import android.widget.Toast;
 
 import com.pocketleague.gametypes.GameType;
 import com.pocketleague.manager.backend.ListAdapter_GameType;
-import com.pocketleague.manager.backend.NavigationInterface;
 import com.pocketleague.manager.backend.ViewHolder_GameType;
 import com.pocketleague.manager.db.OrmLiteFragment;
 
 public class View_GameTypes extends OrmLiteFragment {
 	private static final String LOGTAG = "View_GameTypes";
-	NavigationInterface mNav;
 
 	private ListAdapter_GameType gameTypeAdapter;
 	private List<ViewHolder_GameType> gametypes_list = new ArrayList<ViewHolder_GameType>();
@@ -85,13 +82,6 @@ public class View_GameTypes extends OrmLiteFragment {
 	public void onAttach(Activity activity) {
 		super.onAttach(activity);
 		context = getActivity();
-
-		try {
-			mNav = (NavigationInterface) activity;
-		} catch (ClassCastException e) {
-			throw new ClassCastException(activity.toString()
-					+ " must implement NavigationInterface");
-		}
 	}
 
 	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
@@ -128,68 +118,11 @@ public class View_GameTypes extends OrmLiteFragment {
 		public void onItemClick(AdapterView<?> parent, View view, int position,
 				long id) {
 			GameType gt = (GameType) view.getTag();
-			Toast.makeText(context, "Selected " + gt.name(), Toast.LENGTH_SHORT)
-					.show();
 
 			prefs_editor.putString("currentGameType", gt.name());
 			prefs_editor.commit();
 
-			// load the game in progress screen
-			// Long gId = Long.valueOf(gameInfo.getId());
-			// mNav.loadGame(gId);
+			mNav.viewSessions();
 		}
 	};
-
-	// private OnItemLongClickListener elvItemLongClicked = new
-	// OnItemLongClickListener() {
-	// @Override
-	// public boolean onItemLongClick(AdapterView<?> parent, View view,
-	// int position, long id) {
-	// if (ExpandableListView.getPackedPositionType(id) ==
-	// ExpandableListView.PACKED_POSITION_TYPE_CHILD) {
-	// int groupPosition = ExpandableListView
-	// .getPackedPositionGroup(id);
-	// int childPosition = ExpandableListView
-	// .getPackedPositionChild(id);
-	//
-	// // get the group header
-	// ViewHolderHeader_Game sessionInfo = sessionList
-	// .get(groupPosition);
-	// // get the child info
-	// ViewHolder_Game gameInfo = sessionInfo.getGameList().get(
-	// childPosition);
-	// // display it or do something with it
-	// Toast.makeText(
-	// context,
-	// "Selected " + sessionInfo.getName() + "/"
-	// + String.valueOf(gameInfo.getId()),
-	// Toast.LENGTH_SHORT).show();
-	//
-	// // load the game in progress screen
-	// Long gid = Long.valueOf(gameInfo.getId());
-	// Intent intent = new Intent(context, Detail_Game.class);
-	// intent.putExtra("GID", gid);
-	// startActivity(intent);
-	// return true;
-	// }
-	// return false;
-	// }
-	// };
-
-	// private void addGameType(GameType gameId, String p1, String p2, String
-	// score) {
-	// logd("addGame() - adding game " + gameId);
-	// // find the index of the session header
-	// ViewHolderHeader_Game sessionInfo = sHash.get(sort);
-	// List<ViewHolder_Game> gameList = sessionInfo.getGameList();
-	//
-	// // create a new child and add that to the group
-	// ViewHolder_Game gameInfo = new ViewHolder_Game();
-	// gameInfo.setId(gameId);
-	// gameInfo.setPlayerOne(p1);
-	// gameInfo.setPlayerTwo(p2);
-	// gameInfo.setScore(score);
-	// gameList.add(gameInfo);
-	// sessionInfo.setGameList(gameList);
-	// }
 }
