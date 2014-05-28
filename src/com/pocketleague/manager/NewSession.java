@@ -117,7 +117,7 @@ public class NewSession extends MenuContainerActivity {
 		sessionTypeSpinner.setAdapter(sAdapter);
 
 		try {
-			players = Player.getAll(getApplicationContext());
+			players = Player.getDao(this).queryForAll();
 			playerNames.clear();
 			for (Player p : players) {
 				playerNames.add(p.getFirstName() + " " + p.getLastName());
@@ -137,7 +137,7 @@ public class NewSession extends MenuContainerActivity {
 		sId = intent.getLongExtra("SID", -1);
 		if (sId != -1) {
 			try {
-				sDao = Session.getDao(getApplicationContext());
+				sDao = Session.getDao(this);
 				s = sDao.queryForId(sId);
 				createButton.setText("Modify");
 				name.setText(s.getSessionName());
@@ -268,13 +268,10 @@ public class NewSession extends MenuContainerActivity {
 			// ruleSetId = ruleSetIds.get(ruleSet_pos);
 		}
 
-		// get isActive
-		is_active = isActiveCB.isChecked();
-
 		// make the new session or modify an existing one
 		if (sId != -1) {
 			s.setSessionName(session_name);
-			s.setIsActive(is_active);
+			s.setIsActive(isActiveCB.isChecked());
 
 			try {
 				sDao.update(s);
@@ -282,10 +279,8 @@ public class NewSession extends MenuContainerActivity {
 						.show();
 				finish();
 			} catch (SQLException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
-				Log.e(PocketLeague.class.getName(),
-						"Could not modify session.", e);
+				loge("Could not modify session", e);
 				Toast.makeText(context, "Could not modify session.",
 						Toast.LENGTH_SHORT).show();
 			}

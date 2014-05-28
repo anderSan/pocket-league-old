@@ -51,9 +51,6 @@ public class ListAdapter_Team extends BaseExpandableListAdapter {
 		TextView name = (TextView) view.findViewById(R.id.textView_name);
 		name.setText(teamInfo.getTeamName().trim());
 
-		TextView nickName = (TextView) view.findViewById(R.id.textView_players);
-		nickName.setText(teamInfo.getPlayerNames().trim());
-
 		return view;
 	}
 

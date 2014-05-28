@@ -23,7 +23,7 @@ import com.pocketleague.manager.db.tables.Session;
 import com.pocketleague.manager.enums.SessionType;
 
 public class Detail_Session extends MenuContainerActivity {
-	public static String LOGTAG = "Detail_Session";
+	private static final String LOGTAG = "Detail_Session";
 	Long sId;
 	Session s;
 	Dao<Session, Long> sDao;

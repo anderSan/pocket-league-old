@@ -2,7 +2,6 @@ package com.pocketleague.manager;
 
 import java.sql.SQLException;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
@@ -16,6 +15,7 @@ import com.pocketleague.manager.db.tables.Player;
 import com.pocketleague.manager.db.tables.Team;
 
 public class Detail_Team extends MenuContainerActivity {
+	private static final String LOGTAG = "Detail_Team";
 	Long tId;
 	Team t;
 	Dao<Team, Long> tDao;
@@ -57,15 +57,13 @@ public class Detail_Team extends MenuContainerActivity {
 
 	public void refreshDetails() {
 		Player[] p = new Player[2];
-		Context context = getApplicationContext();
 
 		if (tId != -1) {
 			try {
-				// TODO: uncomment this once teams are set up in the db again
-				// tDao = Team.getDao(context);
+				tDao = Team.getDao(this);
 				t = tDao.queryForId(tId);
 
-				pDao = Player.getDao(context);
+				// pDao = Player.getDao(context);
 				// pDao.refresh(t.getFirstPlayer());
 				// pDao.refresh(t.getSecondPlayer());
 				//
@@ -73,8 +71,7 @@ public class Detail_Team extends MenuContainerActivity {
 				// p[1] = t.getSecondPlayer();
 
 			} catch (SQLException e) {
-				Toast.makeText(context, e.getMessage(), Toast.LENGTH_LONG)
-						.show();
+				Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show();
 			}
 		}
 
@@ -84,11 +81,11 @@ public class Detail_Team extends MenuContainerActivity {
 		TextView teamId = (TextView) findViewById(R.id.tDet_id);
 		teamId.setText(String.valueOf(t.getId()));
 
-		TextView tP1 = (TextView) findViewById(R.id.tDet_p1name);
-		tP1.setText(p[0].getFirstName() + " " + p[0].getLastName());
-
-		TextView tP2 = (TextView) findViewById(R.id.tDet_p2name);
-		tP2.setText(p[1].getFirstName() + " " + p[1].getLastName());
+		// TextView tP1 = (TextView) findViewById(R.id.tDet_p1name);
+		// tP1.setText(p[0].getFirstName() + " " + p[0].getLastName());
+		//
+		// TextView tP2 = (TextView) findViewById(R.id.tDet_p2name);
+		// tP2.setText(p[1].getFirstName() + " " + p[1].getLastName());
 
 		TextView tWinRatio = (TextView) findViewById(R.id.tDet_winRatio);
 		// tWinRatio.setText(String.valueOf(t.getnWins()) + "/" +

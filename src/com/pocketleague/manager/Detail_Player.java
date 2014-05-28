@@ -14,11 +14,10 @@ import com.pocketleague.manager.backend.MenuContainerActivity;
 import com.pocketleague.manager.db.tables.Player;
 
 public class Detail_Player extends MenuContainerActivity {
+	private static final String LOGTAG = "Detail_Player";
 	Long pId;
 	Player p;
 	Dao<Player, Long> pDao;
-
-	public static String LOGTAG = "DET_PLAYER";
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -57,12 +56,11 @@ public class Detail_Player extends MenuContainerActivity {
 	public void refreshDetails() {
 		if (pId != -1) {
 			try {
-				pDao = Player.getDao(getApplicationContext());
+				pDao = Player.getDao(this);
 				p = pDao.queryForId(pId);
 
 			} catch (SQLException e) {
-				Toast.makeText(getApplicationContext(), e.getMessage(),
-						Toast.LENGTH_LONG).show();
+				Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show();
 			}
 		}
 

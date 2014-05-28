@@ -9,7 +9,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -114,8 +113,7 @@ public class View_Players extends OrmLiteFragment {
 			}
 		} catch (SQLException e) {
 			Toast.makeText(context, e.getMessage(), Toast.LENGTH_LONG).show();
-			Log.e(View_Players.class.getName(), "Retrieval of players failed",
-					e);
+			loge("Retrieval of players failed. ", e);
 		}
 
 		expandAll();
@@ -144,6 +142,7 @@ public class View_Players extends OrmLiteFragment {
 			return false;
 		}
 	};
+
 	private OnGroupClickListener elvGroupClicked = new OnGroupClickListener() {
 		public boolean onGroupClick(ExpandableListView parent, View v,
 				int groupPosition, long id) {
