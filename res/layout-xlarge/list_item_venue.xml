@@ -5,16 +5,17 @@
 
     <TextView
         android:id="@+id/textView_venueId"
-        android:layout_width="wrap_content"
+        android:layout_width="80sp"
 		android:layout_height="45sp"
 		android:gravity="right|center_vertical"
+        android:paddingLeft="35sp"
         android:paddingRight="15dp"
-        android:hint="vid"
+        android:hint="venueId"
         android:textAppearance="?android:attr/textAppearanceMedium" />
 
     <TextView
         android:id="@+id/textView_venueName"
-        android:layout_width="fill_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_toRightOf="@+id/textView_venueId"
         android:layout_alignBaseline="@+id/textView_venueId"

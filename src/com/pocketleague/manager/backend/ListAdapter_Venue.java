@@ -12,6 +12,7 @@ import android.widget.TextView;
 import com.pocketleague.manager.R;
 
 public class ListAdapter_Venue extends BaseExpandableListAdapter {
+	private static final String LOGTAG = "ListAdapter_Venue";
 	private Context context;
 	private List<ViewHolderHeader_Venue> statusList;
 

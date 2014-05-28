@@ -3,6 +3,7 @@ package com.pocketleague.manager;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.List;
 
 import android.app.Activity;
 import android.content.Context;
@@ -31,7 +32,7 @@ public class View_Players extends OrmLiteFragment {
 	private static final String LOGTAG = "View_Players";
 
 	private LinkedHashMap<String, ViewHolderHeader_Player> sHash = new LinkedHashMap<String, ViewHolderHeader_Player>();
-	private ArrayList<ViewHolderHeader_Player> statusList = new ArrayList<ViewHolderHeader_Player>();
+	private List<ViewHolderHeader_Player> statusList = new ArrayList<ViewHolderHeader_Player>();
 	private ListAdapter_Player playerAdapter;
 	private ExpandableListView elv;
 	private View rootView;
@@ -172,7 +173,7 @@ public class View_Players extends OrmLiteFragment {
 			sortBy = "Retired";
 		}
 		ViewHolderHeader_Player statusInfo = sHash.get(sortBy);
-		ArrayList<ViewHolder_Player> playerList = statusInfo.getPlayerList();
+		List<ViewHolder_Player> playerList = statusInfo.getPlayerList();
 
 		// create a new child and add that to the group
 		ViewHolder_Player playerInfo = new ViewHolder_Player();
