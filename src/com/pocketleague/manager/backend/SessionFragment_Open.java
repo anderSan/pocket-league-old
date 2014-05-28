@@ -38,7 +38,6 @@ import com.pocketleague.manager.enums.SessionType;
 
 public class SessionFragment_Open extends OrmLiteFragment {
 	private static final String LOGTAG = "View_Games";
-	NavigationInterface mNav;
 
 	private LinkedHashMap<String, ViewHolderHeader_Game> sHash = new LinkedHashMap<String, ViewHolderHeader_Game>();
 	private List<ViewHolderHeader_Game> sessionList = new ArrayList<ViewHolderHeader_Game>();
@@ -95,13 +94,6 @@ public class SessionFragment_Open extends OrmLiteFragment {
 	public void onAttach(Activity activity) {
 		super.onAttach(activity);
 		context = getActivity();
-
-		try {
-			mNav = (NavigationInterface) activity;
-		} catch (ClassCastException e) {
-			throw new ClassCastException(activity.toString()
-					+ " must implement NavigationInterface");
-		}
 	}
 
 	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {

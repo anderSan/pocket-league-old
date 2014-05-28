@@ -227,4 +227,8 @@ public class PocketLeague extends MenuContainerActivity implements
 		// intent.putExtra("GID", gId);
 		// startActivity(intent);
 	}
+
+	public void viewSessions() {
+		selectItem(1, "Sessions");
+	}
 }
