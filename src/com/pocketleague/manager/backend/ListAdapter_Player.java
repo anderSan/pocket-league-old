@@ -1,6 +1,6 @@
 package com.pocketleague.manager.backend;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -12,18 +12,19 @@ import android.widget.TextView;
 import com.pocketleague.manager.R;
 
 public class ListAdapter_Player extends BaseExpandableListAdapter {
+	private static final String LOGTAG = "ListAdapter_Player";
 	private Context context;
-	private ArrayList<ViewHolderHeader_Player> statusList;
+	private List<ViewHolderHeader_Player> statusList;
 
 	public ListAdapter_Player(Context context,
-			ArrayList<ViewHolderHeader_Player> statusList) {
+			List<ViewHolderHeader_Player> statusList) {
 		this.context = context;
 		this.statusList = statusList;
 	}
 
 	@Override
 	public Object getChild(int groupPosition, int childPosition) {
-		ArrayList<ViewHolder_Player> playerList = statusList.get(groupPosition)
+		List<ViewHolder_Player> playerList = statusList.get(groupPosition)
 				.getPlayerList();
 		return playerList.get(childPosition);
 	}
@@ -48,14 +49,14 @@ public class ListAdapter_Player extends BaseExpandableListAdapter {
 		TextView playerId = (TextView) view
 				.findViewById(R.id.textView_playerId);
 		playerId.setText(playerInfo.getId().trim());
-		TextView playerColor = (TextView) view
-				.findViewById(R.id.textView_playerColor);
-		playerColor.setBackgroundColor(playerInfo.getColor());
 		TextView name = (TextView) view.findViewById(R.id.textView_name);
 		name.setText(playerInfo.getName().trim());
 		TextView nickName = (TextView) view
 				.findViewById(R.id.textView_nickName);
 		nickName.setText(playerInfo.getNickName().trim());
+		TextView playerColor = (TextView) view
+				.findViewById(R.id.textView_playerColor);
+		playerColor.setBackgroundColor(playerInfo.getColor());
 
 		return view;
 	}
@@ -63,7 +64,7 @@ public class ListAdapter_Player extends BaseExpandableListAdapter {
 	@Override
 	public int getChildrenCount(int groupPosition) {
 
-		ArrayList<ViewHolder_Player> playerList = statusList.get(groupPosition)
+		List<ViewHolder_Player> playerList = statusList.get(groupPosition)
 				.getPlayerList();
 		return playerList.size();
 
