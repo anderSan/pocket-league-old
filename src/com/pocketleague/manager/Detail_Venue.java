@@ -14,6 +14,7 @@ import com.pocketleague.manager.backend.MenuContainerActivity;
 import com.pocketleague.manager.db.tables.Venue;
 
 public class Detail_Venue extends MenuContainerActivity {
+	private static final String LOGTAG = "Detail_Venue";
 	Long vId;
 	Venue v;
 	Dao<Venue, Long> vDao;

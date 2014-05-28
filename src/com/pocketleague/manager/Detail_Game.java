@@ -21,6 +21,7 @@ import com.pocketleague.manager.db.tables.Session;
 import com.pocketleague.manager.db.tables.Venue;
 
 public class Detail_Game extends MenuContainerActivity {
+	private static final String LOGTAG = "Detail_Game";
 	Long gId;
 	Game g;
 	Player[] p = new Player[2];

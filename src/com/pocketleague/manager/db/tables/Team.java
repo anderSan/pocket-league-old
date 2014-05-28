@@ -1,8 +1,10 @@
 package com.pocketleague.manager.db.tables;
 
 import java.sql.SQLException;
+import java.util.List;
 
 import android.content.Context;
+import android.widget.Toast;
 
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.dao.ForeignCollection;
@@ -103,5 +105,33 @@ public class Team {
 
 	public void setIsFavorite(boolean is_favorite) {
 		this.is_favorite = is_favorite;
+	}
+
+	// =========================================================================
+	// Additional methods
+	// =========================================================================
+
+	public boolean exists(Context context) throws SQLException {
+		return exists(name, context);
+	}
+
+	public static boolean exists(String name, Context context)
+			throws SQLException {
+		if (name == null) {
+			return false;
+		}
+
+		try {
+			List<Team> tList = getDao(context).queryBuilder().where()
+					.eq(Team.NAME, name).query();
+			if (tList.isEmpty()) {
+				return false;
+			} else {
+				return true;
+			}
+		} catch (SQLException e) {
+			Toast.makeText(context, e.getMessage(), Toast.LENGTH_LONG).show();
+			return false;
+		}
 	}
 }

@@ -1,5 +1,6 @@
 package com.pocketleague.manager;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -19,11 +20,12 @@ import android.widget.ExpandableListView.OnChildClickListener;
 import android.widget.ExpandableListView.OnGroupClickListener;
 import android.widget.Toast;
 
+import com.j256.ormlite.dao.Dao;
 import com.pocketleague.manager.backend.ListAdapter_Team;
 import com.pocketleague.manager.backend.ViewHolderHeader_Team;
 import com.pocketleague.manager.backend.ViewHolder_Team;
 import com.pocketleague.manager.db.OrmLiteFragment;
-import com.pocketleague.manager.db.tables.Player;
+import com.pocketleague.manager.db.tables.Team;
 
 public class View_Teams extends OrmLiteFragment {
 	private static final String LOGTAG = "View_Teams";
@@ -100,28 +102,18 @@ public class View_Teams extends OrmLiteFragment {
 		addStatus("Active");
 		addStatus("Retired");
 
-		Player[] p = new Player[2];
-
 		// add all the teams
-		// try{
-		// Dao<Team, Long> teamDao = Team.getDao(context);
-		// Dao<Player, Long> playerDao = Player.getDao(context);
-		//
-		// for (Team t: teamDao) {
-		// playerDao.refresh(t.getFirstPlayer());
-		// playerDao.refresh(t.getSecondPlayer());
-		//
-		// addTeam(t.getIsActive(),
-		// String.valueOf(t.getId()),
-		// t.getTeamName(),
-		// "(" + t.getFirstPlayer().getNickName()
-		// + " and " + t.getSecondPlayer().getNickName() + ")"
-		// );
-		// }
-		// }
-		// catch (SQLException e){
-		// loge("Retrieval of teams failed", e);
-		// }
+		Dao<Team, Long> teamDao = null;
+		try {
+			teamDao = getHelper().getTeamDao();
+			for (Team t : teamDao) {
+				addTeam(t.getIsActive(), String.valueOf(t.getId()),
+						t.getTeamName());
+			}
+		} catch (SQLException e) {
+			Toast.makeText(context, e.getMessage(), Toast.LENGTH_LONG).show();
+			loge("Retrieval of teams failed. ", e);
+		}
 
 		expandAll();
 		teamAdapter.notifyDataSetChanged(); // required in case the list has
@@ -149,6 +141,7 @@ public class View_Teams extends OrmLiteFragment {
 			return false;
 		}
 	};
+
 	private OnGroupClickListener elvGroupClicked = new OnGroupClickListener() {
 		public boolean onGroupClick(ExpandableListView parent, View v,
 				int groupPosition, long id) {
@@ -167,8 +160,7 @@ public class View_Teams extends OrmLiteFragment {
 		sHash.put(statusName, vhh_Team);
 	}
 
-	private void addTeam(boolean isActive, String teamId, String teamName,
-			String teamPlayers) {
+	private void addTeam(boolean isActive, String teamId, String teamName) {
 		// find the index of the session header
 		String sortBy;
 		if (isActive) {
@@ -184,7 +176,6 @@ public class View_Teams extends OrmLiteFragment {
 			ViewHolder_Team teamInfo = new ViewHolder_Team();
 			teamInfo.setId(teamId);
 			teamInfo.setTeamName(teamName);
-			teamInfo.setPlayerNames(teamPlayers);
 			teamList.add(teamInfo);
 			statusInfo.setTeamList(teamList);
 		} catch (NullPointerException e) {

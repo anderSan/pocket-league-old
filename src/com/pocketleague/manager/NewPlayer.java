@@ -9,7 +9,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -160,8 +159,7 @@ public class NewPlayer extends MenuContainerActivity {
 						.show();
 				finish();
 			} catch (SQLException e) {
-				Log.e(PocketLeague.class.getName(), "Could not create player.",
-						e);
+				loge("Could not create player", e);
 				boolean player_exists = false;
 				try {
 					player_exists = newPlayer.exists(context);
@@ -175,8 +173,7 @@ public class NewPlayer extends MenuContainerActivity {
 				} catch (SQLException ee) {
 					Toast.makeText(context, ee.getMessage(), Toast.LENGTH_LONG)
 							.show();
-					Log.e(PocketLeague.class.getName(),
-							"Could not test for existence of player", ee);
+					loge("Could not test for existence of player", ee);
 				}
 			}
 		}

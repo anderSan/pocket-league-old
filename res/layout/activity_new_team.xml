@@ -8,6 +8,14 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context=".NewPlayer" >
 
+    <Button
+        android:id="@+id/button_createTeam"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"
+        android:onClick="createNewTeam"
+        android:text="@string/create" />
     
     <EditText
         android:id="@+id/editText_teamName"
@@ -24,36 +32,20 @@
         <requestFocus />
     </EditText>
 
-    <Button
-        android:id="@+id/button_createTeam"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentRight="true"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:onClick="createNewTeam"
-        android:text="@string/create" />
+    <ListView
+    	android:id="@+id/newTeam_playerSelection"
+    	android:layout_width="wrap_content"
+    	android:layout_height="wrap_content"
+    	android:layout_alignParentLeft="true"
+    	android:layout_alignParentRight="true"
+    	android:layout_below="@id/editText_teamName"
+    	android:layout_marginTop="45dp" />
     
-    <Spinner
-        android:id="@+id/spinner_player1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_below="@+id/editText_teamName"
-        android:layout_marginLeft="40dp" />
-    
-    <Spinner
-        android:id="@+id/spinner_player2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_below="@+id/spinner_player1"
-        android:layout_marginLeft="40dp" />
-
     <CheckBox 
     	android:id="@+id/newTeam_isActive"
     	android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-    	android:layout_below="@id/spinner_player2"
+    	android:layout_below="@id/newTeam_playerSelection"
     	android:layout_alignParentLeft="true"
     	android:layout_marginTop="20dp"
     	android:text="Active"

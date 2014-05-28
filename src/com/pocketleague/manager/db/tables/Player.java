@@ -1,10 +1,10 @@
 package com.pocketleague.manager.db.tables;
 
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 
 import android.content.Context;
+import android.widget.Toast;
 
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.field.DataType;
@@ -248,54 +248,28 @@ public class Player implements Comparable<Player> {
 		}
 	}
 
-	// public static long getIdByNames(String nick, Context context)
-	// throws SQLException {
-	// Player p = getByNames(nick, context);
-	// if (p == null) {
-	// return -1;
-	// }
-	// return p.getId();
-	// }
-	//
-	// public static Player getByNames(String nick, Context context)
-	// throws SQLException {
-	// List<Player> pList = null;
-	// HashMap<String, Object> m = buildNameMap(nick);
-	//
-	// pList = getDao(context).queryForFieldValuesArgs(m);
-	// if (pList.isEmpty()) {
-	// return null;
-	// } else {
-	// return pList.get(0);
-	// }
-	// }
-	//
-	public static boolean exists(String first, String last, String nick,
-			Context context) throws SQLException {
-		if (first == null || last == null || nick == null) {
+	public boolean exists(Context context) throws SQLException {
+		return exists(nickname, context);
+	}
+
+	public static boolean exists(String nickname, Context context)
+			throws SQLException {
+		if (nickname == null) {
 			return false;
 		}
-		List<Player> pList = null;
-		// HashMap<String, Object> m = buildNameMap(first, last, nick);
 
-		// pList = getDao(context).queryForFieldValuesArgs(m);
-		// if (pList.isEmpty()) {
-		// return false;
-		// } else {
-		return true;
-		// }
-	}
-
-	public boolean exists(Context context) throws SQLException {
-		return exists(first_name, last_name, nickname, context);
-	}
-
-	public static List<Player> getAll(Context context) throws SQLException {
-		Dao<Player, Long> d = Player.getDao(context);
-		List<Player> players = new ArrayList<Player>();
-		for (Player p : d) {
-			players.add(p);
+		try {
+			List<Player> pList = getDao(context).queryBuilder().where()
+					.eq(Player.NICK_NAME, nickname).query();
+			if (pList.isEmpty()) {
+				return false;
+			} else {
+				return true;
+			}
+		} catch (SQLException e) {
+			Toast.makeText(context, e.getMessage(), Toast.LENGTH_LONG).show();
+			return false;
 		}
-		return players;
+
 	}
 }
