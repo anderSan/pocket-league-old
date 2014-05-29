@@ -107,7 +107,6 @@ public class NewTeam extends MenuContainerActivity {
 		Context context = getApplicationContext();
 		Team newTeam = null;
 		String teamName = null;
-		List<TeamMember> tMembers = new ArrayList<TeamMember>();
 
 		String s = name.getText().toString().trim().toLowerCase(Locale.US);
 		if (!s.isEmpty()) {
@@ -136,7 +135,6 @@ public class NewTeam extends MenuContainerActivity {
 				dao.create(newTeam);
 				Toast.makeText(context, "Team created!", Toast.LENGTH_SHORT)
 						.show();
-				finish();
 			} catch (SQLException e) {
 				loge("Could not create team", e);
 				boolean team_exists = false;
@@ -156,10 +154,18 @@ public class NewTeam extends MenuContainerActivity {
 				}
 			}
 
-			for (Integer playerIdx : playerIdxList) {
-				Player p = players.get(playerIdx);
-
-				tMembers.add(new TeamMember(newTeam, p));
+			try {
+				Dao<TeamMember, Long> tmDao = getHelper().getTeamMemberDao();
+				for (Integer playerIdx : playerIdxList) {
+					Player p = players.get(playerIdx);
+					TeamMember tm = new TeamMember(newTeam, p);
+					tmDao.create(tm);
+				}
+				finish();
+			} catch (SQLException e) {
+				loge("Could not create team member.", e);
+				Toast.makeText(context, "Could not create team member.",
+						Toast.LENGTH_SHORT).show();
 			}
 		}
 	}
