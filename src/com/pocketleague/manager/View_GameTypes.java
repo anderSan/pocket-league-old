@@ -118,10 +118,7 @@ public class View_GameTypes extends OrmLiteFragment {
 		public void onItemClick(AdapterView<?> parent, View view, int position,
 				long id) {
 			GameType gt = (GameType) view.getTag();
-
-			prefs_editor.putString("currentGameType", gt.name());
-			prefs_editor.commit();
-
+			setCurrentGameType(gt);
 			mNav.viewSessions();
 		}
 	};
