@@ -195,8 +195,7 @@ public class PocketLeague extends MenuContainerActivity implements
 
 	@Override
 	public void setTitle(CharSequence title) {
-		GameType currentGameType = GameType.valueOf(getPreference(
-				"currentGameType", GameType.UNDEFINED.toString()));
+		GameType currentGameType = getCurrentGameType();
 		mTitle = "(" + currentGameType.toString() + ") " + title;
 
 		getActionBar().setTitle(mTitle);

@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.MenuItem;
 
 import com.j256.ormlite.android.apptools.OrmLiteBaseActivity;
+import com.pocketleague.gametypes.GameType;
 import com.pocketleague.manager.db.DatabaseHelper;
 
 public class MenuContainerActivity extends OrmLiteBaseActivity<DatabaseHelper> {
@@ -41,6 +42,15 @@ public class MenuContainerActivity extends OrmLiteBaseActivity<DatabaseHelper> {
 	public void setPreference(String pref_name, String pref_value) {
 		prefs_editor.putString(pref_name, pref_value);
 		prefs_editor.commit();
+	}
+
+	public GameType getCurrentGameType() {
+		return GameType.valueOf(getPreference("currentGameType",
+				GameType.UNDEFINED.toString()));
+	}
+
+	public void setCurrentGameType(GameType gametype) {
+		setPreference("currentGameType", gametype.toString());
 	}
 
 	public void log(String msg) {

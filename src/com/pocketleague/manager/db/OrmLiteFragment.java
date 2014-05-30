@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import android.util.Log;
 
 import com.j256.ormlite.android.apptools.OpenHelperManager;
+import com.pocketleague.gametypes.GameType;
 import com.pocketleague.manager.backend.NavigationInterface;
 
 public class OrmLiteFragment extends Fragment {
@@ -55,6 +56,15 @@ public class OrmLiteFragment extends Fragment {
 	public void setPreference(String pref_name, String pref_value) {
 		prefs_editor.putString(pref_name, pref_value);
 		prefs_editor.commit();
+	}
+
+	public GameType getCurrentGameType() {
+		return GameType.valueOf(getPreference("currentGameType",
+				GameType.UNDEFINED.toString()));
+	}
+
+	public void setCurrentGameType(GameType gametype) {
+		setPreference("currentGameType", gametype.toString());
 	}
 
 	public void log(String msg) {
