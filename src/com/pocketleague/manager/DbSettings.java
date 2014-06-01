@@ -33,7 +33,6 @@ import com.dropbox.sync.android.DbxFileInfo;
 import com.dropbox.sync.android.DbxFileSystem;
 import com.dropbox.sync.android.DbxPath;
 import com.j256.ormlite.dao.Dao;
-import com.pocketleague.manager.R.color;
 import com.pocketleague.manager.db.DatabaseHelper;
 import com.pocketleague.manager.db.DbxInfo;
 import com.pocketleague.manager.db.OrmLiteFragment;
@@ -219,23 +218,32 @@ public class DbSettings extends OrmLiteFragment {
 		byte[] emptyImage = new byte[0];
 		Player[] players = {
 				new Player("mike c", "michael", "cannamela", true, false, true,
-						false, 170, 70, emptyImage, color.Aqua, true),
+						false, 170, 70, emptyImage, getResources().getColor(
+								R.color.SaddleBrown), true),
 				new Player("samu", "erin", "arai", true, false, true, false,
-						160, 50, emptyImage, color.BlanchedAlmond, false),
+						160, 50, emptyImage, getResources().getColor(
+								R.color.BlanchedAlmond), false),
 				new Player("king tut", "matt", "tuttle", true, false, true,
-						false, 182, 63, emptyImage, color.CornflowerBlue, false),
+						false, 182, 63, emptyImage, getResources().getColor(
+								R.color.CornflowerBlue), false),
 				new Player("dru", "andrew", "o'brien", true, false, true,
-						false, 182, 63, emptyImage, color.DodgerBlue, false),
+						false, 182, 63, emptyImage, getResources().getColor(
+								R.color.DarkOrange), false),
 				new Player("murder", "matt", "miguez", true, false, true,
-						false, 182, 63, emptyImage, color.FireBrick, false),
+						false, 182, 63, emptyImage, getResources().getColor(
+								R.color.FireBrick), false),
 				new Player("juice", "julian", "spring", false, true, true,
-						false, 182, 63, emptyImage, color.Goldenrod, false),
+						false, 182, 63, emptyImage, getResources().getColor(
+								R.color.Goldenrod), false),
 				new Player("freeeedom", "mike", "freeman", true, false, true,
-						false, 182, 63, emptyImage, color.HotPink, false),
+						false, 182, 63, emptyImage, getResources().getColor(
+								R.color.HotPink), false),
 				new Player("pilip", "phillip", "anderson", false, true, true,
-						false, 182, 63, emptyImage, color.Indigo, true),
+						false, 182, 63, emptyImage, getResources().getColor(
+								R.color.Green), true),
 				new Player("sukes appeal", "jon", "sukovich", true, false,
-						true, false, 182, 63, emptyImage, color.Khaki, false) };
+						true, false, 182, 63, emptyImage, getResources()
+								.getColor(R.color.Khaki), false) };
 
 		// Session s1 = new Session("league", GameType.POLISH_HORSESHOES,
 		// GameRule.POLISH_SINGLES, SessionType.LEAGUE, 1);
