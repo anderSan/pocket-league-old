@@ -34,12 +34,16 @@ import com.dropbox.sync.android.DbxFileInfo;
 import com.dropbox.sync.android.DbxFileSystem;
 import com.dropbox.sync.android.DbxPath;
 import com.j256.ormlite.dao.Dao;
+import com.pocketleague.gametypes.GameRule;
+import com.pocketleague.gametypes.GameType;
+import com.pocketleague.manager.R.color;
 import com.pocketleague.manager.db.DatabaseHelper;
 import com.pocketleague.manager.db.DbxInfo;
 import com.pocketleague.manager.db.OrmLiteFragment;
 import com.pocketleague.manager.db.tables.Player;
 import com.pocketleague.manager.db.tables.Session;
 import com.pocketleague.manager.db.tables.Venue;
+import com.pocketleague.manager.enums.SessionType;
 
 public class DbSettings extends OrmLiteFragment {
 
@@ -218,39 +222,29 @@ public class DbSettings extends OrmLiteFragment {
 		Dao<Player, Long> playerDao = null;
 		byte[] emptyImage = new byte[0];
 		Player[] players = {
-				new Player("michael", "cannamela", "mike c", true, false, true,
-						false, 170, 70, emptyImage, getResources().getColor(
-								R.color.Aqua)),
-				new Player("erin", "arai", "samu", true, false, true, false,
-						160, 50, emptyImage, getResources().getColor(
-								R.color.BlanchedAlmond)),
-				new Player("matt", "tuttle", "king tut", true, false, true,
-						false, 182, 63, emptyImage, getResources().getColor(
-								R.color.CornflowerBlue)),
-				new Player("andrew", "o'brien", "dru", true, false, true,
-						false, 182, 63, emptyImage, getResources().getColor(
-								R.color.DodgerBlue)),
-				new Player("matt", "miguez", "murder", true, false, true,
-						false, 182, 63, emptyImage, getResources().getColor(
-								R.color.FireBrick)),
-				new Player("julian", "spring", "juice", false, true, true,
-						false, 182, 63, emptyImage, getResources().getColor(
-								R.color.Goldenrod)),
-				new Player("mike", "freeman", "freeeedom", true, false, true,
-						false, 182, 63, emptyImage, getResources().getColor(
-								R.color.HotPink)),
-				new Player("phillip", "anderson", "pillip", false, true, true,
-						false, 182, 63, emptyImage, getResources().getColor(
-								R.color.Indigo)),
-				new Player("jon", "sukovich", "sukes appeal", true, false,
-						true, false, 182, 63, emptyImage, getResources()
-								.getColor(R.color.Khaki)) };
+				new Player("mike c", "michael", "cannamela", true, false, true,
+						false, 170, 70, emptyImage, color.Aqua, true),
+				new Player("samu", "erin", "arai", true, false, true, false,
+						160, 50, emptyImage, color.BlanchedAlmond, false),
+				new Player("king tut", "matt", "tuttle", true, false, true,
+						false, 182, 63, emptyImage, color.CornflowerBlue, false),
+				new Player("dru", "andrew", "o'brien", true, false, true,
+						false, 182, 63, emptyImage, color.DodgerBlue, false),
+				new Player("murder", "matt", "miguez", true, false, true,
+						false, 182, 63, emptyImage, color.FireBrick, false),
+				new Player("juice", "julian", "spring", false, true, true,
+						false, 182, 63, emptyImage, color.Goldenrod, false),
+				new Player("freeeedom", "mike", "freeman", true, false, true,
+						false, 182, 63, emptyImage, color.HotPink, false),
+				new Player("pilip", "phillip", "anderson", false, true, true,
+						false, 182, 63, emptyImage, color.Indigo, true),
+				new Player("sukes appeal", "jon", "sukovich", true, false,
+						true, false, 182, 63, emptyImage, color.Khaki, false) };
 		Dao<Session, Long> sessionDao = null;
-		// Session s1 = new Session("league", 1, RuleType.rs01, new Date(),
-		// false);
-		// Session s2 = new Session("side_books", 0, RuleType.rsNull, new
-		// Date(),
-		// false);
+		Session s1 = new Session("league", GameType.POLISH_HORSESHOES,
+				GameRule.POLISH_SINGLES, SessionType.LEAGUE, 1);
+		Session s2 = new Session("league", GameType.BILLIARDS,
+				GameRule.EIGHTBALL, SessionType.LEAGUE, 1);
 		Dao<Venue, Long> venueDao = null;
 		Venue v1 = new Venue("cogswell");
 		Venue v2 = new Venue("verndale");
@@ -262,8 +256,8 @@ public class DbSettings extends OrmLiteFragment {
 			}
 
 			sessionDao = getHelper().getSessionDao();
-			// sessionDao.create(s1);
-			// sessionDao.create(s2);
+			sessionDao.create(s1);
+			sessionDao.create(s2);
 			venueDao = getHelper().getVenueDao();
 			venueDao.create(v1);
 			venueDao.create(v2);

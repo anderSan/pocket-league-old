@@ -128,7 +128,8 @@ public class NewTeam extends MenuContainerActivity {
 						Toast.LENGTH_SHORT).show();
 			}
 		} else {
-			newTeam = new Team(teamName, playerIdxList.size(), color.Aqua);
+			newTeam = new Team(teamName, playerIdxList.size(), color.Aqua,
+					false);
 
 			try {
 				Dao<Team, Long> dao = getHelper().getTeamDao();

@@ -24,10 +24,10 @@ public class Team {
 	@DatabaseField(generatedId = true)
 	private long id;
 
-	@DatabaseField(canBeNull = false)
+	@DatabaseField(canBeNull = false, uniqueCombo = true)
 	private String name;
 
-	@DatabaseField
+	@DatabaseField(uniqueCombo = true)
 	private int team_size;
 
 	@DatabaseField
@@ -45,11 +45,12 @@ public class Team {
 	Team() {
 	}
 
-	public Team(String team_name, int team_size, int color) {
+	public Team(String team_name, int team_size, int color, boolean is_favorite) {
 		super();
 		this.name = team_name;
 		this.team_size = team_size;
 		this.color = color;
+		this.is_favorite = is_favorite;
 	}
 
 	public static Dao<Team, Long> getDao(Context context) {
