@@ -250,9 +250,10 @@ public class DbSettings extends OrmLiteFragment {
 		// Session s2 = new Session("league", GameType.BILLIARDS,
 		// GameRule.EIGHTBALL, SessionType.LEAGUE, 1);
 
-		Venue v1 = new Venue("Putnam St.");
-		Venue v2 = new Venue("Verndale");
-		Venue v3 = new Venue("Oxford");
+		Venue v1 = new Venue("Putnam St.", true);
+		Venue v2 = new Venue("Verndale", false);
+		Venue v3 = new Venue("Oxford", true);
+
 		try {
 			Dao<Player, Long> playerDao = getHelper().getPlayerDao();
 			Dao<Team, Long> teamDao = getHelper().getTeamDao();

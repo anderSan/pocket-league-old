@@ -8,47 +8,48 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context=".NewVenue" >
 
+     <Button
+        android:id="@+id/button_createVenue"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"
+        android:text="@string/create"
+        android:onClick="doneButtonPushed"
+        />
+     
     <EditText
         android:id="@+id/editText_venueName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
-        android:layout_marginLeft="22dp"
-        android:layout_marginTop="36dp"
         android:ems="10"
-        android:hint="Venue Name (required)" >
+        android:hint="Venue name (required)"
+        android:inputType="textPersonName"
+        android:maxLines="1"
+        >
+        	<requestFocus />
+    	</EditText>
 
-        <requestFocus />
-    </EditText>
-
-    <Button
-        android:id="@+id/button_createVenue"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentRight="true"
-        android:layout_width="wrap_content"
+    <CheckBox 
+    	android:id="@+id/newVenue_isFavorite"
+    	android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/create"
-        android:onClick="createNewVenue" />
-    
-    <CheckBox
-        android:id="@+id/checkBox_scoreKeptFromTop"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_below="@id/editText_venueName"
-        android:layout_marginTop="32dp"
-        android:checked="true"
-        android:text="Score from top" />
+    	android:layout_alignLeft="@id/editText_venueName"
+    	android:layout_below="@id/editText_venueName"
+    	android:layout_marginTop="20dp"
+    	android:text="Favorite"
+    	/>
     
     <CheckBox 
     	android:id="@+id/newVenue_isActive"
     	android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-    	android:layout_below="@id/checkBox_scoreKeptFromTop"
-    	android:layout_alignParentLeft="true"
-    	android:layout_marginTop="20dp"
+    	android:layout_alignLeft="@id/editText_venueName"
+    	android:layout_below="@id/newVenue_isFavorite"
     	android:text="Active"
-    	android:visibility="gone" />"
+    	android:visibility="gone"
+    	/>
 
 </RelativeLayout>
