@@ -16,7 +16,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -34,16 +33,14 @@ import com.dropbox.sync.android.DbxFileInfo;
 import com.dropbox.sync.android.DbxFileSystem;
 import com.dropbox.sync.android.DbxPath;
 import com.j256.ormlite.dao.Dao;
-import com.pocketleague.gametypes.GameRule;
-import com.pocketleague.gametypes.GameType;
 import com.pocketleague.manager.R.color;
 import com.pocketleague.manager.db.DatabaseHelper;
 import com.pocketleague.manager.db.DbxInfo;
 import com.pocketleague.manager.db.OrmLiteFragment;
 import com.pocketleague.manager.db.tables.Player;
-import com.pocketleague.manager.db.tables.Session;
+import com.pocketleague.manager.db.tables.Team;
+import com.pocketleague.manager.db.tables.TeamMember;
 import com.pocketleague.manager.db.tables.Venue;
-import com.pocketleague.manager.enums.SessionType;
 
 public class DbSettings extends OrmLiteFragment {
 
@@ -219,7 +216,6 @@ public class DbSettings extends OrmLiteFragment {
 	}
 
 	public void doPopulateTest() {
-		Dao<Player, Long> playerDao = null;
 		byte[] emptyImage = new byte[0];
 		Player[] players = {
 				new Player("mike c", "michael", "cannamela", true, false, true,
@@ -240,32 +236,39 @@ public class DbSettings extends OrmLiteFragment {
 						false, 182, 63, emptyImage, color.Indigo, true),
 				new Player("sukes appeal", "jon", "sukovich", true, false,
 						true, false, 182, 63, emptyImage, color.Khaki, false) };
-		Dao<Session, Long> sessionDao = null;
-		Session s1 = new Session("league", GameType.POLISH_HORSESHOES,
-				GameRule.POLISH_SINGLES, SessionType.LEAGUE, 1);
-		Session s2 = new Session("league", GameType.BILLIARDS,
-				GameRule.EIGHTBALL, SessionType.LEAGUE, 1);
-		Dao<Venue, Long> venueDao = null;
-		Venue v1 = new Venue("cogswell");
-		Venue v2 = new Venue("verndale");
-		Venue v3 = new Venue("oxford");
+
+		// Session s1 = new Session("league", GameType.POLISH_HORSESHOES,
+		// GameRule.POLISH_SINGLES, SessionType.LEAGUE, 1);
+		// Session s2 = new Session("league", GameType.BILLIARDS,
+		// GameRule.EIGHTBALL, SessionType.LEAGUE, 1);
+
+		Venue v1 = new Venue("Putnam St.");
+		Venue v2 = new Venue("Verndale");
+		Venue v3 = new Venue("Oxford");
 		try {
-			playerDao = getHelper().getPlayerDao();
-			for (int i = 0; i < players.length; i++) {
-				playerDao.create(players[i]);
+			Dao<Player, Long> playerDao = getHelper().getPlayerDao();
+			Dao<Team, Long> teamDao = getHelper().getTeamDao();
+			Dao<TeamMember, Long> tmDao = getHelper().getTeamMemberDao();
+			// Dao<Session, Long> sessionDao = getHelper().getSessionDao();
+			Dao<Venue, Long> venueDao = getHelper().getVenueDao();
+			for (Player p : players) {
+				playerDao.create(p);
+				Team t = new Team(p.getNickName(), 1, p.getColor(),
+						p.getIsFavorite());
+				teamDao.create(t);
+				tmDao.create(new TeamMember(t, p));
 			}
 
-			sessionDao = getHelper().getSessionDao();
-			sessionDao.create(s1);
-			sessionDao.create(s2);
-			venueDao = getHelper().getVenueDao();
+			// sessionDao.create(s1);
+			// sessionDao.create(s2);
+
 			venueDao.create(v1);
 			venueDao.create(v2);
 			venueDao.create(v3);
 		} catch (SQLException e) {
 			int duration = Toast.LENGTH_LONG;
 			Toast.makeText(context, e.getMessage(), duration).show();
-			Log.e(PocketLeague.class.getName(), "Creation of players failed", e);
+			loge("Populate database failed", e);
 		}
 	}
 
