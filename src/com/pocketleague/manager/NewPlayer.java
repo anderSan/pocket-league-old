@@ -1,11 +1,10 @@
 package com.pocketleague.manager;
 
 import java.sql.SQLException;
-import java.util.Locale;
+import java.util.List;
 
 import yuku.ambilwarna.AmbilWarnaDialog;
 import yuku.ambilwarna.AmbilWarnaDialog.OnAmbilWarnaListener;
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -16,167 +15,213 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.j256.ormlite.dao.Dao;
+import com.j256.ormlite.stmt.QueryBuilder;
 import com.pocketleague.manager.backend.MenuContainerActivity;
 import com.pocketleague.manager.db.tables.Player;
+import com.pocketleague.manager.db.tables.Team;
+import com.pocketleague.manager.db.tables.TeamMember;
 
 public class NewPlayer extends MenuContainerActivity {
 	Long pId;
 	Player p;
+	Team t;
 	Dao<Player, Long> pDao;
+	Dao<Team, Long> tDao;
+	Dao<TeamMember, Long> tmDao;
 
-	TextView name;
-	TextView nick;
-	TextView weight;
-	TextView height;
-	CheckBox rh;
-	CheckBox lh;
-	CheckBox prefL;
-	CheckBox prefR;
-	Button playerColorBtn;
-	int playerColor = Color.BLACK;
-	CheckBox isActiveCB;
+	Button btn_create;
+	TextView tv_nick;
+	TextView tv_name;
+	TextView tv_weight;
+	TextView tv_height;
+	CheckBox cb_lh;
+	CheckBox cb_rh;
+	CheckBox cb_lf;
+	CheckBox cb_rf;
+	Button btn_color;
+	int player_color = Color.BLACK;
+	CheckBox cb_isActive;
+	CheckBox cb_isFavorite;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_new_player);
 
-		Button createButton = (Button) findViewById(R.id.button_createPlayer);
-		name = (TextView) findViewById(R.id.editText_playerName);
-		nick = (TextView) findViewById(R.id.editText_nickname);
-		weight = (TextView) findViewById(R.id.editText_weight);
-		height = (TextView) findViewById(R.id.editText_height);
-		rh = (CheckBox) findViewById(R.id.checkBox_throwsRightHanded);
-		lh = (CheckBox) findViewById(R.id.checkBox_throwsLeftHanded);
-		prefR = (CheckBox) findViewById(R.id.checkBox_prefersRightSide);
-		prefL = (CheckBox) findViewById(R.id.checkBox_prefersLeftSide);
-		playerColorBtn = (Button) findViewById(R.id.newPlayer_colorPicker);
-		isActiveCB = (CheckBox) findViewById(R.id.newPlayer_isActive);
+		pDao = Player.getDao(this);
+		tDao = Team.getDao(this);
+		tmDao = TeamMember.getDao(this);
+
+		btn_create = (Button) findViewById(R.id.button_createPlayer);
+		tv_nick = (TextView) findViewById(R.id.editText_nickname);
+		tv_name = (TextView) findViewById(R.id.editText_playerName);
+		tv_weight = (TextView) findViewById(R.id.editText_weight);
+		tv_height = (TextView) findViewById(R.id.editText_height);
+		cb_lh = (CheckBox) findViewById(R.id.checkBox_leftHanded);
+		cb_rh = (CheckBox) findViewById(R.id.checkBox_rightHanded);
+		cb_lf = (CheckBox) findViewById(R.id.checkBox_leftFooted);
+		cb_rf = (CheckBox) findViewById(R.id.checkBox_rightFooted);
+		btn_color = (Button) findViewById(R.id.newPlayer_colorPicker);
+		cb_isActive = (CheckBox) findViewById(R.id.newPlayer_isActive);
+		cb_isFavorite = (CheckBox) findViewById(R.id.newPlayer_isFavorite);
 
 		Intent intent = getIntent();
 		pId = intent.getLongExtra("PID", -1);
+		loadPlayerValues();
+	}
+
+	private void loadPlayerValues() {
 		if (pId != -1) {
 			try {
-				pDao = Player.getDao(getApplicationContext());
 				p = pDao.queryForId(pId);
-				createButton.setText("Modify");
-				name.setText(p.getFirstName() + " " + p.getLastName());
-				nick.setText(p.getNickName());
-				weight.setText(String.valueOf(p.getWeight_kg()));
-				height.setText(String.valueOf(p.getHeight_cm()));
-				if (p.getIsLeftHanded() == true) {
-					lh.setChecked(true);
-				}
-				if (p.getIsRightHanded() == true) {
-					rh.setChecked(true);
-				}
-				playerColorBtn.setBackgroundColor(p.getColor());
-				playerColor = p.getColor();
-				isActiveCB.setVisibility(View.VISIBLE);
-				isActiveCB.setChecked(p.getIsActive());
+				t = findPlayerTeam(p);
+				btn_create.setText("Modify");
+				tv_nick.setText(p.getNickName());
+				tv_name.setText(p.getFirstName() + " " + p.getLastName());
+				tv_weight.setText(String.valueOf(p.getWeight_kg()));
+				tv_height.setText(String.valueOf(p.getHeight_cm()));
+				cb_lh.setChecked(p.getIsLeftHanded());
+				cb_rh.setChecked(p.getIsRightHanded());
+				cb_lf.setChecked(p.getIsLeftFooted());
+				cb_rf.setChecked(p.getIsRightFooted());
+				btn_color.setBackgroundColor(p.getColor());
+				player_color = p.getColor();
+				cb_isActive.setVisibility(View.VISIBLE);
+				cb_isActive.setChecked(p.getIsActive());
+				cb_isFavorite.setChecked(p.getIsFavorite());
 			} catch (SQLException e) {
-				Toast.makeText(getApplicationContext(), e.getMessage(),
-						Toast.LENGTH_LONG).show();
+				Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show();
 			}
 		}
 	}
 
-	public void createNewPlayer(View view) {
-		Context context = getApplicationContext();
-		Player newPlayer = null;
-		String firstName = null;
-		String lastName = null;
-		String nickname = null;
+	public void doneButtonPushed(View view) {
 
-		int height_cm = -1;
-		int weight_kg = -1;
-
-		Boolean throwsRightHanded = rh.isChecked();
-		Boolean throwsLeftHanded = lh.isChecked();
-		Boolean prefersRightSide = prefR.isChecked();
-		Boolean prefersLeftSide = prefL.isChecked();
-
-		byte[] emptyImage = new byte[0];
-
-		Boolean isActive = isActiveCB.isChecked();
-
-		String s = name.getText().toString();
-		String[] toks;
-
-		toks = s.split("\\s+");
-		if (toks.length >= 2) {
-			firstName = toks[0].toLowerCase(Locale.US);
-			lastName = toks[1].toLowerCase(Locale.US);
-		}
-
-		s = nick.getText().toString().trim().toLowerCase(Locale.US);
-		if (!s.isEmpty()) {
-			nickname = new String(s);
-		}
-
-		s = weight.getText().toString().trim();
-		if (!s.isEmpty()) {
-			weight_kg = Integer.parseInt(s);
-		}
-
-		s = height.getText().toString().trim();
-		if (!s.isEmpty()) {
-			height_cm = Integer.parseInt(s);
-		}
-
-		if (pId != -1) {
-			p.setFirstName(firstName);
-			p.setLastName(lastName);
-			p.setNickName(nickname);
-			p.setWeight_kg(weight_kg);
-			p.setHeight_cm(height_cm);
-			p.setIsLeftHanded(throwsLeftHanded);
-			p.setIsRightHanded(throwsRightHanded);
-			p.setColor(playerColor);
-			p.setIsActive(isActive);
-			try {
-				pDao.update(p);
-				Toast.makeText(context, "Player modified.", Toast.LENGTH_SHORT)
-						.show();
-				finish();
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-				Toast.makeText(context, "Could not modify player.",
-						Toast.LENGTH_SHORT).show();
+		String nickname = tv_nick.getText().toString().trim();
+		if (nickname.isEmpty()) {
+			Toast.makeText(this, "Nickname is required.", Toast.LENGTH_LONG)
+					.show();
+		} else {
+			String[] names = tv_name.getText().toString().split("\\s+", 2);
+			String first_name = names[0];
+			String last_name = "";
+			if (names.length >= 2) {
+				last_name = names[1];
 			}
 
-		} else {
-			newPlayer = new Player(nickname, firstName, lastName,
-					throwsRightHanded, throwsLeftHanded, prefersRightSide,
-					prefersLeftSide, height_cm, weight_kg, emptyImage,
-					playerColor);
+			int weight_kg = 0;
+			String s = tv_weight.getText().toString().trim();
+			if (!s.isEmpty()) {
+				weight_kg = Integer.parseInt(s);
+			}
 
-			try {
-				Dao<Player, Long> dao = getHelper().getPlayerDao();
-				dao.create(newPlayer);
-				Toast.makeText(context, "Player created!", Toast.LENGTH_SHORT)
-						.show();
-				finish();
-			} catch (SQLException e) {
-				loge("Could not create player", e);
-				boolean player_exists = false;
+			int height_cm = 0;
+			s = tv_height.getText().toString().trim();
+			if (!s.isEmpty()) {
+				height_cm = Integer.parseInt(s);
+			}
+
+			Boolean lh = cb_lh.isChecked();
+			Boolean rh = cb_rh.isChecked();
+			Boolean lf = cb_lf.isChecked();
+			Boolean rf = cb_rf.isChecked();
+
+			byte[] emptyImage = new byte[0];
+
+			Boolean is_active = cb_isActive.isChecked();
+			Boolean is_favorite = cb_isFavorite.isChecked();
+
+			if (pId != -1) {
+				modifyPlayer(nickname, first_name, last_name, lh, rh, lf, rf,
+						height_cm, weight_kg, emptyImage, is_active,
+						is_favorite);
+			} else {
+				createPlayer(nickname, first_name, last_name, lh, rh, lf, rf,
+						height_cm, weight_kg, emptyImage, is_favorite);
+			}
+		}
+	}
+
+	private void createPlayer(String nickname, String first_name,
+			String last_name, boolean lh, boolean rh, boolean lf, boolean rf,
+			int height_cm, int weight_kg, byte[] image, boolean is_favorite) {
+
+		Player newPlayer = new Player(nickname, first_name, last_name, lh, rh,
+				lf, rf, height_cm, weight_kg, image, player_color, is_favorite);
+		Team newTeam = new Team(nickname, 1, player_color, is_favorite);
+		TeamMember newTeamMember = new TeamMember(newTeam, newPlayer);
+
+		try {
+			if (newPlayer.exists(this) || newTeam.exists(this)) {
+				Toast.makeText(this, "Player already exists.",
+						Toast.LENGTH_SHORT).show();
+			} else {
 				try {
-					player_exists = newPlayer.exists(context);
-					if (player_exists) {
-						Toast.makeText(context, "Player already exists.",
-								Toast.LENGTH_SHORT).show();
-					} else {
-						Toast.makeText(context, "Could not create player.",
-								Toast.LENGTH_SHORT).show();
-					}
-				} catch (SQLException ee) {
-					Toast.makeText(context, ee.getMessage(), Toast.LENGTH_LONG)
+					pDao.create(newPlayer);
+					tDao.create(newTeam);
+					tmDao.create(newTeamMember);
+					Toast.makeText(this, "Player created!", Toast.LENGTH_SHORT)
 							.show();
-					loge("Could not test for existence of player", ee);
+					finish();
+				} catch (SQLException ee) {
+					loge("Could not create player or team", ee);
+					Toast.makeText(this, "Could not create player.",
+							Toast.LENGTH_SHORT).show();
 				}
 			}
+		} catch (SQLException e) {
+			Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show();
+			loge("Could not test for existence of player or team", e);
 		}
+	}
+
+	private void modifyPlayer(String nickname, String first_name,
+			String last_name, boolean lh, boolean rh, boolean lf, boolean rf,
+			int height_cm, int weight_kg, byte[] image, boolean is_active,
+			boolean is_favorite) {
+
+		p.setNickName(nickname);
+		p.setFirstName(first_name);
+		p.setLastName(last_name);
+		p.setIsLeftHanded(lh);
+		p.setIsRightHanded(rh);
+		p.setIsLeftFooted(lf);
+		p.setIsRightFooted(rf);
+		p.setWeight_kg(weight_kg);
+		p.setHeight_cm(height_cm);
+		p.setColor(player_color);
+		p.setIsActive(is_active);
+		p.setIsFavorite(is_favorite);
+
+		t.setTeamName(nickname);
+		t.setIsActive(is_active);
+		t.setIsFavorite(is_favorite);
+		try {
+			pDao.update(p);
+			tDao.update(t);
+			Toast.makeText(this, "Player modified.", Toast.LENGTH_SHORT).show();
+			finish();
+		} catch (SQLException e) {
+			e.printStackTrace();
+			Toast.makeText(this, "Could not modify player.", Toast.LENGTH_SHORT)
+					.show();
+		}
+	}
+
+	private Team findPlayerTeam(Player p) throws SQLException {
+		QueryBuilder<TeamMember, Long> tmQb = tmDao.queryBuilder();
+		tmQb.where().eq(TeamMember.PLAYER, p);
+		QueryBuilder<Team, Long> tQb = tDao.queryBuilder();
+		tQb.where().eq(Team.TEAM_SIZE, 1);
+		// join with the order query
+		List<Team> results = tQb.join(tmQb).query();
+		if (results.size() > 1) {
+			log("Warning: Multiple teams found for player " + p.getNickName());
+			Toast.makeText(this, "Warning: Multiple teams found for player!",
+					Toast.LENGTH_SHORT).show();
+		}
+
+		return results.get(0);
 	}
 
 	public void showColorPicker(View view) {
@@ -185,11 +230,11 @@ public class NewPlayer extends MenuContainerActivity {
 		// for example, 0xff000000 is black, 0xff0000ff is blue. Please be aware
 		// of the initial 0xff which is the alpha.
 		AmbilWarnaDialog dialog = new AmbilWarnaDialog(view.getContext(),
-				playerColor, new OnAmbilWarnaListener() {
+				player_color, new OnAmbilWarnaListener() {
 					@Override
 					public void onOk(AmbilWarnaDialog dialog, int color) {
-						playerColor = color;
-						playerColorBtn.setBackgroundColor(color);
+						player_color = color;
+						btn_color.setBackgroundColor(color);
 					}
 
 					@Override

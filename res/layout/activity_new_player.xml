@@ -14,102 +14,123 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_alignParentRight="true"
-        android:onClick="createNewPlayer"
-        android:text="@string/create" />
+        android:onClick="doneButtonPushed"
+        android:text="@string/create"
+        />
+    
+    <EditText
+        android:id="@+id/editText_nickname"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:ems="10"
+        android:hint="Nickname (required)"
+        android:inputType="textPersonName"
+        android:maxLines="1"
+        >
+        	<requestFocus />
+        </EditText>
     
     <EditText
         android:id="@+id/editText_playerName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginLeft="22dp"
-        android:layout_marginTop="18dp"
+        android:layout_alignLeft="@id/editText_nickname"
+        android:layout_below="@id/editText_nickname"
         android:ems="10"
-        android:hint="First Last (required)"
-        android:inputType="textPersonName" >
-
-        <requestFocus />
-    </EditText>
-
-    <EditText
-        android:id="@+id/editText_nickname"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@id/editText_playerName"
-        android:layout_below="@id/editText_playerName"
-        android:ems="10"
-        android:hint="nickname (required)" />
+        android:hint="Name [First Last]"
+        android:inputType="textPersonName"
+        android:maxLines="1"
+     	/>
 
     <EditText
         android:id="@+id/editText_weight"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignLeft="@id/editText_nickname"
-        android:layout_below="@id/editText_nickname"
+        android:layout_below="@id/editText_playerName"
         android:ems="10"
-        android:hint="Weight, kg"
-        android:inputType="number" />
+        android:hint="Weight [kg]"
+        android:inputType="number"
+        />
 
     <EditText
         android:id="@+id/editText_height"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@id/editText_weight"
+        android:layout_alignLeft="@id/editText_nickname"
         android:layout_below="@id/editText_weight"
         android:ems="10"
-        android:hint="Height, cm"
-        android:inputType="number" />
+        android:hint="Height [cm]"
+        android:inputType="number"
+        />
 
     <CheckBox
-        android:id="@+id/checkBox_throwsRightHanded"
+        android:id="@+id/checkBox_leftHanded"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@id/editText_height"
+        android:layout_alignLeft="@id/editText_nickname"
         android:layout_below="@id/editText_height"
-        android:text="ThrowsRightHanded?" />
+        android:text="Left handed"
+        />
     
     <CheckBox
-        android:id="@+id/checkBox_throwsLeftHanded"
+        android:id="@+id/checkBox_rightHanded"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@id/checkBox_throwsRightHanded"
-        android:layout_below="@id/checkBox_throwsRightHanded"
-        android:text="ThrowsLeftHanded?" />
+        android:layout_alignLeft="@id/editText_nickname"
+        android:layout_below="@id/checkBox_leftHanded"
+        android:text="Right handed"
+        />
     
     <CheckBox
-        android:id="@+id/checkBox_prefersRightSide"
+        android:id="@+id/checkBox_leftFooted"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@id/editText_height"
-        android:layout_below="@id/checkBox_throwsLeftHanded"
-        android:text="PrefersRightSide?" />
+        android:layout_alignLeft="@id/editText_nickname"
+        android:layout_below="@id/checkBox_rightHanded"
+        android:text="Left footed"
+        />
     
     <CheckBox
-        android:id="@+id/checkBox_prefersLeftSide"
+        android:id="@+id/checkBox_rightFooted"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@id/checkBox_throwsRightHanded"
-        android:layout_below="@id/checkBox_prefersRightSide"
-        android:text="PrefersLeftSide?" />
+        android:layout_alignLeft="@id/editText_nickname"
+        android:layout_below="@id/checkBox_leftFooted"
+        android:text="Right footed"
+        />
     
     <Button
     	android:id="@+id/newPlayer_colorPicker"
     	android:layout_width="50dp"
     	android:layout_height="50dp"
-    	android:layout_alignLeft="@id/checkBox_throwsRightHanded"
-        android:layout_below="@id/checkBox_prefersLeftSide"
+    	android:layout_alignLeft="@id/editText_nickname"
+        android:layout_below="@id/checkBox_rightFooted"
     	android:background="@color/Black"
-    	android:onClick="showColorPicker" />
-    	
+    	android:onClick="showColorPicker"
+    	/>
+
+    <CheckBox 
+    	android:id="@+id/newPlayer_isFavorite"
+    	android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+    	android:layout_alignLeft="@id/editText_nickname"
+    	android:layout_below="@id/newPlayer_colorPicker"
+    	android:layout_marginTop="20dp"
+    	android:text="Favorite"
+    	/>
+    
     <CheckBox 
     	android:id="@+id/newPlayer_isActive"
     	android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-    	android:layout_below="@id/newPlayer_colorPicker"
-    	android:layout_alignLeft="@id/checkBox_throwsRightHanded"
+    	android:layout_alignLeft="@id/editText_nickname"
+    	android:layout_below="@id/newPlayer_isFavorite"
     	android:layout_marginTop="20dp"
     	android:text="Active"
-    	android:visibility="gone" />
+    	android:visibility="gone"
+    	/>
 
 </RelativeLayout>

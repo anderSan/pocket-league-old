@@ -81,7 +81,7 @@ public class Player implements Comparable<Player> {
 	public Player(String nickname, String first_name, String last_name,
 			boolean is_left_handed, boolean is_right_handed,
 			boolean is_left_footed, boolean is_right_footed, int height_cm,
-			int weight_kg, byte[] image_bytes, int color) {
+			int weight_kg, byte[] image_bytes, int color, boolean is_favorite) {
 		super();
 		this.nickname = nickname;
 		this.first_name = first_name;
@@ -94,6 +94,7 @@ public class Player implements Comparable<Player> {
 		this.weight_kg = weight_kg;
 		this.image_bytes = image_bytes;
 		this.color = color;
+		this.is_favorite = is_favorite;
 	}
 
 	public static Dao<Player, Long> getDao(Context context) {
