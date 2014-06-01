@@ -2,6 +2,7 @@ package com.pocketleague.manager;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
@@ -9,27 +10,25 @@ import java.util.Locale;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
-import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.ListView;
 import android.widget.Spinner;
-import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.j256.ormlite.dao.Dao;
+import com.pocketleague.gametypes.GameRule;
+import com.pocketleague.gametypes.GameType;
 import com.pocketleague.manager.backend.MenuContainerActivity;
-import com.pocketleague.manager.db.tables.Player;
+import com.pocketleague.manager.backend.SpinnerAdapter;
 import com.pocketleague.manager.db.tables.Session;
 import com.pocketleague.manager.db.tables.SessionMember;
+import com.pocketleague.manager.db.tables.Team;
 import com.pocketleague.manager.enums.SessionType;
 
 public class NewSession extends MenuContainerActivity {
@@ -38,45 +37,14 @@ public class NewSession extends MenuContainerActivity {
 	Dao<Session, Long> sDao;
 
 	TextView name;
-	Spinner sessionTypeSpinner;
+	Spinner spinner_sessionType;
 	Spinner spinner_ruleSet;
-	int ruleSet_pos = 0;
-	Switch switch_forceRuleSet;
-	List<String> ruleSetDescriptions = new ArrayList<String>();
-	List<Integer> ruleSetIds = new ArrayList<Integer>();
-	CheckBox isTeamCB;
 	CheckBox isActiveCB;
 	ListView rosterCheckList;
-	List<Player> players = new ArrayList<Player>();
-	List<Integer> playerIdxList = new ArrayList<Integer>();
-	List<String> playerNames = new ArrayList<String>();
 
-	// List<Team> teams = new ArrayList<Team>();
-	// List<Integer> teamIdxList = new ArrayList<Integer>();
-	// List<String> teamNames = new ArrayList<String>();
-
-	private OnCheckedChangeListener mCheckedChangeListener = new OnCheckedChangeListener() {
-		@Override
-		public void onCheckedChanged(CompoundButton buttonView,
-				boolean isChecked) {
-
-			if (isChecked) {
-				spinner_ruleSet.setEnabled(true);
-			} else {
-				spinner_ruleSet.setEnabled(false);
-			}
-		}
-	};
-
-	private OnItemSelectedListener mRuleSetSelectedHandler = new OnItemSelectedListener() {
-		public void onItemSelected(AdapterView<?> parent, View v, int position,
-				long id) {
-			ruleSet_pos = position;
-		}
-
-		public void onNothingSelected(AdapterView<?> parent) {
-		}
-	};
+	List<Team> teams = new ArrayList<Team>();
+	List<Integer> teamIdxList = new ArrayList<Integer>();
+	List<String> teamNames = new ArrayList<String>();
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -85,49 +53,40 @@ public class NewSession extends MenuContainerActivity {
 
 		name = (TextView) findViewById(R.id.editText_sessionName);
 		Button createButton = (Button) findViewById(R.id.button_createSession);
-		sessionTypeSpinner = (Spinner) findViewById(R.id.newSession_sessionType);
+
+		spinner_sessionType = (Spinner) findViewById(R.id.newSession_sessionType);
+		List<String> sessionTypes = new ArrayList<String>();
+		for (SessionType st : SessionType.values()) {
+			sessionTypes.add(st.toString());
+		}
+		ArrayAdapter<String> stAdapter = new SpinnerAdapter(this,
+				android.R.layout.simple_spinner_dropdown_item, sessionTypes,
+				Arrays.asList(SessionType.values()));
+		stAdapter
+				.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+		spinner_sessionType.setAdapter(stAdapter);
 
 		spinner_ruleSet = (Spinner) findViewById(R.id.newSession_spinner_ruleSet);
-		// for (RuleSet rs : RuleType.map.values()) {
-		// ruleSetDescriptions.add(rs.getDescription());
-		// ruleSetIds.add(rs.getId());
-		// }
-		ArrayAdapter<String> rsAdapter = new ArrayAdapter<String>(this,
+		List<String> ruleSetDescriptions = new ArrayList<String>();
+		GameType currentGameType = getCurrentGameType();
+		for (GameRule gr : currentGameType.toGameRules()) {
+			ruleSetDescriptions.add(gr.toRuleSet().getDescription());
+		}
+		ArrayAdapter<String> rsAdapter = new SpinnerAdapter(this,
 				android.R.layout.simple_spinner_dropdown_item,
-				ruleSetDescriptions);
+				ruleSetDescriptions, currentGameType.toGameRules());
 		rsAdapter
 				.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		spinner_ruleSet.setAdapter(rsAdapter);
-		spinner_ruleSet.setOnItemSelectedListener(mRuleSetSelectedHandler);
 
-		switch_forceRuleSet = (Switch) findViewById(R.id.newSession_forceRuleSet);
-		switch_forceRuleSet.setOnCheckedChangeListener(mCheckedChangeListener);
-
-		isTeamCB = (CheckBox) findViewById(R.id.newSession_isTeam);
 		isActiveCB = (CheckBox) findViewById(R.id.newSession_isActive);
 
-		List<String> sessionTypes = new ArrayList<String>();
-		sessionTypes.add(SessionType.LEAGUE.toString());
-		sessionTypes.add(SessionType.LADDER.toString());
-		sessionTypes.add(SessionType.SNGL_ELIM.toString());
-		sessionTypes.add(SessionType.DBL_ELIM.toString());
-		ArrayAdapter<String> sAdapter = new ArrayAdapter<String>(this,
-				android.R.layout.simple_spinner_dropdown_item, sessionTypes);
-		sAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-		sessionTypeSpinner.setAdapter(sAdapter);
-
 		try {
-			players = Player.getDao(this).queryForAll();
-			playerNames.clear();
-			for (Player p : players) {
-				playerNames.add(p.getFirstName() + " " + p.getLastName());
+			teams = Team.getDao(this).queryForAll();
+			teamNames.clear();
+			for (Team t : teams) {
+				teamNames.add(t.getTeamName());
 			}
-			// TODO: uncomment once teams are re-implemented
-			// teams = Team.getAll(getApplicationContext());
-			// teamNames.clear();
-			// for(Team t: teams){
-			// teamNames.add(t.getTeamName());
-			// }
 		} catch (SQLException e) {
 			Toast.makeText(getApplicationContext(), e.getMessage(),
 					Toast.LENGTH_LONG).show();
@@ -141,18 +100,15 @@ public class NewSession extends MenuContainerActivity {
 				s = sDao.queryForId(sId);
 				createButton.setText("Modify");
 				name.setText(s.getSessionName());
-				sessionTypeSpinner.setVisibility(View.GONE);
-				switch_forceRuleSet.setVisibility(View.GONE);
+				spinner_sessionType.setVisibility(View.GONE);
 				spinner_ruleSet.setVisibility(View.GONE);
-				isTeamCB.setVisibility(View.GONE);
 				isActiveCB.setVisibility(View.VISIBLE);
 				isActiveCB.setChecked(s.getIsActive());
 
 				// TODO: if loading a session, show player/team names or hide
 				// box but dont allow session roster to change or bad things
 				// could happen!
-				playerNames.clear();
-				// teamNames.clear();
+				teamNames.clear();
 			} catch (SQLException e) {
 				Toast.makeText(getApplicationContext(), e.getMessage(),
 						Toast.LENGTH_LONG).show();
@@ -166,72 +122,34 @@ public class NewSession extends MenuContainerActivity {
 			@Override
 			public void onItemClick(AdapterView arg0, View view, int pos,
 					long arg3) {
-				// if (isTeamCB.isChecked()) {
-				// if(teamIdxList.contains(pos))
-				// {
-				// teamIdxList.remove((Integer) pos);
-				// } else {
-				// teamIdxList.add(pos);
-				// }
-				// } else {
-				if (playerIdxList.contains(pos)) {
-					playerIdxList.remove((Integer) pos);
+
+				if (teamIdxList.contains(pos)) {
+					teamIdxList.remove((Integer) pos);
 				} else {
-					playerIdxList.add(pos);
+					teamIdxList.add(pos);
 				}
-				// }
 
-				String strText = "";
-
-				// if (isTeamCB.isChecked()) {
+				// String strText = "";
+				//
 				// Collections.sort(teamIdxList);
-				// for(int i=0 ; i < teamIdxList.size(); i++)
-				// strText += teams.get(teamIdxList.get(i)).getTeamName() + ",";
-				// } else {
-				Collections.sort(playerIdxList);
-				for (int i = 0; i < playerIdxList.size(); i++)
-					strText += players.get(playerIdxList.get(i)).getFirstName()
-							+ ",";
-				// }
+				// for (int i = 0; i < teamIdxList.size(); i++)
+				// strText += teams.get(teamIdxList.get(i)).getTeamName()
+				// + ",";
 			}
 		});
-
-		isTeamCB.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-			public void onCheckedChanged(CompoundButton buttonView,
-					boolean isChecked) {
-				updateRosterCheckList();
-				if (isChecked) {
-					// for (Integer t: teamIdxList) {
-					// rosterCheckList.setItemChecked(t, true);
-					// }
-				} else {
-					for (Integer p : playerIdxList) {
-						rosterCheckList.setItemChecked(p, true);
-					}
-				}
-			}
-		});
-
 	}
 
 	public void updateRosterCheckList() {
-		// if (isTeamCB.isChecked()) {
-		// rosterCheckList.setAdapter(new ArrayAdapter<String>(this,
-		// android.R.layout.simple_list_item_multiple_choice, teamNames));
-		// } else {
-		rosterCheckList
-				.setAdapter(new ArrayAdapter<String>(this,
-						android.R.layout.simple_list_item_multiple_choice,
-						playerNames));
-		// }
+		rosterCheckList.setAdapter(new ArrayAdapter<String>(this,
+				android.R.layout.simple_list_item_multiple_choice, teamNames));
 	}
 
 	public void createNewSession(View view) {
 		Context context = getApplicationContext();
 		Session session = null;
 		String session_name = null;
-		// int ruleSetId = RuleType.rsNull;
 		SessionType session_type;
+		GameRule game_rule;
 		Boolean is_active = true;
 
 		List<SessionMember> sMembers = new ArrayList<SessionMember>();
@@ -244,29 +162,13 @@ public class NewSession extends MenuContainerActivity {
 		}
 
 		// get the session type
-		switch (sessionTypeSpinner.getSelectedItemPosition()) {
-		case 0:
-			// is league
-			session_type = SessionType.LEAGUE;
-			break;
-		case 1:
-			// is ladder
-			session_type = SessionType.LADDER;
-			break;
-		case 2:
-			// is single elimination tourny
-			session_type = SessionType.SNGL_ELIM;
-			break;
-		case 3:
-			// is double elimination tourny
-			session_type = SessionType.DBL_ELIM;
-			break;
-		}
+		session_type = (SessionType) spinner_sessionType.getSelectedView()
+				.getTag();
 
-		// get the ruleset
-		if (switch_forceRuleSet.isChecked() == true) {
-			// ruleSetId = ruleSetIds.get(ruleSet_pos);
-		}
+		// get the game rules
+		game_rule = (GameRule) spinner_ruleSet.getSelectedView().getTag();
+
+		int team_size = 1;
 
 		// make the new session or modify an existing one
 		if (sId != -1) {
@@ -286,8 +188,8 @@ public class NewSession extends MenuContainerActivity {
 			}
 		} else {
 			// create the session
-			// session = new Session(sessionName, sessionType, ruleSetId,
-			// startDate, isTeam);
+			session = new Session(session_name, getCurrentGameType(),
+					game_rule, session_type, team_size);
 
 			try {
 				sDao = getHelper().getSessionDao();
@@ -295,45 +197,27 @@ public class NewSession extends MenuContainerActivity {
 				Toast.makeText(context, "Session created!", Toast.LENGTH_SHORT)
 						.show();
 			} catch (SQLException e) {
-				Log.e(PocketLeague.class.getName(),
-						"Could not create session.", e);
+				loge("Could not create session", e);
 				Toast.makeText(context, "Could not create session.",
 						Toast.LENGTH_SHORT).show();
 			}
 
-			// convert the indices from the roster list to actual players or
-			// teams
-			// if (isTeam) {
-			// List<Team> roster = new ArrayList<Team>();
-			// for (Integer teamIdx: teamIdxList) {
-			// roster.add(teams.get(teamIdx));
-			// }
-			//
-			// roster = seedRoster(roster);
-			//
-			// int ii = 0;
-			// for (Team t: roster) {
-			// sMembers.add(new SessionMember(session, t, ii));
-			// ii++;
-			// }
-			// } else {
-			List<Player> roster = new ArrayList<Player>();
-			for (Integer playerIdx : playerIdxList) {
-				roster.add(players.get(playerIdx));
+			// convert the indices from the roster list to actual teams
+
+			List<Team> roster = new ArrayList<Team>();
+			for (Integer teamIdx : teamIdxList) {
+				roster.add(teams.get(teamIdx));
 			}
 
 			roster = seedRoster(roster);
 
 			int ii = 0;
-			for (Player p : roster) {
-				// TODO: change players to teams
-				// sMembers.add(new SessionMember(session, p, ii));
+			for (Team t : roster) {
+				sMembers.add(new SessionMember(session, t, ii));
 				ii++;
 			}
-			// }
 
 			// create the session members
-
 			try {
 				Dao<SessionMember, Long> smDao = getHelper()
 						.getSessionMemberDao();
@@ -342,8 +226,7 @@ public class NewSession extends MenuContainerActivity {
 				}
 				finish();
 			} catch (SQLException e) {
-				Log.e(PocketLeague.class.getName(),
-						"Could not create session member.", e);
+				loge("Could not create session member", e);
 				Toast.makeText(context, "Could not create session member.",
 						Toast.LENGTH_SHORT).show();
 			}
@@ -351,7 +234,7 @@ public class NewSession extends MenuContainerActivity {
 
 	}
 
-	public List seedRoster(List roster) {
+	public List<Team> seedRoster(List<Team> roster) {
 		// only random seeding so far...
 		Collections.shuffle(roster);
 
