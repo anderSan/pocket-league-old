@@ -104,7 +104,7 @@ public class View_GameTypes extends OrmLiteFragment {
 		for (GameType gt : GameType.values()) {
 			ViewHolder_GameType gtvh = new ViewHolder_GameType();
 			gtvh.setGameType(gt);
-			gtvh.setName(gt.name());
+			gtvh.setName(gt.toString());
 			gtvh.setDrawableId(gt.toDrawableId());
 			gametypes_list.add(gtvh);
 		}
