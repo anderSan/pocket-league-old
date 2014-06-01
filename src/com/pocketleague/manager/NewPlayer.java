@@ -164,7 +164,7 @@ public class NewPlayer extends MenuContainerActivity {
 							.show();
 					finish();
 				} catch (SQLException ee) {
-					loge("Could not create player or team", ee);
+					loge("Could not create player", ee);
 					Toast.makeText(this, "Could not create player.",
 							Toast.LENGTH_SHORT).show();
 				}

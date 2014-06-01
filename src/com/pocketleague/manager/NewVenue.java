@@ -20,7 +20,7 @@ public class NewVenue extends MenuContainerActivity {
 	Dao<Venue, Long> vDao;
 
 	Button btn_create;
-	TextView name;
+	TextView tv_name;
 	CheckBox cb_isActive;
 	CheckBox cb_isFavorite;
 
@@ -32,7 +32,7 @@ public class NewVenue extends MenuContainerActivity {
 		vDao = Venue.getDao(this);
 
 		btn_create = (Button) findViewById(R.id.button_createVenue);
-		name = (TextView) findViewById(R.id.editText_venueName);
+		tv_name = (TextView) findViewById(R.id.editText_venueName);
 		cb_isActive = (CheckBox) findViewById(R.id.newVenue_isActive);
 		cb_isFavorite = (CheckBox) findViewById(R.id.newVenue_isFavorite);
 
@@ -47,7 +47,7 @@ public class NewVenue extends MenuContainerActivity {
 		try {
 			v = vDao.queryForId(vId);
 			btn_create.setText("Modify");
-			name.setText(v.getName());
+			tv_name.setText(v.getName());
 			cb_isActive.setVisibility(View.VISIBLE);
 			cb_isActive.setChecked(v.getIsActive());
 			cb_isFavorite.setChecked(v.getIsFavorite());
@@ -57,7 +57,7 @@ public class NewVenue extends MenuContainerActivity {
 	}
 
 	public void doneButtonPushed(View view) {
-		String venue_name = name.getText().toString().trim();
+		String venue_name = tv_name.getText().toString().trim();
 		if (venue_name.isEmpty()) {
 			Toast.makeText(this, "Venue name is required.", Toast.LENGTH_LONG)
 					.show();
@@ -98,6 +98,7 @@ public class NewVenue extends MenuContainerActivity {
 			finish();
 		} catch (SQLException e) {
 			e.printStackTrace();
+			loge("Could not modify venue", e);
 			Toast.makeText(this, "Could not modify venue.", Toast.LENGTH_SHORT)
 					.show();
 		}
