@@ -67,31 +67,31 @@ public class NewPlayer extends MenuContainerActivity {
 
 		Intent intent = getIntent();
 		pId = intent.getLongExtra("PID", -1);
-		loadPlayerValues();
+		if (pId != -1) {
+			loadPlayerValues();
+		}
 	}
 
 	private void loadPlayerValues() {
-		if (pId != -1) {
-			try {
-				p = pDao.queryForId(pId);
-				t = findPlayerTeam(p);
-				btn_create.setText("Modify");
-				tv_nick.setText(p.getNickName());
-				tv_name.setText(p.getFirstName() + " " + p.getLastName());
-				tv_weight.setText(String.valueOf(p.getWeight_kg()));
-				tv_height.setText(String.valueOf(p.getHeight_cm()));
-				cb_lh.setChecked(p.getIsLeftHanded());
-				cb_rh.setChecked(p.getIsRightHanded());
-				cb_lf.setChecked(p.getIsLeftFooted());
-				cb_rf.setChecked(p.getIsRightFooted());
-				btn_color.setBackgroundColor(p.getColor());
-				player_color = p.getColor();
-				cb_isActive.setVisibility(View.VISIBLE);
-				cb_isActive.setChecked(p.getIsActive());
-				cb_isFavorite.setChecked(p.getIsFavorite());
-			} catch (SQLException e) {
-				Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show();
-			}
+		try {
+			p = pDao.queryForId(pId);
+			t = findPlayerTeam(p);
+			btn_create.setText("Modify");
+			tv_nick.setText(p.getNickName());
+			tv_name.setText(p.getFirstName() + " " + p.getLastName());
+			tv_weight.setText(String.valueOf(p.getWeight_kg()));
+			tv_height.setText(String.valueOf(p.getHeight_cm()));
+			cb_lh.setChecked(p.getIsLeftHanded());
+			cb_rh.setChecked(p.getIsRightHanded());
+			cb_lf.setChecked(p.getIsLeftFooted());
+			cb_rf.setChecked(p.getIsRightFooted());
+			btn_color.setBackgroundColor(p.getColor());
+			player_color = p.getColor();
+			cb_isActive.setVisibility(View.VISIBLE);
+			cb_isActive.setChecked(p.getIsActive());
+			cb_isFavorite.setChecked(p.getIsFavorite());
+		} catch (SQLException e) {
+			Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show();
 		}
 	}
 
@@ -229,8 +229,8 @@ public class NewPlayer extends MenuContainerActivity {
 		// rectangle on the left of the arrow.
 		// for example, 0xff000000 is black, 0xff0000ff is blue. Please be aware
 		// of the initial 0xff which is the alpha.
-		AmbilWarnaDialog dialog = new AmbilWarnaDialog(view.getContext(),
-				player_color, new OnAmbilWarnaListener() {
+		AmbilWarnaDialog dialog = new AmbilWarnaDialog(this, player_color,
+				new OnAmbilWarnaListener() {
 					@Override
 					public void onOk(AmbilWarnaDialog dialog, int color) {
 						player_color = color;

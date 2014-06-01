@@ -44,9 +44,10 @@ public class Venue {
 	Venue() {
 	}
 
-	public Venue(String name) {
+	public Venue(String name, boolean is_favorite) {
 		super();
 		this.name = name;
+		this.is_favorite = is_favorite;
 	}
 
 	public static Dao<Venue, Long> getDao(Context context) {
@@ -92,5 +93,13 @@ public class Venue {
 
 	public void setIsActive(boolean is_active) {
 		this.is_active = is_active;
+	}
+
+	public boolean getIsFavorite() {
+		return is_favorite;
+	}
+
+	public void setIsFavorite(boolean is_favorite) {
+		this.is_favorite = is_favorite;
 	}
 }

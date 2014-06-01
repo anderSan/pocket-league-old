@@ -14,8 +14,8 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_alignParentRight="true"
-        android:onClick="doneButtonPushed"
         android:text="@string/create"
+        android:onClick="doneButtonPushed"
         />
     
     <EditText
@@ -128,7 +128,6 @@
         android:layout_height="wrap_content"
     	android:layout_alignLeft="@id/editText_nickname"
     	android:layout_below="@id/newPlayer_isFavorite"
-    	android:layout_marginTop="20dp"
     	android:text="Active"
     	android:visibility="gone"
     	/>
