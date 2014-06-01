@@ -11,7 +11,6 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.pocketleague.gametypes.GameType;
 import com.pocketleague.manager.R;
 
 public class ListAdapter_GameType extends ArrayAdapter<ViewHolder_GameType> {
@@ -27,9 +26,8 @@ public class ListAdapter_GameType extends ArrayAdapter<ViewHolder_GameType> {
 		this.gametype_list = data;
 	}
 
+	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
-
-		GameType gametype_info;
 
 		View gridView;
 		TextView textView;
@@ -61,13 +59,11 @@ public class ListAdapter_GameType extends ArrayAdapter<ViewHolder_GameType> {
 
 	@Override
 	public ViewHolder_GameType getItem(int position) {
-		// TODO Auto-generated method stub
 		return super.getItem(position);
 	}
 
 	@Override
 	public long getItemId(int position) {
-		// TODO Auto-generated method stub
 		return super.getItemId(position);
 	}
 }

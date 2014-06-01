@@ -105,14 +105,14 @@ public class NewGame extends MenuContainerActivity {
 		public void onItemSelected(AdapterView<?> parent, View v, int position,
 				long id) {
 			session_pos = position;
-			if (sessions.get(position).getRuleSetId() == -1) {
-				spinner_ruleSet.setEnabled(true);
-			} else {
-				spinner_ruleSet.setEnabled(false);
-				int selectedId = sessions.get(position).getRuleSetId();
-				spinner_ruleSet.setSelection(ruleset_ids.indexOf(selectedId));
-				ruleSet_pos = ruleset_ids.indexOf(selectedId);
-			}
+			// if (sessions.get(position).getRuleSet() == -1) {
+			// spinner_ruleSet.setEnabled(true);
+			// } else {
+			// spinner_ruleSet.setEnabled(false);
+			// int selectedId = sessions.get(position).getRuleSet();
+			// spinner_ruleSet.setSelection(ruleset_ids.indexOf(selectedId));
+			// ruleSet_pos = ruleset_ids.indexOf(selectedId);
+			// }
 		}
 
 		public void onNothingSelected(AdapterView<?> parent) {

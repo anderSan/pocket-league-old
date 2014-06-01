@@ -9,7 +9,9 @@ import com.j256.ormlite.dao.ForeignCollection;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.field.ForeignCollectionField;
 import com.j256.ormlite.table.DatabaseTable;
+import com.pocketleague.gametypes.GameRule;
 import com.pocketleague.gametypes.GameType;
+import com.pocketleague.gametypes.RuleSet;
 import com.pocketleague.manager.db.DatabaseHelper;
 import com.pocketleague.manager.enums.SessionType;
 
@@ -17,7 +19,7 @@ import com.pocketleague.manager.enums.SessionType;
 public class Session {
 	public static final String NAME = "name";
 	public static final String GAME_TYPE = "game_type";
-	public static final String RULESET = "ruleset_id";
+	public static final String GAME_RULES = "game_rules";
 	public static final String SESSION_TYPE = "session_type";
 	public static final String TEAM_SIZE = "team_size";
 	public static final String IS_ACTIVE = "is_active";
@@ -33,7 +35,7 @@ public class Session {
 	private GameType game_type;
 
 	@DatabaseField
-	private int ruleset_id;
+	private GameRule game_rule;
 
 	@DatabaseField(canBeNull = false)
 	private SessionType session_type;
@@ -56,12 +58,12 @@ public class Session {
 	public Session() {
 	}
 
-	public Session(String session_name, GameType game_type, int ruleset_id,
+	public Session(String session_name, GameType game_type, GameRule game_rule,
 			SessionType session_type, int team_size) {
 		super();
 		this.name = session_name;
 		this.game_type = game_type;
-		this.ruleset_id = ruleset_id;
+		this.game_rule = game_rule;
 		this.session_type = session_type;
 		this.team_size = team_size;
 	}
@@ -101,12 +103,12 @@ public class Session {
 		this.game_type = game_type;
 	}
 
-	public int getRuleSetId() {
-		return ruleset_id;
+	public GameRule getGameRule() {
+		return game_rule;
 	}
 
-	public void setRuleSetId(int ruleset_id) {
-		this.ruleset_id = ruleset_id;
+	public void setGameRules(GameRule game_rule) {
+		this.game_rule = game_rule;
 	}
 
 	public SessionType getSessionType() {
@@ -152,4 +154,8 @@ public class Session {
 	// =========================================================================
 	// Additional methods
 	// =========================================================================
+
+	public RuleSet getRuleSet() {
+		return game_rule.toRuleSet();
+	}
 }
