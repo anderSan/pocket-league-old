@@ -46,11 +46,11 @@ public class MenuContainerActivity extends OrmLiteBaseActivity<DatabaseHelper> {
 
 	public GameType getCurrentGameType() {
 		return GameType.valueOf(getPreference("currentGameType",
-				GameType.UNDEFINED.toString()));
+				GameType.UNDEFINED.name()));
 	}
 
 	public void setCurrentGameType(GameType gametype) {
-		setPreference("currentGameType", gametype.toString());
+		setPreference("currentGameType", gametype.name());
 	}
 
 	public void log(String msg) {

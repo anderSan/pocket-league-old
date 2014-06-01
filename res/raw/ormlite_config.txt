@@ -1,5 +1,5 @@
 #
-# generated on 2014/05/18 06:39:03
+# generated on 2014/06/01 01:10:34
 #
 # --table-start--
 dataClass=com.pocketleague.manager.db.tables.Game
@@ -132,7 +132,7 @@ fieldName=game_type
 canBeNull=false
 # --field-end--
 # --field-start--
-fieldName=ruleset_id
+fieldName=game_rule
 # --field-end--
 # --field-start--
 fieldName=session_type
