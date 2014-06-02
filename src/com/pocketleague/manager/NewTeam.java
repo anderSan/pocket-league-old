@@ -30,8 +30,8 @@ public class NewTeam extends MenuContainerActivity {
 
 	Button btn_create;
 	TextView tv_name;
+	TextView tv_num_selected;
 	ListView lv_roster;
-	CheckBox cb_isActive;
 	CheckBox cb_isFavorite;
 
 	List<Player> players = new ArrayList<Player>();
@@ -48,15 +48,15 @@ public class NewTeam extends MenuContainerActivity {
 
 		btn_create = (Button) findViewById(R.id.button_createTeam);
 		tv_name = (TextView) findViewById(R.id.editText_teamName);
+		tv_num_selected = (TextView) findViewById(R.id.tv_num_selected);
 		lv_roster = (ListView) findViewById(R.id.newTeam_playerSelection);
-		cb_isActive = (CheckBox) findViewById(R.id.newTeam_isActive);
 		cb_isFavorite = (CheckBox) findViewById(R.id.newTeam_isFavorite);
 
 		try {
 			players = Player.getDao(this).queryForAll();
 			playerNames.clear();
 			for (Player p : players) {
-				playerNames.add(p.getFirstName() + " " + p.getLastName());
+				playerNames.add(p.getNickName());
 			}
 		} catch (SQLException e) {
 			Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show();
@@ -72,6 +72,7 @@ public class NewTeam extends MenuContainerActivity {
 				} else {
 					playerIdxList.add(pos);
 				}
+				tv_num_selected.setText(playerIdxList.size() + " selected");
 			}
 		});
 
@@ -88,8 +89,6 @@ public class NewTeam extends MenuContainerActivity {
 			btn_create.setText("Modify");
 			tv_name.setText(t.getTeamName());
 			lv_roster.setVisibility(View.GONE);
-			cb_isActive.setVisibility(View.VISIBLE);
-			cb_isActive.setChecked(t.getIsActive());
 			cb_isFavorite.setChecked(t.getIsFavorite());
 
 			// TODO: if loading a team, show players but dont allow team
@@ -113,12 +112,11 @@ public class NewTeam extends MenuContainerActivity {
 			Toast.makeText(this, "Team name is required.", Toast.LENGTH_LONG)
 					.show();
 		} else {
-			Boolean is_active = cb_isActive.isChecked();
 			Boolean is_favorite = cb_isFavorite.isChecked();
 			int team_color = getResources().getColor(R.color.Aqua);
 
 			if (tId != -1) {
-				modifyTeam(team_name, team_color, is_active, is_favorite);
+				modifyTeam(team_name, team_color, true, is_favorite);
 			} else {
 				createTeam(team_name, team_color, is_favorite);
 			}
