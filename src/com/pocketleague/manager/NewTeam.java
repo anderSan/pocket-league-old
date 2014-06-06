@@ -129,7 +129,10 @@ public class NewTeam extends MenuContainerActivity {
 				is_favorite);
 
 		try {
-			if (newTeam.exists(this)) {
+			if (playerIdxList.size() == 1) {
+				Toast.makeText(this, "Cannot create a team with one player.",
+						Toast.LENGTH_SHORT).show();
+			} else if (newTeam.exists(this)) {
 				Toast.makeText(this, "Team already exists.", Toast.LENGTH_SHORT)
 						.show();
 			} else {
