@@ -7,6 +7,10 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.CheckBox;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -24,6 +28,12 @@ public class Detail_Team extends MenuContainerActivity {
 	Dao<TeamMember, Long> tmDao;
 	Dao<Player, Long> pDao;
 
+	TextView tv_teamName;
+	TextView tv_teamId;
+	TextView tv_members;
+	CheckBox cb_isFavorite;
+	Switch sw_isActive;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -31,6 +41,18 @@ public class Detail_Team extends MenuContainerActivity {
 
 		Intent intent = getIntent();
 		tId = intent.getLongExtra("TID", -1);
+
+		tDao = Team.getDao(this);
+		pDao = Player.getDao(this);
+		tmDao = TeamMember.getDao(this);
+
+		tv_teamName = (TextView) findViewById(R.id.tDet_name);
+		tv_teamId = (TextView) findViewById(R.id.tDet_id);
+		tv_members = (TextView) findViewById(R.id.tDet_members);
+		cb_isFavorite = (CheckBox) findViewById(R.id.tDet_isFavorite);
+		cb_isFavorite.setOnClickListener(favoriteClicked);
+		sw_isActive = (Switch) findViewById(R.id.tDet_isActive);
+		sw_isActive.setOnClickListener(activeClicked);
 	}
 
 	@Override
@@ -62,11 +84,7 @@ public class Detail_Team extends MenuContainerActivity {
 		String memberNicks = "";
 		if (tId != -1) {
 			try {
-				tDao = Team.getDao(this);
 				t = tDao.queryForId(tId);
-
-				pDao = Player.getDao(this);
-				tmDao = TeamMember.getDao(this);
 				List<TeamMember> memberList = tmDao.queryBuilder().where()
 						.eq(TeamMember.TEAM, tId).query();
 
@@ -86,24 +104,39 @@ public class Detail_Team extends MenuContainerActivity {
 			}
 		}
 
-		TextView tName = (TextView) findViewById(R.id.tDet_name);
-		tName.setText(t.getTeamName());
-
-		TextView teamId = (TextView) findViewById(R.id.tDet_id);
-		teamId.setText(String.valueOf(t.getId()));
-
-		TextView tv_members = (TextView) findViewById(R.id.tDet_members);
+		tv_teamName.setText(t.getTeamName());
+		tv_teamId.setText(String.valueOf(t.getId()));
 		tv_members.setText(memberNicks);
+		cb_isFavorite.setChecked(t.getIsFavorite());
+		sw_isActive.setChecked(t.getIsActive());
+	}
 
-		TextView tWinRatio = (TextView) findViewById(R.id.tDet_winRatio);
-		// tWinRatio.setText(String.valueOf(t.getnWins()) + "/" +
-		// String.valueOf(t.getnLosses()));
+	private OnClickListener favoriteClicked = new OnClickListener() {
+		@Override
+		public void onClick(View v) {
+			if (tId != -1) {
+				t.setIsFavorite(((CheckBox) v).isChecked());
+				updateTeam();
+			}
+		}
+	};
 
-		TextView tIsActive = (TextView) findViewById(R.id.teamDet_isActive);
-		if (t.getIsActive()) {
-			tIsActive.setText("This team is active");
-		} else {
-			tIsActive.setText("This team is retired");
+	private OnClickListener activeClicked = new OnClickListener() {
+		@Override
+		public void onClick(View v) {
+			if (tId != -1) {
+				t.setIsActive(((Switch) v).isChecked());
+				updateTeam();
+			}
+		}
+	};
+
+	private void updateTeam() {
+		try {
+			tDao.update(t);
+		} catch (SQLException e) {
+			loge("Could not update team", e);
+			e.printStackTrace();
 		}
 	}
 }
