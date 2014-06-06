@@ -1,6 +1,7 @@
 package com.pocketleague.manager;
 
 import java.sql.SQLException;
+import java.util.List;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -13,12 +14,14 @@ import com.j256.ormlite.dao.Dao;
 import com.pocketleague.manager.backend.MenuContainerActivity;
 import com.pocketleague.manager.db.tables.Player;
 import com.pocketleague.manager.db.tables.Team;
+import com.pocketleague.manager.db.tables.TeamMember;
 
 public class Detail_Team extends MenuContainerActivity {
 	private static final String LOGTAG = "Detail_Team";
 	Long tId;
 	Team t;
 	Dao<Team, Long> tDao;
+	Dao<TeamMember, Long> tmDao;
 	Dao<Player, Long> pDao;
 
 	@Override
@@ -56,20 +59,28 @@ public class Detail_Team extends MenuContainerActivity {
 	}
 
 	public void refreshDetails() {
-		Player[] p = new Player[2];
-
+		String memberNicks = "";
 		if (tId != -1) {
 			try {
 				tDao = Team.getDao(this);
 				t = tDao.queryForId(tId);
 
-				// pDao = Player.getDao(context);
-				// pDao.refresh(t.getFirstPlayer());
-				// pDao.refresh(t.getSecondPlayer());
-				//
-				// p[0] = t.getFirstPlayer();
-				// p[1] = t.getSecondPlayer();
+				pDao = Player.getDao(this);
+				tmDao = TeamMember.getDao(this);
+				List<TeamMember> memberList = tmDao.queryBuilder().where()
+						.eq(TeamMember.TEAM, tId).query();
 
+				for (TeamMember tm : memberList) {
+					pDao.refresh(tm.getPlayer());
+					memberNicks = memberNicks.concat(tm.getPlayer()
+							.getNickName() + ", ");
+				}
+				if (memberNicks.length() == 0) {
+					memberNicks = "Anonymous team (no members).";
+				} else {
+					memberNicks = memberNicks.substring(0,
+							memberNicks.length() - 2) + ".";
+				}
 			} catch (SQLException e) {
 				Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show();
 			}
@@ -81,11 +92,8 @@ public class Detail_Team extends MenuContainerActivity {
 		TextView teamId = (TextView) findViewById(R.id.tDet_id);
 		teamId.setText(String.valueOf(t.getId()));
 
-		// TextView tP1 = (TextView) findViewById(R.id.tDet_p1name);
-		// tP1.setText(p[0].getFirstName() + " " + p[0].getLastName());
-		//
-		// TextView tP2 = (TextView) findViewById(R.id.tDet_p2name);
-		// tP2.setText(p[1].getFirstName() + " " + p[1].getLastName());
+		TextView tv_members = (TextView) findViewById(R.id.tDet_members);
+		tv_members.setText(memberNicks);
 
 		TextView tWinRatio = (TextView) findViewById(R.id.tDet_winRatio);
 		// tWinRatio.setText(String.valueOf(t.getnWins()) + "/" +

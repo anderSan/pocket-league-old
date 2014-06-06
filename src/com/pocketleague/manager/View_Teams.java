@@ -103,10 +103,11 @@ public class View_Teams extends OrmLiteFragment {
 		addStatus("Retired");
 
 		// add all the teams
-		Dao<Team, Long> teamDao = null;
 		try {
-			teamDao = getHelper().getTeamDao();
-			for (Team t : teamDao) {
+			Dao<Team, Long> teamDao = getHelper().getTeamDao();
+			List<Team> allTeams = teamDao.queryBuilder().where()
+					.ne(Team.TEAM_SIZE, 1).query();
+			for (Team t : allTeams) {
 				addTeam(t.getIsActive(), String.valueOf(t.getId()),
 						t.getTeamName());
 			}
