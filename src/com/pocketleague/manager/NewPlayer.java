@@ -1,7 +1,6 @@
 package com.pocketleague.manager;
 
 import java.sql.SQLException;
-import java.util.List;
 
 import yuku.ambilwarna.AmbilWarnaDialog;
 import yuku.ambilwarna.AmbilWarnaDialog.OnAmbilWarnaListener;
@@ -15,8 +14,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.j256.ormlite.dao.Dao;
-import com.j256.ormlite.stmt.QueryBuilder;
 import com.pocketleague.manager.backend.MenuContainerActivity;
+import com.pocketleague.manager.db.DatabaseCommonQueue;
 import com.pocketleague.manager.db.tables.Player;
 import com.pocketleague.manager.db.tables.Team;
 import com.pocketleague.manager.db.tables.TeamMember;
@@ -75,12 +74,12 @@ public class NewPlayer extends MenuContainerActivity {
 	private void loadPlayerValues() {
 		try {
 			p = pDao.queryForId(pId);
-			t = findPlayerTeam(p);
+			t = DatabaseCommonQueue.findPlayerSoloTeam(this, p);
 			btn_create.setText("Modify");
 			tv_nick.setText(p.getNickName());
 			tv_name.setText(p.getFirstName() + " " + p.getLastName());
-			tv_weight.setText(String.valueOf(p.getWeight_kg()));
-			tv_height.setText(String.valueOf(p.getHeight_cm()));
+			tv_weight.setText(String.valueOf(p.getWeight()));
+			tv_height.setText(String.valueOf(p.getHeight()));
 			cb_lh.setChecked(p.getIsLeftHanded());
 			cb_rh.setChecked(p.getIsRightHanded());
 			cb_lf.setChecked(p.getIsLeftFooted());
@@ -206,22 +205,6 @@ public class NewPlayer extends MenuContainerActivity {
 			Toast.makeText(this, "Could not modify player.", Toast.LENGTH_SHORT)
 					.show();
 		}
-	}
-
-	private Team findPlayerTeam(Player p) throws SQLException {
-		QueryBuilder<TeamMember, Long> tmQb = tmDao.queryBuilder();
-		tmQb.where().eq(TeamMember.PLAYER, p);
-		QueryBuilder<Team, Long> tQb = tDao.queryBuilder();
-		tQb.where().eq(Team.TEAM_SIZE, 1);
-		// join with the order query
-		List<Team> results = tQb.join(tmQb).query();
-		if (results.size() > 1) {
-			log("Warning: Multiple teams found for player " + p.getNickName());
-			Toast.makeText(this, "Warning: Multiple teams found for player!",
-					Toast.LENGTH_SHORT).show();
-		}
-
-		return results.get(0);
 	}
 
 	public void showColorPicker(View view) {

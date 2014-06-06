@@ -172,7 +172,7 @@ public class Player implements Comparable<Player> {
 		this.is_right_footed = is_right_footed;
 	}
 
-	public int getHeight_cm() {
+	public int getHeight() {
 		return height_cm;
 	}
 
@@ -180,7 +180,7 @@ public class Player implements Comparable<Player> {
 		this.height_cm = height_cm;
 	}
 
-	public int getWeight_kg() {
+	public int getWeight() {
 		return weight_kg;
 	}
 
