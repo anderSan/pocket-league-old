@@ -6,18 +6,35 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.CheckBox;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.j256.ormlite.dao.Dao;
 import com.pocketleague.manager.backend.MenuContainerActivity;
+import com.pocketleague.manager.db.DatabaseCommonQueue;
 import com.pocketleague.manager.db.tables.Player;
+import com.pocketleague.manager.db.tables.Team;
 
 public class Detail_Player extends MenuContainerActivity {
 	private static final String LOGTAG = "Detail_Player";
 	Long pId;
 	Player p;
+	Team t;
 	Dao<Player, Long> pDao;
+	Dao<Team, Long> tDao;
+
+	TextView tv_playerName;
+	TextView tv_playerId;
+	TextView tv_height;
+	TextView tv_weight;
+	TextView tv_handed;
+	TextView tv_footed;
+	CheckBox cb_isFavorite;
+	Switch sw_isActive;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -26,6 +43,20 @@ public class Detail_Player extends MenuContainerActivity {
 
 		Intent intent = getIntent();
 		pId = intent.getLongExtra("PID", -1);
+
+		pDao = Player.getDao(this);
+		tDao = Team.getDao(this);
+
+		tv_playerName = (TextView) findViewById(R.id.pDet_name);
+		tv_playerId = (TextView) findViewById(R.id.pDet_id);
+		tv_height = (TextView) findViewById(R.id.pDet_height);
+		tv_weight = (TextView) findViewById(R.id.pDet_weight);
+		tv_handed = (TextView) findViewById(R.id.pDet_handed);
+		tv_footed = (TextView) findViewById(R.id.pDet_footed);
+		cb_isFavorite = (CheckBox) findViewById(R.id.pDet_isFavorite);
+		cb_isFavorite.setOnClickListener(favoriteClicked);
+		sw_isActive = (Switch) findViewById(R.id.pDet_isActive);
+		sw_isActive.setOnClickListener(activeClicked);
 	}
 
 	@Override
@@ -56,45 +87,73 @@ public class Detail_Player extends MenuContainerActivity {
 	public void refreshDetails() {
 		if (pId != -1) {
 			try {
-				pDao = Player.getDao(this);
 				p = pDao.queryForId(pId);
-
+				t = DatabaseCommonQueue.findPlayerSoloTeam(this, p);
 			} catch (SQLException e) {
 				Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show();
 			}
 		}
 
-		TextView pName = (TextView) findViewById(R.id.pDet_name);
-		pName.setText(p.getFirstName() + ' ' + p.getLastName() + " ("
-				+ p.getNickName() + ")");
-
-		TextView playerId = (TextView) findViewById(R.id.pDet_id);
-		playerId.setText(String.valueOf(p.getId()));
-
-		TextView pHeight = (TextView) findViewById(R.id.pDet_height);
-		pHeight.setText("Height: " + String.valueOf(p.getHeight_cm()) + " cm");
-
-		TextView pWeight = (TextView) findViewById(R.id.pDet_weight);
-		pWeight.setText("Weight: " + String.valueOf(p.getWeight_kg()) + " kg");
-
-		TextView pWinRatio = (TextView) findViewById(R.id.pDet_winRatio);
-		// pWinRatio.setText(String.valueOf(p.getnWins()) + "/" +
-		// String.valueOf(p.getnLosses()));
-		pWinRatio.setText("Win Ratio here eventually...");
-
-		TextView pHanded = (TextView) findViewById(R.id.pDet_handed);
+		tv_playerName.setText(p.getNickName() + " (" + p.getFirstName() + ' '
+				+ p.getLastName() + ")");
+		tv_playerId.setText(String.valueOf(p.getId()));
+		tv_height.setText("Height: " + String.valueOf(p.getHeight()) + " cm");
+		tv_weight.setText("Weight: " + String.valueOf(p.getWeight()) + " kg");
 		if (p.getIsLeftHanded()) {
 			if (p.getIsRightHanded()) {
-				pHanded.setText("L + R");
+				tv_handed.setText("L + R");
 			} else {
-				pHanded.setText("L");
+				tv_handed.setText("L");
 			}
 		} else {
-			pHanded.setText("R");
+			tv_handed.setText("R");
 		}
 
-		TextView pStatsSummary = (TextView) findViewById(R.id.pDet_statsSummary);
-		pStatsSummary.setText("Stats \n will \n go \n here");
+		if (p.getIsLeftFooted()) {
+			if (p.getIsRightFooted()) {
+				tv_footed.setText("L + R");
+			} else {
+				tv_footed.setText("L");
+			}
+		} else {
+			tv_footed.setText("R");
+		}
+
+		cb_isFavorite.setChecked(p.getIsFavorite());
+		sw_isActive.setChecked(p.getIsActive());
 	}
 
+	private OnClickListener favoriteClicked = new OnClickListener() {
+		@Override
+		public void onClick(View v) {
+			if (pId != -1) {
+				boolean is_favorite = ((CheckBox) v).isChecked();
+				p.setIsFavorite(is_favorite);
+				t.setIsFavorite(is_favorite);
+				updatePlayer();
+			}
+		}
+	};
+
+	private OnClickListener activeClicked = new OnClickListener() {
+		@Override
+		public void onClick(View v) {
+			if (pId != -1) {
+				boolean is_active = ((Switch) v).isChecked();
+				p.setIsActive(is_active);
+				t.setIsActive(is_active);
+				updatePlayer();
+			}
+		}
+	};
+
+	private void updatePlayer() {
+		try {
+			pDao.update(p);
+			tDao.update(t);
+		} catch (SQLException e) {
+			loge("Could not update player", e);
+			e.printStackTrace();
+		}
+	}
 }
