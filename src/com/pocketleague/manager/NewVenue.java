@@ -21,7 +21,6 @@ public class NewVenue extends MenuContainerActivity {
 
 	Button btn_create;
 	TextView tv_name;
-	CheckBox cb_isActive;
 	CheckBox cb_isFavorite;
 
 	@Override
@@ -33,7 +32,6 @@ public class NewVenue extends MenuContainerActivity {
 
 		btn_create = (Button) findViewById(R.id.button_createVenue);
 		tv_name = (TextView) findViewById(R.id.editText_venueName);
-		cb_isActive = (CheckBox) findViewById(R.id.newVenue_isActive);
 		cb_isFavorite = (CheckBox) findViewById(R.id.newVenue_isFavorite);
 
 		Intent intent = getIntent();
@@ -48,8 +46,6 @@ public class NewVenue extends MenuContainerActivity {
 			v = vDao.queryForId(vId);
 			btn_create.setText("Modify");
 			tv_name.setText(v.getName());
-			cb_isActive.setVisibility(View.VISIBLE);
-			cb_isActive.setChecked(v.getIsActive());
 			cb_isFavorite.setChecked(v.getIsFavorite());
 		} catch (SQLException e) {
 			Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show();
@@ -62,11 +58,10 @@ public class NewVenue extends MenuContainerActivity {
 			Toast.makeText(this, "Venue name is required.", Toast.LENGTH_LONG)
 					.show();
 		} else {
-			Boolean is_active = cb_isActive.isChecked();
 			Boolean is_favorite = cb_isFavorite.isChecked();
 
 			if (vId != -1) {
-				modifyVenue(venue_name, is_active, is_favorite);
+				modifyVenue(venue_name, is_favorite);
 			} else {
 				createVenue(venue_name, is_favorite);
 			}
@@ -87,10 +82,8 @@ public class NewVenue extends MenuContainerActivity {
 		}
 	}
 
-	private void modifyVenue(String venue_name, boolean is_active,
-			boolean is_favorite) {
+	private void modifyVenue(String venue_name, boolean is_favorite) {
 		v.setName(venue_name);
-		v.setIsActive(is_active);
 		v.setIsFavorite(is_favorite);
 		try {
 			vDao.update(v);
