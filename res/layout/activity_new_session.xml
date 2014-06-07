@@ -8,57 +8,85 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context=".NewSession" >
 
+    <CheckBox 
+    	android:id="@+id/newSession_isFavorite"
+    	android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+    	android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+    	android:layout_marginLeft="16dp"
+    	style="?android:attr/starStyle"
+    	/>
+    
     <EditText
         android:id="@+id/editText_sessionName"
-        android:layout_width="wrap_content"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
-        android:layout_marginTop="36dp"
-        android:ems="15"
-        android:hint="SessionName (required)" />
+        android:layout_toLeftOf="@id/newSession_isFavorite"
+        android:hint="SessionName (required)"
+        android:inputType="text"
+        android:imeOptions="actionDone"
+        >
+        	<requestFocus />
+    	</EditText>
     
     <Spinner
          android:id="@+id/newSession_sessionType"
+         android:layout_width="fill_parent"
+         android:layout_height="wrap_content"
          android:layout_alignParentLeft="true"
          android:layout_below="@id/editText_sessionName"
-         android:layout_width="wrap_content"
-         android:layout_height="wrap_content"
-         android:layout_marginTop="20dp"
-         android:layout_marginBottom="20dp" />
+         />
     
     <Spinner
-        android:id="@+id/newSession_spinner_ruleSet"
-        android:layout_width="wrap_content"
+        android:id="@+id/newSession_ruleSet"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
-        android:layout_below="@id/newSession_sessionType" />   
+        android:layout_below="@id/newSession_sessionType"
+        />
     
-    <CheckBox 
-    	android:id="@+id/newSession_isActive"
-    	android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-    	android:layout_below="@id/newSession_spinner_ruleSet"
-    	android:layout_alignParentLeft="true"
-    	android:layout_marginTop="20dp"
-    	android:text="Active"
-    	android:visibility="gone" />
-
-    <ListView
-    	android:id="@+id/newSession_playerSelection"
-    	android:layout_width="wrap_content"
-    	android:layout_height="wrap_content"
-    	android:layout_alignParentLeft="true"
-    	android:layout_alignRight="@+id/editText_sessionName"
-    	android:layout_below="@id/newSession_isActive"
-    	android:layout_marginTop="45dp" />
+    <TextView
+	    android:id="@+id/tv_header"
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:layout_alignParentLeft="true"
+	    android:layout_below="@id/newSession_ruleSet"
+	    android:layout_marginTop="16dp"
+	    android:layout_marginBottom="8dp"
+	    android:text="@string/team_member_header"
+	    />
+    
+    <TextView
+	    android:id="@+id/tv_num_selected"
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:layout_alignParentRight="true"
+	    android:layout_alignBaseline="@id/tv_header"
+	    android:layout_marginTop="16dp"
+	    android:layout_marginBottom="8dp"
+	    />
     
     <Button
         android:id="@+id/button_createSession"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
-        android:layout_width="wrap_content"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:onClick="createNewSession"
-        android:text="@string/create" />
+        android:layout_gravity="center_horizontal"
+        android:layout_alignParentBottom="true"
+        android:layout_marginTop="16dp"
+        android:text="@string/create"
+        android:onClick="doneButtonPushed"
+        />
+
+    <ListView
+    	android:id="@+id/newSession_teamSelection"
+    	android:layout_width="wrap_content"
+    	android:layout_height="wrap_content"
+    	android:layout_alignParentLeft="true"
+    	android:layout_below="@id/tv_header"
+    	android:layout_above="@id/button_createSession"
+    	android:choiceMode="multipleChoice"
+    	/>
 
 </RelativeLayout>
