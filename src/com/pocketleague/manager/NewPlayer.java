@@ -39,7 +39,6 @@ public class NewPlayer extends MenuContainerActivity {
 	CheckBox cb_rf;
 	Button btn_color;
 	int player_color = Color.BLACK;
-	CheckBox cb_isActive;
 	CheckBox cb_isFavorite;
 
 	@Override
@@ -61,7 +60,6 @@ public class NewPlayer extends MenuContainerActivity {
 		cb_lf = (CheckBox) findViewById(R.id.checkBox_leftFooted);
 		cb_rf = (CheckBox) findViewById(R.id.checkBox_rightFooted);
 		btn_color = (Button) findViewById(R.id.newPlayer_colorPicker);
-		cb_isActive = (CheckBox) findViewById(R.id.newPlayer_isActive);
 		cb_isFavorite = (CheckBox) findViewById(R.id.newPlayer_isFavorite);
 
 		Intent intent = getIntent();
@@ -86,8 +84,6 @@ public class NewPlayer extends MenuContainerActivity {
 			cb_rf.setChecked(p.getIsRightFooted());
 			btn_color.setBackgroundColor(p.getColor());
 			player_color = p.getColor();
-			cb_isActive.setVisibility(View.VISIBLE);
-			cb_isActive.setChecked(p.getIsActive());
 			cb_isFavorite.setChecked(p.getIsFavorite());
 		} catch (SQLException e) {
 			Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show();
@@ -127,13 +123,11 @@ public class NewPlayer extends MenuContainerActivity {
 
 			byte[] emptyImage = new byte[0];
 
-			Boolean is_active = cb_isActive.isChecked();
 			Boolean is_favorite = cb_isFavorite.isChecked();
 
 			if (pId != -1) {
 				modifyPlayer(nickname, first_name, last_name, lh, rh, lf, rf,
-						height_cm, weight_kg, emptyImage, is_active,
-						is_favorite);
+						height_cm, weight_kg, emptyImage, is_favorite);
 			} else {
 				createPlayer(nickname, first_name, last_name, lh, rh, lf, rf,
 						height_cm, weight_kg, emptyImage, is_favorite);
@@ -176,8 +170,7 @@ public class NewPlayer extends MenuContainerActivity {
 
 	private void modifyPlayer(String nickname, String first_name,
 			String last_name, boolean lh, boolean rh, boolean lf, boolean rf,
-			int height_cm, int weight_kg, byte[] image, boolean is_active,
-			boolean is_favorite) {
+			int height_cm, int weight_kg, byte[] image, boolean is_favorite) {
 
 		p.setNickName(nickname);
 		p.setFirstName(first_name);
@@ -189,11 +182,9 @@ public class NewPlayer extends MenuContainerActivity {
 		p.setWeight_kg(weight_kg);
 		p.setHeight_cm(height_cm);
 		p.setColor(player_color);
-		p.setIsActive(is_active);
 		p.setIsFavorite(is_favorite);
 
 		t.setTeamName(nickname);
-		t.setIsActive(is_active);
 		t.setIsFavorite(is_favorite);
 		try {
 			pDao.update(p);

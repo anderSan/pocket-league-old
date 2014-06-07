@@ -8,16 +8,16 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context=".NewPlayer" >
 
-    <Button
-        android:id="@+id/button_createPlayer"
-        android:layout_width="wrap_content"
+    <CheckBox 
+    	android:id="@+id/newPlayer_isFavorite"
+    	android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+    	android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
-        android:layout_alignParentRight="true"
-        android:text="@string/create"
-        android:onClick="doneButtonPushed"
-        />
-    
+    	android:layout_marginLeft="16dp"
+    	style="?android:attr/starStyle"
+    	/>
+
     <EditText
         android:id="@+id/editText_nickname"
         android:layout_width="wrap_content"
@@ -111,25 +111,17 @@
     	android:background="@color/Black"
     	android:onClick="showColorPicker"
     	/>
-
-    <CheckBox 
-    	android:id="@+id/newPlayer_isFavorite"
-    	android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-    	android:layout_alignLeft="@id/editText_nickname"
-    	android:layout_below="@id/newPlayer_colorPicker"
-    	android:layout_marginTop="20dp"
-    	android:text="Favorite"
-    	/>
     
-    <CheckBox 
-    	android:id="@+id/newPlayer_isActive"
-    	android:layout_width="wrap_content"
+    <Button
+        android:id="@+id/button_createPlayer"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-    	android:layout_alignLeft="@id/editText_nickname"
-    	android:layout_below="@id/newPlayer_isFavorite"
-    	android:text="Active"
-    	android:visibility="gone"
-    	/>
+        android:layout_gravity="center_horizontal"
+        android:layout_alignParentBottom="true"
+        android:layout_marginTop="16dp"
+        android:text="@string/create"
+        android:onClick="doneButtonPushed"
+        />
+    
 
 </RelativeLayout>
