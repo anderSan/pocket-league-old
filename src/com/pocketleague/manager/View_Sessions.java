@@ -147,6 +147,7 @@ public class View_Sessions extends OrmLiteFragment {
 
 			// get the group header
 			ViewHolderHeader_Session statusInfo = statusList.get(groupPosition);
+			SessionType session_type = statusInfo.getSessionType();
 			// get the child info
 			ViewHolder_Session sessionInfo = statusInfo.getSessionList().get(
 					childPosition);
@@ -156,7 +157,7 @@ public class View_Sessions extends OrmLiteFragment {
 
 			// load the game in progress screen
 			Long sId = Long.valueOf(sessionInfo.getId());
-			Intent intent = new Intent(context, Detail_Session.class);
+			Intent intent = new Intent(context, session_type.toClass());
 			intent.putExtra("SID", sId);
 			startActivity(intent);
 			return false;
@@ -176,7 +177,7 @@ public class View_Sessions extends OrmLiteFragment {
 
 	private void addStatus(SessionType st) {
 		ViewHolderHeader_Session vhh_Session = new ViewHolderHeader_Session();
-		vhh_Session.setName(st.toString());
+		vhh_Session.setSessionType(st);
 		statusList.add(vhh_Session);
 		sHash.put(st.name(), vhh_Session);
 	}
