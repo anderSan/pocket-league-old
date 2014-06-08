@@ -915,7 +915,8 @@ public class Bracket {
 		public long p2Id = -1;
 		public boolean allowCreate = false;
 		public boolean allowView = false;
-		public String marquee = "";
+		public String title = "";
+		public String subtitle = "";
 
 		MatchInfo() {
 		}
@@ -944,34 +945,34 @@ public class Bracket {
 				allowView = true;
 			}
 
-			marquee += "[ " + matchIds.get(idx) + " / " + gameId + " ] ";
+			subtitle += "matchId: " + matchIds.get(idx) + ", gameId: " + gameId;
 
 			// upper player
 			if (sm1Type == BrNodeType.UNSET || sm1Type == BrNodeType.RESPAWN) {
-				marquee += "Unknown";
+				title += "Unknown";
 			} else {
-				marquee += smSeedMap.get(sm1Idcs.get(idx)).getTeam()
+				title += smSeedMap.get(sm1Idcs.get(idx)).getTeam()
 						.getTeamName();
 				if (sm1Type == BrNodeType.WIN) {
-					marquee += " (W)";
+					title += " (W)";
 				} else if (sm1Type == BrNodeType.LOSS) {
-					marquee += " (L)";
+					title += " (L)";
 				}
 			}
 
 			// lower player
 			if (sm2Type == BrNodeType.UNSET || sm2Type == BrNodeType.RESPAWN) {
-				marquee += " -vs- Unknown";
+				title += " -vs- Unknown";
 			} else if (sm2Type == BrNodeType.NA) {
-				marquee += ", bracket winner.";
+				title += ", bracket winner.";
 			} else {
-				marquee += " -vs- "
+				title += " -vs- "
 						+ smSeedMap.get(sm2Idcs.get(idx)).getTeam()
 								.getTeamName();
 				if (sm2Type == BrNodeType.WIN) {
-					marquee += " (W)";
+					title += " (W)";
 				} else if (sm2Type == BrNodeType.LOSS) {
-					marquee += " (L)";
+					title += " (L)";
 				}
 			}
 		}
