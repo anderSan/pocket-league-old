@@ -5,41 +5,23 @@
 
     <TextView
         android:id="@+id/textView_sessionId"
-        android:layout_width="80sp"
-		android:layout_height="45sp"
+        android:layout_width="wrap_content"
+		android:layout_height="35sp"
 		android:gravity="right|center_vertical"
-        android:paddingLeft="35sp"
-        android:paddingRight="15dp"
-        android:hint="sessionId"
-        android:textAppearance="?android:attr/textAppearanceMedium" />
+		android:paddingLeft="8dp"
+        android:paddingRight="16dp"
+        android:hint="sid"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        />
 
     <TextView
         android:id="@+id/textView_sessionName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_toRightOf="@+id/textView_sessionId"
-        android:layout_alignBaseline="@+id/textView_sessionId"
+        android:layout_toRightOf="@id/textView_sessionId"
+        android:layout_alignBaseline="@id/textView_sessionId"
         android:hint="sessionName"
-        android:textAppearance="?android:attr/textAppearanceMedium" />
-    
-    <TextView
-        android:id="@+id/textView_sessionType"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_toRightOf="@+id/textView_sessionName"
-        android:layout_alignBaseline="@+id/textView_sessionId"
-        android:hint="sessionType"
-        android:textAppearance="?android:attr/textAppearanceMedium" />
-    
-    <TextView
-        android:id="@+id/textView_sessionTeam"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_alignBaseline="@+id/textView_sessionId"
-        android:gravity="right"
-        android:layout_marginRight="24dp"
-        android:hint="Team"
-        android:textAppearance="?android:attr/textAppearanceMedium" />
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        />
 
 </RelativeLayout>

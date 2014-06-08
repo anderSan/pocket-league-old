@@ -53,12 +53,6 @@ public class ListAdapter_Session extends BaseExpandableListAdapter {
 		TextView name = (TextView) view.findViewById(R.id.textView_sessionName);
 		name.setText(sessionInfo.getName().trim());
 
-		TextView type = (TextView) view.findViewById(R.id.textView_sessionType);
-		type.setText(sessionInfo.getType().trim());
-
-		TextView team = (TextView) view.findViewById(R.id.textView_sessionTeam);
-		team.setText(sessionInfo.getTeam().trim());
-
 		return view;
 	}
 

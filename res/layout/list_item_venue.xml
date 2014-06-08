@@ -8,7 +8,8 @@
         android:layout_width="wrap_content"
 		android:layout_height="45sp"
 		android:gravity="right|center_vertical"
-        android:paddingRight="15dp"
+		android:paddingLeft="8dp"
+        android:paddingRight="16dp"
         android:hint="vid"
         android:textAppearance="?android:attr/textAppearanceMedium" />
 
