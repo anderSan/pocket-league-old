@@ -3,6 +3,7 @@ package com.pocketleague.manager;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.List;
 
 import android.app.Activity;
 import android.content.Context;
@@ -15,9 +16,12 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CompoundButton;
+import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.ExpandableListView;
 import android.widget.ExpandableListView.OnChildClickListener;
 import android.widget.ExpandableListView.OnGroupClickListener;
+import android.widget.Switch;
 import android.widget.Toast;
 
 import com.j256.ormlite.dao.Dao;
@@ -26,6 +30,7 @@ import com.pocketleague.manager.backend.ViewHolderHeader_Session;
 import com.pocketleague.manager.backend.ViewHolder_Session;
 import com.pocketleague.manager.db.OrmLiteFragment;
 import com.pocketleague.manager.db.tables.Session;
+import com.pocketleague.manager.enums.SessionType;
 
 public class View_Sessions extends OrmLiteFragment {
 	private static final String LOGTAG = "View_Sessions";
@@ -34,6 +39,7 @@ public class View_Sessions extends OrmLiteFragment {
 	private ArrayList<ViewHolderHeader_Session> statusList = new ArrayList<ViewHolderHeader_Session>();
 	private ListAdapter_Session sessionAdapter;
 	private ExpandableListView elv;
+	private Switch sw_open;
 	private View rootView;
 	private Context context;
 
@@ -56,6 +62,16 @@ public class View_Sessions extends OrmLiteFragment {
 		expandAll();
 		elv.setOnChildClickListener(elvItemClicked);
 		elv.setOnGroupClickListener(elvGroupClicked);
+
+		sw_open = (Switch) rootView.findViewById(R.id.sw_showActive);
+		sw_open.setTextOn("Open");
+		sw_open.setTextOff("Closed");
+		sw_open.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+			public void onCheckedChanged(CompoundButton buttonView,
+					boolean isChecked) {
+				refreshSessionListing();
+			}
+		});
 		return rootView;
 	}
 
@@ -99,19 +115,20 @@ public class View_Sessions extends OrmLiteFragment {
 		statusList.clear();
 
 		// add all the statii to the headers
-		addStatus("Active");
-		addStatus("Inactive");
+		for (SessionType st : SessionType.values()) {
+			addStatus(st);
+		}
 
+		boolean show_open = sw_open.isChecked();
 		// add all the sessions
-		Dao<Session, Long> sessionDao = null;
 		try {
-			sessionDao = getHelper().getSessionDao();
-			for (Session s : sessionDao) {
-				String is_team = "Singles";
-
-				addSession(s.getIsActive(), String.valueOf(s.getId()),
-						s.getSessionName(), s.getSessionType().toString(),
-						is_team);
+			Dao<Session, Long> sDao = getHelper().getSessionDao();
+			List<Session> sessions = sDao.queryBuilder().where()
+					.eq(Session.IS_ACTIVE, show_open).and()
+					.eq(Session.GAME_TYPE, getCurrentGameType()).query();
+			for (Session s : sessions) {
+				addSession(String.valueOf(s.getId()), s.getSessionName(),
+						s.getSessionType());
 			}
 		} catch (SQLException e) {
 			Toast.makeText(context, e.getMessage(), Toast.LENGTH_LONG).show();
@@ -157,31 +174,23 @@ public class View_Sessions extends OrmLiteFragment {
 		}
 	};
 
-	private void addStatus(String statusName) {
+	private void addStatus(SessionType st) {
 		ViewHolderHeader_Session vhh_Session = new ViewHolderHeader_Session();
-		vhh_Session.setName(statusName);
+		vhh_Session.setName(st.toString());
 		statusList.add(vhh_Session);
-		sHash.put(statusName, vhh_Session);
+		sHash.put(st.name(), vhh_Session);
 	}
 
-	private void addSession(boolean isActive, String sessionId,
-			String sessionName, String sessionType, String sessionTeam) {
-		// find the index of the session header
-		String sortBy;
-		if (isActive) {
-			sortBy = "Active";
-		} else {
-			sortBy = "Inactive";
-		}
-		ViewHolderHeader_Session statusInfo = sHash.get(sortBy);
+	private void addSession(String session_id, String session_name,
+			SessionType session_type) {
+
+		ViewHolderHeader_Session statusInfo = sHash.get(session_type.name());
 		ArrayList<ViewHolder_Session> sessionList = statusInfo.getSessionList();
 
 		// create a new child and add that to the group
 		ViewHolder_Session sessionInfo = new ViewHolder_Session();
-		sessionInfo.setId(sessionId);
-		sessionInfo.setName(sessionName);
-		sessionInfo.setType(sessionType);
-		sessionInfo.setTeam(sessionTeam);
+		sessionInfo.setId(session_id);
+		sessionInfo.setName(session_name);
 		sessionList.add(sessionInfo);
 		statusInfo.setSessionList(sessionList);
 	}

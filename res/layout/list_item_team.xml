@@ -8,7 +8,8 @@
         android:layout_width="wrap_content"
 		android:layout_height="35sp"
 		android:gravity="right|center_vertical"
-        android:paddingRight="15dp"
+		android:paddingLeft="8dp"
+        android:paddingRight="16dp"
         android:hint="tid"
         android:textAppearance="?android:attr/textAppearanceMedium" />
 
@@ -16,8 +17,8 @@
         android:id="@+id/textView_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_toRightOf="@+id/textView_teamId"
-        android:layout_alignBaseline="@+id/textView_teamId"
+        android:layout_toRightOf="@id/textView_teamId"
+        android:layout_alignBaseline="@id/textView_teamId"
         android:hint="team name"
         android:textAppearance="?android:attr/textAppearanceMedium" />
 
