@@ -135,12 +135,7 @@
 			android:parentActivityName="com.pocketleague.manager.View_Sessions" >
 		</activity>
 		<activity
-			android:name="com.pocketleague.manager.Detail_Session_SnglElim"
-			android:label="@string/title_activity_detail_session"
-			android:parentActivityName="com.pocketleague.manager.View_Sessions" >
-		</activity>
-		<activity
-			android:name="com.pocketleague.manager.Detail_Session_DblElim"
+			android:name="com.pocketleague.manager.Detail_Session_Elimination"
 			android:label="@string/title_activity_detail_session"
 			android:parentActivityName="com.pocketleague.manager.View_Sessions" >
 		</activity>

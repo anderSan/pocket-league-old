@@ -4,12 +4,12 @@ import java.sql.SQLException;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.ActionMode;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnLongClickListener;
-import android.widget.Button;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -28,9 +28,8 @@ public class Detail_Session_Base extends MenuContainerActivity {
 	public Session s;
 	public Dao<Session, Long> sDao;
 	public BracketHolder bracketHolder = null;
-	public TextView matchText;
-	public Button loadMatch;
 	public MatchInfo mInfo;
+	public ActionMode mActionMode;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
