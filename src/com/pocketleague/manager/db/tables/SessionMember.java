@@ -16,6 +16,9 @@ public class SessionMember {
 	public static final String TEAM_SEED = "team_seed";
 	public static final String TEAM_RANK = "team_rank";
 
+	@DatabaseField(generatedId = true)
+	private long id;
+
 	@DatabaseField(canBeNull = false, uniqueCombo = true, foreign = true)
 	private Session session;
 
