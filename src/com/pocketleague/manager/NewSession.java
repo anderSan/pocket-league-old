@@ -27,6 +27,7 @@ import com.pocketleague.manager.backend.SpinnerAdapter;
 import com.pocketleague.manager.db.tables.Session;
 import com.pocketleague.manager.db.tables.SessionMember;
 import com.pocketleague.manager.db.tables.Team;
+import com.pocketleague.manager.db.tables.Venue;
 import com.pocketleague.manager.enums.SessionType;
 
 public class NewSession extends MenuContainerActivity {
@@ -39,6 +40,7 @@ public class NewSession extends MenuContainerActivity {
 	TextView tv_name;
 	Spinner sp_sessionType;
 	Spinner sp_ruleSet;
+	Spinner sp_venues;
 	TextView tv_num_selected;
 	ListView lv_roster;
 	CheckBox cb_isFavorite;
@@ -59,6 +61,7 @@ public class NewSession extends MenuContainerActivity {
 		tv_name = (TextView) findViewById(R.id.editText_sessionName);
 		sp_sessionType = (Spinner) findViewById(R.id.newSession_sessionType);
 		sp_ruleSet = (Spinner) findViewById(R.id.newSession_ruleSet);
+		sp_venues = (Spinner) findViewById(R.id.newSession_venues);
 		tv_num_selected = (TextView) findViewById(R.id.tv_num_selected);
 		lv_roster = (ListView) findViewById(R.id.newSession_teamSelection);
 		cb_isFavorite = (CheckBox) findViewById(R.id.newSession_isFavorite);
@@ -68,10 +71,8 @@ public class NewSession extends MenuContainerActivity {
 			sessionTypes.add(st.toString());
 		}
 		ArrayAdapter<String> stAdapter = new SpinnerAdapter(this,
-				android.R.layout.simple_spinner_dropdown_item, sessionTypes,
+				android.R.layout.simple_spinner_item, sessionTypes,
 				Arrays.asList(SessionType.values()));
-		stAdapter
-				.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		sp_sessionType.setAdapter(stAdapter);
 
 		List<String> ruleSetDescriptions = new ArrayList<String>();
@@ -80,11 +81,23 @@ public class NewSession extends MenuContainerActivity {
 			ruleSetDescriptions.add(gr.toRuleSet().getDescription());
 		}
 		ArrayAdapter<String> rsAdapter = new SpinnerAdapter(this,
-				android.R.layout.simple_spinner_dropdown_item,
-				ruleSetDescriptions, currentGameType.toGameRules());
-		rsAdapter
-				.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+				android.R.layout.simple_spinner_item, ruleSetDescriptions,
+				currentGameType.toGameRules());
 		sp_ruleSet.setAdapter(rsAdapter);
+
+		try {
+			List<Venue> venues = Venue.getDao(this).queryForAll();
+			List<String> venueNames = new ArrayList<String>();
+			for (Venue v : venues) {
+				venueNames.add(v.getName());
+			}
+			ArrayAdapter<String> vAdapter = new SpinnerAdapter(this,
+					android.R.layout.simple_spinner_dropdown_item, venueNames,
+					venues);
+			sp_venues.setAdapter(vAdapter);
+		} catch (SQLException e) {
+			Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show();
+		}
 
 		try {
 			teams = Team.getDao(this).queryForAll();
@@ -150,22 +163,23 @@ public class NewSession extends MenuContainerActivity {
 					.getSelectedView().getTag();
 			GameRule game_rule = (GameRule) sp_ruleSet.getSelectedView()
 					.getTag();
+			Venue current_venue = (Venue) sp_venues.getSelectedView().getTag();
 			Boolean is_favorite = cb_isFavorite.isChecked();
 
 			if (sId != -1) {
-				modifySession(session_name, is_favorite);
+				modifySession(session_name, current_venue, is_favorite);
 			} else {
 				createSession(session_name, game_rule, session_type,
-						is_favorite);
+						current_venue, is_favorite);
 			}
 		}
 	}
 
 	private void createSession(String session_name, GameRule game_rule,
-			SessionType session_type, boolean is_favorite) {
+			SessionType session_type, Venue current_venue, boolean is_favorite) {
 		int team_size = teamIdxList.size();
 		Session newSession = new Session(session_name, getCurrentGameType(),
-				game_rule, session_type, team_size);
+				game_rule, session_type, team_size, current_venue);
 		newSession.setIsFavorite(is_favorite);
 
 		List<Team> roster = new ArrayList<Team>();
@@ -191,8 +205,10 @@ public class NewSession extends MenuContainerActivity {
 		}
 	}
 
-	private void modifySession(String session_name, boolean is_favorite) {
+	private void modifySession(String session_name, Venue current_venue,
+			boolean is_favorite) {
 		s.setSessionName(session_name);
+		s.setCurrentVenue(current_venue);
 		s.setIsFavorite(is_favorite);
 
 		try {

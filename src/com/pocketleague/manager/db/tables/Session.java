@@ -24,6 +24,7 @@ public class Session {
 	public static final String TEAM_SIZE = "team_size";
 	public static final String IS_ACTIVE = "is_active";
 	public static final String IS_FAVORITE = "is_favorite";
+	public static final String CURRENT_VENUE = "current_venue";
 
 	@DatabaseField(generatedId = true)
 	private long id;
@@ -49,6 +50,9 @@ public class Session {
 	@DatabaseField
 	private boolean is_favorite = false;
 
+	@DatabaseField(foreign = true)
+	private Venue current_venue;
+
 	@ForeignCollectionField
 	ForeignCollection<Game> games;
 
@@ -59,13 +63,14 @@ public class Session {
 	}
 
 	public Session(String session_name, GameType game_type, GameRule game_rule,
-			SessionType session_type, int team_size) {
+			SessionType session_type, int team_size, Venue current_venue) {
 		super();
 		this.name = session_name;
 		this.game_type = game_type;
 		this.game_rule = game_rule;
 		this.session_type = session_type;
 		this.team_size = team_size;
+		this.current_venue = current_venue;
 	}
 
 	public static Dao<Session, Long> getDao(Context context) {
@@ -141,6 +146,14 @@ public class Session {
 
 	public void setIsFavorite(boolean is_favorite) {
 		this.is_favorite = is_favorite;
+	}
+
+	public Venue getCurrentVenue() {
+		return current_venue;
+	}
+
+	public void setCurrentVenue(Venue current_venue) {
+		this.current_venue = current_venue;
 	}
 
 	public ForeignCollection<Game> getGames() {
