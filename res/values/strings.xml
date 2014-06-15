@@ -14,6 +14,7 @@
 	<string name="title_activity_players">Players</string>
 	<string name="title_activity_sessions">Sessions</string>
 	<string name="title_activity_teams">Teams</string>
+	<string name="title_activity_quick_game">Quick Game</string>
 	<string name="title_activity_venues">Venues</string>
 	<string name="title_activity_new_game">New Game</string>
 	<string name="title_activity_new_player">New Player</string>

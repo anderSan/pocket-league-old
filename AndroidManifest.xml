@@ -95,6 +95,11 @@
 			android:parentActivityName="com.pocketleague.manager.PocketLeague" >
 		</activity>
 		<activity
+			android:name="com.pocketleague.manager.Quick_Game"
+			android:label="@string/title_activity_quick_game"
+			android:parentActivityName="com.pocketleague.manager.PocketLeague" >
+		</activity>
+		<activity
 			android:name="com.pocketleague.manager.View_Sessions"
 			android:label="@string/title_activity_sessions"
 			android:parentActivityName="com.pocketleague.manager.PocketLeague" >
