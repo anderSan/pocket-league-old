@@ -14,6 +14,9 @@ public class TeamMember {
 	public static final String TEAM = "team_id";
 	public static final String PLAYER = "player_id";
 
+	@DatabaseField(generatedId = true)
+	private long id;
+
 	@DatabaseField(canBeNull = false, uniqueCombo = true, foreign = true)
 	private Team team;
 
