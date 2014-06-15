@@ -47,12 +47,20 @@
         android:layout_below="@id/newSession_sessionType"
         />
     
+    <Spinner
+        android:id="@+id/newSession_venues"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@id/newSession_ruleSet"
+        />
+    
     <TextView
 	    android:id="@+id/tv_header"
 	    android:layout_width="wrap_content"
 	    android:layout_height="wrap_content"
 	    android:layout_alignParentLeft="true"
-	    android:layout_below="@id/newSession_ruleSet"
+	    android:layout_below="@id/newSession_venues"
 	    android:layout_marginTop="16dp"
 	    android:layout_marginBottom="8dp"
 	    android:text="@string/team_member_header"
