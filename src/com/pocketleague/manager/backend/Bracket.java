@@ -438,9 +438,9 @@ public class Bracket {
 			if (isLabeled) {
 				if (sm1Types.get(idx) != BrNodeType.RESPAWN) {
 					SessionMember sm = smSeedMap.get(sm1Idcs.get(idx));
-					String nickname = "(" + String.valueOf(sm.getSeed() + 1)
-							+ ") " + sm.getTeam().getTeamName();
-					tv.setText(nickname);
+					// String nickname = "(" + String.valueOf(sm.getSeed() + 1)
+					// + ") " + sm.getTeam().getTeamName();
+					// tv.setText(nickname);
 				}
 				drwString += "_labeled";
 				if (smLost(sm1Idcs.get(idx))) {
@@ -474,10 +474,10 @@ public class Bracket {
 				if (isLabeled) {
 					if (sm2Types.get(idx) != BrNodeType.RESPAWN) {
 						SessionMember sm = smSeedMap.get(sm2Idcs.get(idx));
-						String nickname = "("
-								+ String.valueOf(sm.getSeed() + 1) + ") "
-								+ sm.getTeam().getTeamName();
-						tv.setText(nickname);
+						// String nickname = "("
+						// + String.valueOf(sm.getSeed() + 1) + ") "
+						// + sm.getTeam().getTeamName();
+						// tv.setText(nickname);
 					}
 					drwString += "_labeled";
 					if (smLost(sm2Idcs.get(idx))) {
