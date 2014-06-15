@@ -118,6 +118,7 @@ public class Detail_Session_Elimination extends Detail_Session_Base {
 		intent.putExtra("p1", mInfo.p1Id);
 		intent.putExtra("p2", mInfo.p2Id);
 		intent.putExtra("sId", sId);
+		intent.putExtra("vId", s.getCurrentVenue().getId());
 		startActivity(intent);
 
 		// load a game that is in progress
