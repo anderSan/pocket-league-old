@@ -21,12 +21,14 @@ import com.pocketleague.manager.NewSession;
 import com.pocketleague.manager.R;
 import com.pocketleague.manager.backend.Bracket.MatchInfo;
 import com.pocketleague.manager.db.tables.Session;
+import com.pocketleague.manager.db.tables.SessionMember;
 
 public class Detail_Session_Base extends MenuContainerActivity {
 	private static final String LOGTAG = "Detail_Session";
 	public Long sId;
 	public Session s;
 	public Dao<Session, Long> sDao;
+	public Dao<SessionMember, Long> smDao;
 	public BracketHolder bracketHolder = null;
 	public MatchInfo mInfo;
 	public ActionMode mActionMode;
@@ -41,6 +43,8 @@ public class Detail_Session_Base extends MenuContainerActivity {
 		if (sId != -1) {
 			try {
 				sDao = Session.getDao(this);
+				smDao = SessionMember.getDao(this);
+
 				s = sDao.queryForId(sId);
 			} catch (SQLException e) {
 				Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show();
@@ -84,8 +88,7 @@ public class Detail_Session_Base extends MenuContainerActivity {
 		// smDao.update(sm);
 		// }
 		// } catch (SQLException e) {
-		// Toast.makeText(getApplicationContext(), e.getMessage(),
-		// Toast.LENGTH_LONG).show();
+		// Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show();
 		// }
 	}
 

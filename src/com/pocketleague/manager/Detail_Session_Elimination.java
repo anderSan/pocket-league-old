@@ -1,5 +1,7 @@
 package com.pocketleague.manager;
 
+import java.sql.SQLException;
+
 import android.content.Intent;
 import android.util.DisplayMetrics;
 import android.view.ActionMode;
@@ -7,12 +9,12 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.View.OnClickListener;
-import android.view.View.OnLongClickListener;
 import android.widget.ScrollView;
+import android.widget.Toast;
 
 import com.pocketleague.manager.backend.BracketHolder;
 import com.pocketleague.manager.backend.Detail_Session_Base;
+import com.pocketleague.manager.db.tables.SessionMember;
 import com.pocketleague.manager.enums.SessionType;
 
 public class Detail_Session_Elimination extends Detail_Session_Base {
@@ -45,15 +47,14 @@ public class Detail_Session_Elimination extends Detail_Session_Base {
 		super.onPause();
 
 		// TODO: move this to bracket.java
-		// try {
-		// for (SessionMember sm: sMembers) {
-		// smDao.update(sm);
-		// }
-		// }
-		// catch (SQLException e) {
-		// Toast.makeText(getApplicationContext(), e.getMessage(),
-		// Toast.LENGTH_LONG).show();
-		// }
+		try {
+			for (SessionMember sm : bracketHolder.sMembers) {
+				smDao.update(sm);
+			}
+		} catch (SQLException e) {
+			Toast.makeText(getApplicationContext(), e.getMessage(),
+					Toast.LENGTH_LONG).show();
+		}
 	}
 
 	public void refreshDetails() {
@@ -61,37 +62,6 @@ public class Detail_Session_Elimination extends Detail_Session_Base {
 			bracketHolder.refreshBrackets();
 		}
 	}
-
-	private OnClickListener mViewMatchListener = new OnClickListener() {
-		@Override
-		public void onClick(View v) {
-			Intent intent = new Intent(v.getContext(), Detail_Game.class);
-			intent.putExtra("GID", mInfo.gameId);
-			startActivity(intent);
-		}
-	};
-
-	private OnLongClickListener mMatchGIPListener = new OnLongClickListener() {
-		@Override
-		public boolean onLongClick(View v) {
-			// Intent intent = new Intent(v.getContext(), GameInProgress.class);
-			// intent.putExtra("GID", mInfo.gameId);
-			// startActivity(intent);
-			// finish();
-			return true;
-		}
-	};
-
-	private OnClickListener mCreateMatchListener = new OnClickListener() {
-		@Override
-		public void onClick(View v) {
-			Intent intent = new Intent(v.getContext(), NewGame.class);
-			intent.putExtra("p1", mInfo.p1Id);
-			intent.putExtra("p2", mInfo.p2Id);
-			intent.putExtra("sId", sId);
-			startActivity(intent);
-		}
-	};
 
 	public class ActionBarCallBack implements ActionMode.Callback {
 		// Called when the action mode is created; startActionMode() was called
@@ -107,13 +77,8 @@ public class Detail_Session_Elimination extends Detail_Session_Base {
 			MenuItem mItm = menu.findItem(R.id.action_match);
 			if (mInfo.allowCreate) {
 				mItm.setTitle("Create");
-
-				// loadMatch.setOnClickListener(mCreateMatchListener);
-				// loadMatch.setOnLongClickListener(null);
 			} else if (mInfo.allowView) {
 				mItm.setTitle("Load");
-				// loadMatch.setOnClickListener(mViewMatchListener);
-				// loadMatch.setOnLongClickListener(mMatchGIPListener);
 			} else {
 				mItm.setVisible(false);
 			}
@@ -149,5 +114,21 @@ public class Detail_Session_Elimination extends Detail_Session_Base {
 	}
 
 	private void matchAction() {
+		Intent intent = new Intent(this, NewGame.class);
+		intent.putExtra("p1", mInfo.p1Id);
+		intent.putExtra("p2", mInfo.p2Id);
+		intent.putExtra("sId", sId);
+		startActivity(intent);
+
+		// load a game that is in progress
+		// Intent intent = new Intent(v.getContext(), GameInProgress.class);
+		// intent.putExtra("GID", mInfo.gameId);
+		// startActivity(intent);
+		// finish();
+
+		// load a game that is finished
+		// Intent intent = new Intent(v.getContext(), Detail_Game.class);
+		// intent.putExtra("GID", mInfo.gameId);
+		// startActivity(intent);
 	}
 }

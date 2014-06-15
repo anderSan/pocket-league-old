@@ -25,7 +25,7 @@ public class BracketHolder implements View.OnClickListener {
 	public Context context;
 	private Session s;
 	private RelativeLayout rl;
-	private List<SessionMember> sMembers = new ArrayList<SessionMember>();
+	public List<SessionMember> sMembers = new ArrayList<SessionMember>();
 	private Boolean isDoubleElim;
 	private Bracket wBr; // winners bracket
 	private Bracket lBr; // losers bracket
