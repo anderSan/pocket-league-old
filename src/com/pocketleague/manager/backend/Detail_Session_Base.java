@@ -6,22 +6,21 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.ActionMode;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.View.OnClickListener;
-import android.view.View.OnLongClickListener;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.j256.ormlite.dao.Dao;
-import com.pocketleague.manager.Detail_Game;
-import com.pocketleague.manager.NewGame;
 import com.pocketleague.manager.NewSession;
+import com.pocketleague.manager.Quick_Game;
 import com.pocketleague.manager.R;
-import com.pocketleague.manager.backend.Bracket.MatchInfo;
+import com.pocketleague.manager.db.tables.Game;
+import com.pocketleague.manager.db.tables.GameMember;
 import com.pocketleague.manager.db.tables.Session;
 import com.pocketleague.manager.db.tables.SessionMember;
+import com.pocketleague.manager.db.tables.Team;
 
 public class Detail_Session_Base extends MenuContainerActivity {
 	private static final String LOGTAG = "Detail_Session";
@@ -29,7 +28,6 @@ public class Detail_Session_Base extends MenuContainerActivity {
 	public Session s;
 	public Dao<Session, Long> sDao;
 	public Dao<SessionMember, Long> smDao;
-	public BracketHolder bracketHolder = null;
 	public MatchInfo mInfo;
 	public ActionMode mActionMode;
 
@@ -50,7 +48,6 @@ public class Detail_Session_Base extends MenuContainerActivity {
 				Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show();
 			}
 		}
-
 		createSessionLayout();
 	}
 
@@ -81,15 +78,6 @@ public class Detail_Session_Base extends MenuContainerActivity {
 	@Override
 	protected void onPause() {
 		super.onPause();
-
-		// TODO: move this to bracket.java
-		// try {
-		// for (SessionMember sm : sMembers) {
-		// smDao.update(sm);
-		// }
-		// } catch (SQLException e) {
-		// Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show();
-		// }
 	}
 
 	public void refreshBaseDetails() {
@@ -108,34 +96,91 @@ public class Detail_Session_Base extends MenuContainerActivity {
 
 	}
 
-	private OnClickListener mViewMatchListener = new OnClickListener() {
+	public class ActionBarCallBack implements ActionMode.Callback {
+		// Called when the action mode is created; startActionMode() was called
 		@Override
-		public void onClick(View v) {
-			Intent intent = new Intent(v.getContext(), Detail_Game.class);
-			intent.putExtra("GID", mInfo.gameId);
-			startActivity(intent);
-		}
-	};
+		public boolean onCreateActionMode(ActionMode mode, Menu menu) {
+			// Inflate a menu resource providing context menu items
+			MenuInflater inflater = mode.getMenuInflater();
+			inflater.inflate(R.menu.context_menu, menu);
 
-	private OnLongClickListener mMatchGIPListener = new OnLongClickListener() {
-		@Override
-		public boolean onLongClick(View v) {
-			// Intent intent = new Intent(v.getContext(), GameInProgress.class);
-			// intent.putExtra("GID", mInfo.gameId);
-			// startActivity(intent);
-			// finish();
+			mode.setTitle(mInfo.title);
+			mode.setSubtitle(mInfo.subtitle);
+
+			MenuItem mItm = menu.findItem(R.id.action_match);
+			if (mInfo.getCreatable()) {
+				mItm.setTitle("Create");
+			} else if (mInfo.getViewable()) {
+				mItm.setTitle("Load");
+			} else {
+				mItm.setVisible(false);
+			}
 			return true;
 		}
-	};
 
-	private OnClickListener mCreateMatchListener = new OnClickListener() {
+		// Called each time the action mode is shown. Always called after
+		// onCreateActionMode, but
+		// may be called multiple times if the mode is invalidated.
 		@Override
-		public void onClick(View v) {
-			Intent intent = new Intent(v.getContext(), NewGame.class);
-			intent.putExtra("p1", mInfo.p1Id);
-			intent.putExtra("p2", mInfo.p2Id);
-			intent.putExtra("sId", sId);
-			startActivity(intent);
+		public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
+			return false; // Return false if nothing is done
 		}
-	};
+
+		// Called when the user selects a contextual menu item
+		@Override
+		public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
+			switch (item.getItemId()) {
+			case R.id.action_match:
+				createMatch();
+				mode.finish();
+				return true;
+			default:
+				return false;
+			}
+		}
+
+		// Called when the user exits the action mode
+		@Override
+		public void onDestroyActionMode(ActionMode mode) {
+			mActionMode = null;
+		}
+	}
+
+	private void createMatch() {
+		Intent intent = new Intent(this, Quick_Game.class);
+		Dao<Game, Long> gDao = Game.getDao(this);
+		Dao<GameMember, Long> gmDao = GameMember.getDao(this);
+		Dao<Team, Long> tDao = Team.getDao(this);
+
+		Game g = new Game(s, mInfo.getIdInSession(), s.getCurrentVenue(), false);
+		GameMember t1 = new GameMember(g, mInfo.getTeam1());
+		GameMember t2 = new GameMember(g, mInfo.getTeam2());
+
+		try {
+			gDao.setObjectCache(true);
+			gDao.create(g);
+			gmDao.create(t1);
+			gmDao.create(t2);
+		} catch (SQLException e) {
+			Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show();
+		}
+
+		intent.putExtra("gId", g.getId());
+		startActivity(intent);
+
+		// load a game that is in progress
+		// Intent intent = new Intent(v.getContext(), GameInProgress.class);
+		// intent.putExtra("GID", mInfo.gameId);
+		// startActivity(intent);
+		// finish();
+
+		// load a game that is finished
+		// Intent intent = new Intent(v.getContext(), Detail_Game.class);
+		// intent.putExtra("GID", mInfo.gameId);
+		// startActivity(intent);
+	}
+
+	private void loadMatch() {
+
+	}
 }
