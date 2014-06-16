@@ -23,7 +23,10 @@ public class Game {
 	@DatabaseField(generatedId = true)
 	private long id;
 
-	@DatabaseField(foreign = true)
+	@DatabaseField(uniqueCombo = true)
+	private long id_in_session;
+
+	@DatabaseField(foreign = true, uniqueCombo = true)
 	private Session session;
 
 	@DatabaseField(foreign = true)
@@ -44,18 +47,21 @@ public class Game {
 	public Game() {
 	}
 
-	public Game(Session session, Venue venue, Date date_played,
-			boolean is_tracked) {
+	public Game(Session session, long id_in_session, Venue venue,
+			Date date_played, boolean is_tracked) {
 		super();
 		this.session = session;
+		this.id_in_session = id_in_session;
 		this.venue = venue;
 		this.date_played = date_played;
 		this.is_tracked = is_tracked;
 	}
 
-	public Game(Session session, Venue venue, boolean is_tracked) {
+	public Game(Session session, long id_in_session, Venue venue,
+			boolean is_tracked) {
 		super();
 		this.session = session;
+		this.id_in_session = id_in_session;
 		this.venue = venue;
 		this.date_played = new Date();
 		this.is_tracked = is_tracked;
@@ -78,6 +84,14 @@ public class Game {
 
 	// public void setId(long id) {
 	// this.id = id;
+	// }
+
+	public long getIdInSession() {
+		return id_in_session;
+	}
+
+	// public void setIdInSession(long id_in_session) {
+	// this.id_in_session = id_in_session;
 	// }
 
 	public Session getSession() {
