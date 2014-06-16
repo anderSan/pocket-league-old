@@ -10,6 +10,7 @@ public enum SessionType {
 	OPEN("Open", Detail_Session_Base.class),
 	LEAGUE("League", Detail_Session_League.class),
 	LADDER("Ladder", Detail_Session_Ladder.class),
+	GROUP_STAGE("Group Stage", Detail_Session_Base.class),
 	SNGL_ELIM("Single-elimination Tournament", Detail_Session_Elimination.class),
 	DBL_ELIM("Double-elimination Tournament", Detail_Session_Elimination.class);
 
