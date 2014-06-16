@@ -13,7 +13,6 @@ import android.widget.Toast;
 
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.stmt.QueryBuilder;
-import com.pocketleague.manager.backend.Bracket.MatchInfo;
 import com.pocketleague.manager.db.tables.Game;
 import com.pocketleague.manager.db.tables.Session;
 import com.pocketleague.manager.db.tables.SessionMember;
