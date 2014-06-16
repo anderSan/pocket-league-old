@@ -278,6 +278,8 @@ public class Bracket {
 		tv.setWidth(baseWidth);
 		tv.setHeight(vwHeight);
 		tv.setId(2 + headerIdOffset);
+		tv.setText(String.valueOf(2 + headerIdOffset));
+		tv.setTextColor(Color.WHITE);
 		tv.setBackgroundColor(Color.BLACK);
 		lp = new RelativeLayout.LayoutParams(
 				RelativeLayout.LayoutParams.WRAP_CONTENT,
@@ -314,6 +316,8 @@ public class Bracket {
 			}
 			tv.setHeight(vwHeight);
 			tv.setId(i + 3 + headerIdOffset);
+			tv.setText(String.valueOf(i + 3 + headerIdOffset));
+			tv.setTextColor(Color.WHITE);
 			tv.setBackgroundColor(vwColor[i % 3]);
 
 			lp.addRule(RelativeLayout.ALIGN_BASELINE, 2 + headerIdOffset);
@@ -558,7 +562,7 @@ public class Bracket {
 			}
 		}
 
-		// Log.i(LOGTAG, "viewId: " + viewId + " placed below " + viewAboveId);
+		Log.i(LOGTAG, "viewId: " + viewId + " placed below " + viewAboveId);
 		return viewAboveId;
 	}
 
@@ -895,59 +899,24 @@ public class Bracket {
 		int matchId = viewId % BrNodeType.MOD - matchIdOffset;
 		if (matchIds.contains(matchId)) {
 			int idx = matchIds.indexOf(matchId);
-			mInfo = new MatchInfo(idx);
-		}
-		return mInfo;
-	}
+			long game_id = gameIds.get(idx);
+			mInfo.setIdInSession(game_id);
 
-	public int length() {
-		assert matchIds.size() == sm1Idcs.size();
-		assert matchIds.size() == sm1Types.size();
-		assert matchIds.size() == sm2Idcs.size();
-		assert matchIds.size() == sm2Types.size();
-		assert matchIds.size() == gameIds.size();
-		return matchIds.size();
-	}
-
-	public class MatchInfo {
-		public long gameId = -1;
-		public long p1Id = -1;
-		public long p2Id = -1;
-		public boolean allowCreate = false;
-		public boolean allowView = false;
-		public String title = "";
-		public String subtitle = "";
-
-		MatchInfo() {
-		}
-
-		MatchInfo(int idx) {
-			gameId = gameIds.get(idx);
 			BrNodeType sm1Type = sm1Types.get(idx);
 			BrNodeType sm2Type = sm2Types.get(idx);
 
 			if (sm1Type == BrNodeType.TIP || sm1Type == BrNodeType.WIN
 					|| sm1Type == BrNodeType.LOSS) {
-				p1Id = smSeedMap.get(sm1Idcs.get(idx)).getTeam().getId();
+				mInfo.setTeam1(smSeedMap.get(sm1Idcs.get(idx)).getTeam());
 			}
 
 			if (sm2Type == BrNodeType.TIP || sm2Type == BrNodeType.WIN
 					|| sm2Type == BrNodeType.LOSS) {
-				p2Id = smSeedMap.get(sm2Idcs.get(idx)).getTeam().getId();
+				mInfo.setTeam2(smSeedMap.get(sm2Idcs.get(idx)).getTeam());
 			}
 
-			if (sm1Type == BrNodeType.TIP && sm2Type == BrNodeType.TIP) {
-				allowCreate = true;
-			}
-
-			if (sm1Type == BrNodeType.WIN || sm1Type == BrNodeType.LOSS) {
-				assert sm2Type == BrNodeType.WIN || sm2Type == BrNodeType.LOSS;
-				allowView = true;
-			}
-
-			subtitle += "matchId: " + matchIds.get(idx) + ", gameId: " + gameId;
-
-			// upper player
+			// upper team
+			String title = "";
 			if (sm1Type == BrNodeType.UNSET || sm1Type == BrNodeType.RESPAWN) {
 				title += "Unknown";
 			} else {
@@ -960,7 +929,7 @@ public class Bracket {
 				}
 			}
 
-			// lower player
+			// lower team
 			if (sm2Type == BrNodeType.UNSET || sm2Type == BrNodeType.RESPAWN) {
 				title += " -vs- Unknown";
 			} else if (sm2Type == BrNodeType.NA) {
@@ -975,7 +944,35 @@ public class Bracket {
 					title += " (L)";
 				}
 			}
+
+			int id_in_session = matchId + matchIdOffset;
+			String subtitle = "id: " + id_in_session + ", match: "
+					+ matchIds.get(idx) + ", gameId: " + game_id;
+
+			mInfo.title = title;
+			mInfo.subtitle = subtitle;
+
+			// boolean allow_create = false;
+			// if (sm1Type == BrNodeType.TIP && sm2Type == BrNodeType.TIP) {
+			// allow_create = true;
+			// }
+
+			// boolean allow_view = false;
+			// if (sm1Type == BrNodeType.WIN || sm1Type == BrNodeType.LOSS) {
+			// assert sm2Type == BrNodeType.WIN || sm2Type == BrNodeType.LOSS;
+			// allow_view = true;
+			// }
 		}
+		return mInfo;
+	}
+
+	public int length() {
+		assert matchIds.size() == sm1Idcs.size();
+		assert matchIds.size() == sm1Types.size();
+		assert matchIds.size() == sm2Idcs.size();
+		assert matchIds.size() == sm2Types.size();
+		assert matchIds.size() == gameIds.size();
+		return matchIds.size();
 	}
 
 	/** find n such that 2**n >= p */
