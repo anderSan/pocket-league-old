@@ -28,6 +28,7 @@ public class Detail_Session_Base extends MenuContainerActivity {
 	public Session s;
 	public Dao<Session, Long> sDao;
 	public Dao<SessionMember, Long> smDao;
+	public Dao<GameMember, Long> gmDao;
 	public MatchInfo mInfo;
 	public ActionMode mActionMode;
 
@@ -42,6 +43,7 @@ public class Detail_Session_Base extends MenuContainerActivity {
 			try {
 				sDao = Session.getDao(this);
 				smDao = SessionMember.getDao(this);
+				gmDao = GameMember.getDao(this);
 
 				s = sDao.queryForId(sId);
 			} catch (SQLException e) {
@@ -131,7 +133,11 @@ public class Detail_Session_Base extends MenuContainerActivity {
 		public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
 			switch (item.getItemId()) {
 			case R.id.action_match:
-				createMatch();
+				if (mInfo.getCreatable()) {
+					createMatch();
+				} else if (mInfo.getViewable()) {
+					loadMatch(mInfo.getGameId());
+				}
 				mode.finish();
 				return true;
 			default:
@@ -180,7 +186,9 @@ public class Detail_Session_Base extends MenuContainerActivity {
 		// startActivity(intent);
 	}
 
-	private void loadMatch() {
-
+	private void loadMatch(long game_id) {
+		Intent intent = new Intent(this, Quick_Game.class);
+		intent.putExtra("gId", game_id);
+		startActivity(intent);
 	}
 }

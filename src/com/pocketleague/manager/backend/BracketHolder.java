@@ -87,11 +87,11 @@ public class BracketHolder implements View.OnClickListener {
 	}
 
 	public void refreshBrackets() {
-		// get all the completed games for the session, ordered by date played
+		// get all the completed games for the session
 		List<Game> sGamesList = new ArrayList<Game>();
 		try {
 			Log.i(LOGTAG, "session id is " + s.getId());
-			sGamesList = gDao.queryBuilder().orderBy(Game.DATE_PLAYED, true)
+			sGamesList = gDao.queryBuilder().orderBy(Game.ID_IN_SESSION, true)
 					.where().eq(Game.SESSION, s.getId()).query();
 			for (Game g : sGamesList) {
 				gDao.refresh(g);
