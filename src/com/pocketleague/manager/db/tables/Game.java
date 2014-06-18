@@ -1,7 +1,10 @@
 package com.pocketleague.manager.db.tables;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
+import java.util.List;
 
 import android.content.Context;
 
@@ -10,10 +13,12 @@ import com.j256.ormlite.dao.ForeignCollection;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.field.ForeignCollectionField;
 import com.j256.ormlite.table.DatabaseTable;
+import com.pocketleague.gametypes.ScoreType;
 import com.pocketleague.manager.db.DatabaseHelper;
 
 @DatabaseTable
 public class Game {
+	public static final String ID_IN_SESSION = "id_in_session";
 	public static final String SESSION = "session_id";
 	public static final String VENUE = "venue_id";
 	public static final String DATE_PLAYED = "date_played";
@@ -141,4 +146,30 @@ public class Game {
 	// =========================================================================
 	// Additional methods
 	// =========================================================================
+	public Team getWinner() {
+		List<GameMember> game_members = new ArrayList<GameMember>();
+		for (GameMember gm : game_members) {
+			// try {
+			// Dao<GameMember, Long> gmDao = GameMember.getDao(context);
+			// gmDao.update(gm);
+			game_members.add(gm);
+			// } catch (SQLException e) {
+			// Toast.makeText(context, e.getMessage(), Toast.LENGTH_LONG)
+			// .show();
+			// }
+		}
+		Collections.sort(game_members);
+		ScoreType scoretype = session.getRuleSet().getScoreType();
+		Team winner;
+		switch (scoretype) {
+		default:
+			winner = game_members.get(game_members.size()).getTeam();
+			break;
+		case POINTS_INVERSE:
+		case TIME_INVERSE:
+			winner = game_members.get(0).getTeam();
+			break;
+		}
+		return winner;
+	}
 }

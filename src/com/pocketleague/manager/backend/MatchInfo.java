@@ -4,6 +4,7 @@ import com.pocketleague.manager.db.tables.Team;
 
 public class MatchInfo {
 	private long id_in_session = -1;
+	private long game_id = -1;
 	private Team team1;
 	private Team team2;
 	public String title = "";
@@ -11,11 +12,13 @@ public class MatchInfo {
 	private boolean creatable = false;
 	private boolean viewable = false;
 
-	MatchInfo() {
+	MatchInfo(long id_in_session) {
+		this.id_in_session = id_in_session;
 	}
 
-	MatchInfo(long id_in_session, Team team1, Team team2) {
+	MatchInfo(long id_in_session, long game_id, Team team1, Team team2) {
 		this.id_in_session = id_in_session;
+		this.game_id = game_id;
 		this.team1 = team1;
 		this.team2 = team2;
 	}
@@ -26,7 +29,15 @@ public class MatchInfo {
 
 	public void setIdInSession(long id_in_session) {
 		this.id_in_session = id_in_session;
-		if (id_in_session > 0) {
+	}
+
+	public long getGameId() {
+		return game_id;
+	}
+
+	public void setGameId(long game_id) {
+		this.game_id = game_id;
+		if (game_id > 0) {
 			this.viewable = true;
 		}
 	}
@@ -37,7 +48,7 @@ public class MatchInfo {
 
 	public void setTeam1(Team team1) {
 		this.team1 = team1;
-		if (team1 != null && team2 != null && id_in_session < 1) {
+		if (team1 != null && team2 != null && game_id < 1) {
 			this.creatable = true;
 		}
 	}
@@ -48,7 +59,7 @@ public class MatchInfo {
 
 	public void setTeam2(Team team2) {
 		this.team2 = team2;
-		if (team1 != null && team2 != null && id_in_session < 1) {
+		if (team1 != null && team2 != null && game_id < 1) {
 			this.creatable = true;
 		}
 	}
