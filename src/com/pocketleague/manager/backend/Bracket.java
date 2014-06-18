@@ -19,6 +19,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.pocketleague.manager.db.tables.Game;
+import com.pocketleague.manager.db.tables.GameMember;
 import com.pocketleague.manager.db.tables.SessionMember;
 import com.pocketleague.manager.enums.BrDrawable;
 import com.pocketleague.manager.enums.BrNodeType;
@@ -775,6 +776,7 @@ public class Bracket {
 
 	public List<Game> matchMatches(List<Game> sGames) {
 		long gId;
+		long gsId;
 		int smASeed;
 		int smBSeed;
 
@@ -782,33 +784,37 @@ public class Bracket {
 		while (gIt.hasNext()) {
 			Game g = gIt.next();
 			gId = g.getId();
+			gsId = g.getIdInSession();
 			// Log.i(LOGTAG, "Game " + gId + ". "
 			// + g.getFirstPlayer().getFirstName() + " vs "
 			// + g.getSecondPlayer().getFirstName());
-			// smASeed = smIdMap.get(g.getFirstPlayer().getId());
-			// smBSeed = smIdMap.get(g.getSecondPlayer().getId());
+
+			List<GameMember> gMembers = new ArrayList<GameMember>();
+			for (GameMember gm : g.getGameMembers()) {
+				gMembers.add(gm);
+			}
+			smASeed = smIdMap.get(gMembers.get(0).getTeam().getId());
+			smBSeed = smIdMap.get(gMembers.get(1).getTeam().getId());
 
 			if (gameIds.contains(gId)) {
-				int idx = gameIds.indexOf(gId);
-				// assert hasSm(idx, smASeed) && hasSm(idx, smBSeed);
 				gIt.remove();
 			} else {
 				int nMatches = length();
 				for (int idx = 0; idx < nMatches; idx++) {
-					// if (hasSm(idx, smASeed) && hasSm(idx, smBSeed)
-					// && gameIds.get(idx) == -1) {
-					// Log.i(LOGTAG, "Matching game " + gId + " to match "
-					// + matchIds.get(idx));
-					// gameIds.set(idx, gId);
-					// gIt.remove();
-					// break;
-					// }
+					if (hasSm(idx, smASeed) && hasSm(idx, smBSeed)
+							&& gameIds.get(idx) == -1) {
+						Log.i(LOGTAG, "Matching game " + gId + " to match "
+								+ matchIds.get(idx));
+						gameIds.set(idx, gId);
+						gIt.remove();
+						break;
+					}
 				}
 			}
 
 			if (g.getIsComplete() && gameIds.contains(gId)) {
-				// smASeed = smIdMap.get(g.getWinner().getId());
-				// promoteWinner(gameIds.indexOf(g.getId()), smASeed);
+				smASeed = smIdMap.get(g.getWinner().getId());
+				promoteWinner(gameIds.indexOf(g.getId()), smASeed);
 			}
 		}
 		return sGames;
@@ -853,8 +859,8 @@ public class Bracket {
 	}
 
 	private void promoteSelf(int idx) {
-		// sm1Types.set(idx, BrNodeType.WIN);
-		// sm2Types.set(idx, BrNodeType.LOSS);
+		sm1Types.set(idx, BrNodeType.WIN);
+		sm2Types.set(idx, BrNodeType.LOSS);
 		int wIdx = sm1Idcs.get(idx);
 
 		int childViewId = getChildViewId(matchIds.get(idx));
@@ -895,12 +901,12 @@ public class Bracket {
 	}
 
 	public MatchInfo getMatchInfo(int viewId) {
-		MatchInfo mInfo = new MatchInfo();
 		int matchId = viewId % BrNodeType.MOD - matchIdOffset;
+		MatchInfo mInfo = new MatchInfo(viewId % BrNodeType.MOD);
 		if (matchIds.contains(matchId)) {
 			int idx = matchIds.indexOf(matchId);
 			long game_id = gameIds.get(idx);
-			mInfo.setIdInSession(game_id);
+			mInfo.setGameId(game_id);
 
 			BrNodeType sm1Type = sm1Types.get(idx);
 			BrNodeType sm2Type = sm2Types.get(idx);
