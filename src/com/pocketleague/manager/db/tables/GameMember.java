@@ -64,9 +64,9 @@ public class GameMember implements Comparable<GameMember> {
 	// =========================================================================
 
 	public int compareTo(GameMember another) {
-		if (id < another.id) {
+		if (score < another.score) {
 			return -1;
-		} else if (id == another.id) {
+		} else if (score == another.score) {
 			return 0;
 		} else {
 			return 1;
